@@ -1,4 +1,4 @@
-exports.getLandingPage = (req, res, next) => {
 
+exports.getLandingPage = (req, res, next) => {
     res.render('landing');
 }

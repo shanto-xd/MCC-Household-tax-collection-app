@@ -2,10 +2,15 @@ h2.heading {
   color: red;
 }
 
-a.btn.p-4 {
-  font-size: 25px;
+a.btn.p-3 {
+  font-size: 22px;
+  font-stretch: 1.1;
   font-weight: bold;
   color: black;
+}
+
+#resetPassword {
+  margin-top: 170px;
 }
 
 .wrapper {
@@ -19,7 +24,7 @@ footer {
   color: black;
   margin: 1em;
   padding: 1em;
-  width: 80%;
+  width: 100%;
   border-top: 1px solid blue;
   justify-content: center;
   font-weight: 600;

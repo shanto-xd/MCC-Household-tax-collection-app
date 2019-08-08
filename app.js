@@ -6,6 +6,7 @@ const flash = require('connect-flash');
 
 // import routes
 const formRoutes = require('./routes/form');
+const authRoutes = require('./routes/auth');
 // import controllers
 // import db models
 // configure db conncetion
@@ -22,9 +23,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use(formRoutes);
+app.use(authRoutes);
 
 
 
 app.listen(3000, () => {
-    console.log('Server is running');
+    console.log('Server is running at 3000');
 })
