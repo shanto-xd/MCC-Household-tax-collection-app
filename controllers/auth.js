@@ -6,7 +6,10 @@ exports.getLogin = (req, res, next) => {
 }
 
 exports.postLogin = (req, res, next) => {
-    res.send('Working!');
+    const email = req.body.email;
+    const password = req.body.password;
+    // check for authentication then
+    res.redirect('/dashboard');
 }
 
 exports.getResetPassword = (req, res, next) => {

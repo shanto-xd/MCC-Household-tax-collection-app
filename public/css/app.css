@@ -13,9 +13,18 @@ a.btn.p-3 {
   margin-top: 170px;
 }
 
+#formHeader {
+  margin-top: 20px;
+}
+
+label>span {
+  color: red;
+}
+
 .wrapper {
   display: flex;
   justify-content: center;
+
 }
 
 footer {

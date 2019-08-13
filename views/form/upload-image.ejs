@@ -1,0 +1,90 @@
+<%- include ../includes/header.ejs %>
+<title>তথ্য সংগ্রহ ফরম পাতা-2</title>
+</head> 
+<body>
+    <div class="container">
+        <div class="text-center mt-3">
+            <h1 class=" font-weight-bold">ময়মনসিংহ সিটি কর্পোরেশন</h1>
+            <h4>নগর ভবন, ময়মনসিংহ</h4>
+        </div>
+
+        <div id="formHeader" class="text-center mb-5">
+            <h4 class="bg-dark text-white p-1 font-weight-bold d-inline">তথ্য বিবরণী ফরম</h4>
+        </div>
+
+        <form action="/upload-image" method="POST" enctype="multipart/form-data">
+            <div class="form-group mb-5">
+                <label>ছবি আপলোড করুন<span>*</span></label>
+                <input type="file" accept="image/*"><br>
+            </div>
+
+            <h5 class="text-center text-primary">১৯৮৬ সনের মিউনিসিপ্যাল(সিটি) কর্পোরেশন ট্যাক্সেশন আইন-২০(৩)(এ)(বি) ধারা মোতাবেক মূল্যায়ন শিট</h5>
+            
+            <p class="lead text-center">সিটি কর্পোরেশনের আদর্শ কর তফসিল-২০১৬ মোতাবেক বার্ষিক মূল্যায়নের......হারে</p>
+            <hr>
+            <div class="form-row my-2">
+                <div class="form-group col-md-4">
+                    <label>হোল্ডিং এর কাঠামো<span>*</span></label> 
+                    <select  class="form-control" name="holdingStructure"> 
+                        <option selected disabled>বাছাই করুন...</option>
+                        <option value="পাকা">পাকা</option>
+                        <option value="আধা পাকা">আধা পাকা/স্টিল স্ট্রাকচার</option>  
+                        <option value="কাঁচা">কাঁচা/অন্যান্য</option>  
+                    </select>    
+                </div>
+
+                <div class="form-group col-md-3 ml-2 d-flex">
+                    <label class="align-self-end">মালিকানা* 
+                        <span>
+                            <input type="radio" name="ownership" value="নিজস্ব"> নিজস্ব
+                            <input checked type="radio" name="ownership" value="ভাড়া"> ভাড়া
+                        </span>
+                    </label>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>আয়তন(বর্গফুট)<span>*</span></label>
+                    <input class="form-control" type="number" min="1" name="area" >
+                </div>
+            </div>
+
+            <p class="text-primary">ফিল্ড অফিসার কর্তৃক পূরণীয়<span class="text-danger">*</span></p>
+
+            <hr>
+
+            <div class="form-row my-2">
+                <div class="form-group col-md-4">
+                    <label>প্রতি বর্গফুট মাসিক ভাড়া<span>*</span></label>  
+                    <input class="form-control" type="number" min="1" name="monthlyRentPerSF" placeholder="ইংরেজিতে লিখুন" >
+                </div>
+                    <div class="form-group col-md-4">
+                        <label>বার্ষিক মূল্যায়ন<span>*</span></label>
+                        <input class="form-control" name="yearlyEvalution">
+                        <small id="rental"  class="text-danger d-none rental">**রক্ষণাবেক্ষণ বাবদ ২ মাসের ভাড়া বাদে ১০ মাসের ভাড়া হিসেবে</small>
+                        <small class="text-danger d-none owned">**১০ মাসের ভাড়া থেকে ৪০% রেয়াতের পর</small>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label>বার্ষিক কর<span>*</span></label>
+                        <input class="form-control" name="yearlyEvalution">
+                        <small id="rental" class="text-danger d-none rental">**রক্ষণাবেক্ষণ বাবদ ২ মাসের ভাড়া বাদে ১০ মাসের ভাড়া হিসেবে</small>
+                        <small class="text-danger d-none owned">**১০ মাসের ভাড়া থেকে ৪০% রেয়াতের পর</small>
+                    </div> 
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">তথ্য সাবমিট করুন</button>
+        </form>
+    </div>
+        
+<%- include ../includes/footer-text.ejs %>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        if ($("input[name='ownership']:checked").val() == "নিজস্ব") {
+            $('.rental').removeClass('d-none');
+        } else {
+            $('.owned').removeClass('d-none');
+        }; 
+    });
+</script>
+
+<%- include ../includes/footer.ejs %>
