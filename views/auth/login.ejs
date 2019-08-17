@@ -1,5 +1,9 @@
 <%- include ../includes/header.ejs %>
 
+	<title><%=userRole%> লগিন</title>
+</head> 
+
+<body> 
 
 <section id="userLoginForm">
   <div class="container mt-5">
@@ -10,7 +14,7 @@
             <h4> <%=userRole %> লগিন</h4>
           </div>
             <div class="card-block">
-              <form class="p-3" action="/auth/login" method="POST">
+              <form class="p-3" action="/auth/login?role=<%= userRole %>" method="POST">
                 <div class="form-group">
                   <label class="form-control-label">ইউজারনেম/ই-মেইল</label>
                   <input type="text" name="username"  class="form-control">

@@ -1,0 +1,32 @@
+<%- include ../includes/header.ejs %>
+
+    <title>ড্যাশবোর্ড | ফিল্ড অফিসার</title>
+</head>
+
+<body>
+
+   <%- include('../includes/nav.ejs', {userRole: userRole}) %>
+   <%- include ../includes/dashboard.ejs %>
+    <div class="row mt-2">
+            <div class="col-md-6 mx-auto text-center ">
+                <div class="mt-4"> 
+                    <a href="/form" class="btn btn-block btn-outline-success p-3">এসেসমেন্ট এন্ট্রি</a>
+                </div>
+                
+                    <div class="mt-4">
+                    <a href="/order-plate?role=<%=userRole%>" class="btn btn-block btn-outline-success p-3">হোল্ডিং প্লেট নাম্বার অর্ডার</a> 
+                </div> 
+                
+                    <div class="mt-4">
+                    <a href="#" class="btn btn-block btn-outline-success p-3">প্লেট ডেলিভারি</a> 
+                </div>
+                
+                <div class="mt-4">
+                    <a href="/fo/daily-report?role=<%=userRole%>" class="btn btn-block btn-outline-success p-3">দৈনিক রিপোর্ট দেখুন</a>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+<%- include ../includes/footer-text.ejs %>
+<%- include ../includes/footer.ejs %>

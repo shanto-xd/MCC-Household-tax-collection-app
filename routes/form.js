@@ -14,4 +14,12 @@ router.get('/upload-image', formController.getUploadImage)
 
 router.post('/upload-image', formController.postUploadImage);
 
+router.get('/confirm-order', formController.getConfirmOrder);
+
+router.post('/confirm-order', formController.postConfirmOrder);
+
+router.get('/order-plate', formController.getOrderPlate);
+
+router.get('/fo/daily-report', formController.getDailyReport);
+
 module.exports = router

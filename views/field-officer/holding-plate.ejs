@@ -1,0 +1,25 @@
+<%- include ../includes/header.ejs %>
+
+    <title>হোল্ডিং নাম্বার প্লেট অর্ডার</title>
+</head>
+
+<body>
+   <%- include('../includes/nav.ejs', {userRole: userRole}) %>
+    <div class="container">
+        <div class="text-center my-3 p-2">
+            <h1 class=" font-weight-bold">ময়মনসিংহ সিটি কর্পোরেশন</h1> 
+            <h4>হোল্ডিং প্লেট নাম্বার অর্ডার</h4>
+        </div>
+
+        <form class="mt-5" action="/order-plate" method="POST">
+            <div class="form-group col-md-8 mx-auto">
+                <label>এর আগে তথ্য হালনাগাদ হয়ে থাকলে আপনার এসেসমেন্ট আইডি দিন, তথ্য হালনাগাদ না করে থাকলে <a href="/form">এখানে যান</a><span>*</span></label>
+                <input type="text" name="assess_id" class="form-control">
+                <input type="submit" value="সাবমিট করুন" class="btn btn-primary mt-2">
+            </div>
+        </form>
+
+    </div>
+
+<%- include ../includes/footer-text.ejs %> 
+<%- include ../includes/footer.ejs %> 

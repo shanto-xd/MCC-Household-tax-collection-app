@@ -12,10 +12,10 @@
             <h4 class="bg-dark text-white p-1 font-weight-bold d-inline">তথ্য বিবরণী ফরম</h4>
         </div>
 
-        <form action="/upload-image" method="POST" enctype="multipart/form-data">
+        <form action="/upload-image?sid=<%=id%>" method="POST" enctype="multipart/form-data">
             <div class="form-group mb-5">
                 <label>ছবি আপলোড করুন<span>*</span></label>
-                <input type="file" accept="image/*"><br>
+                <input type="file" name="image" accept="image/*"><br>
             </div>
 
             <h5 class="text-center text-primary">১৯৮৬ সনের মিউনিসিপ্যাল(সিটি) কর্পোরেশন ট্যাক্সেশন আইন-২০(৩)(এ)(বি) ধারা মোতাবেক মূল্যায়ন শিট</h5>
@@ -25,26 +25,23 @@
             <div class="form-row my-2">
                 <div class="form-group col-md-4">
                     <label>হোল্ডিং এর কাঠামো<span>*</span></label> 
-                    <select  class="form-control" name="holdingStructure"> 
+                    <input class="form-control" type="text" readonly value="<%=holdingStructure%>">
+                    <!-- <select class="form-control" name="holdingStructure"> 
                         <option selected disabled>বাছাই করুন...</option>
                         <option value="পাকা">পাকা</option>
                         <option value="আধা পাকা">আধা পাকা/স্টিল স্ট্রাকচার</option>  
                         <option value="কাঁচা">কাঁচা/অন্যান্য</option>  
-                    </select>    
+                    </select>     -->
                 </div>
 
-                <div class="form-group col-md-3 ml-2 d-flex">
-                    <label class="align-self-end">মালিকানা* 
-                        <span>
-                            <input type="radio" name="ownership" value="নিজস্ব"> নিজস্ব
-                            <input checked type="radio" name="ownership" value="ভাড়া"> ভাড়া
-                        </span>
-                    </label>
+                <div class="form-group col-md-3">
+                    <label>মালিকানা<span>*</span></label>
+                    <input class="form-control" type="text" readonly value="<%=ownership%>">
                 </div>
 
                 <div class="form-group col-md-4">
                     <label>আয়তন(বর্গফুট)<span>*</span></label>
-                    <input class="form-control" type="number" min="1" name="area" >
+                    <input class="form-control" type="number" readonly value="<%=volume%>" >
                 </div>
             </div>
 
@@ -59,14 +56,14 @@
                 </div>
                     <div class="form-group col-md-4">
                         <label>বার্ষিক মূল্যায়ন<span>*</span></label>
-                        <input class="form-control" name="yearlyEvalution">
-                        <small id="rental"  class="text-danger d-none rental">**রক্ষণাবেক্ষণ বাবদ ২ মাসের ভাড়া বাদে ১০ মাসের ভাড়া হিসেবে</small>
+                        <input type="text" class="form-control" name="yearlyEvalution">
+                        <small class="text-danger d-none rental">**রক্ষণাবেক্ষণ বাবদ ২ মাসের ভাড়া বাদে ১০ মাসের ভাড়া হিসেবে</small>
                         <small class="text-danger d-none owned">**১০ মাসের ভাড়া থেকে ৪০% রেয়াতের পর</small>
                     </div>
 
                     <div class="form-group col-md-4">
                         <label>বার্ষিক কর<span>*</span></label>
-                        <input class="form-control" name="yearlyEvalution">
+                        <input class="form-control" name="yearlyTax">
                         <small id="rental" class="text-danger d-none rental">**রক্ষণাবেক্ষণ বাবদ ২ মাসের ভাড়া বাদে ১০ মাসের ভাড়া হিসেবে</small>
                         <small class="text-danger d-none owned">**১০ মাসের ভাড়া থেকে ৪০% রেয়াতের পর</small>
                     </div> 
@@ -79,11 +76,17 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        if ($("input[name='ownership']:checked").val() == "নিজস্ব") {
-            $('.rental').removeClass('d-none');
-        } else {
-            $('.owned').removeClass('d-none');
-        }; 
+        $("input[name='ownership']").on('change', function() {
+            if($(this).val() == "নিজস্ব") {
+                $(".owned").removeClass('d-none')
+                $(".rental").addClass('d-none');
+            }
+
+            if($(this).val() == "ভাড়া") {
+                $(".owned").addClass('d-none');
+                $(".rental").removeClass('d-none');
+            }
+        })
     });
 </script>
 

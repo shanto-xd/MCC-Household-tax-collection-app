@@ -6,7 +6,7 @@
 <body>
     <%- include('../includes/nav.ejs', {userRole: userRole}) %>
     <%- include ../includes/dashboard.ejs %>
-
+    <div class="container">
         <div class="row mt-2">
             <div class="col-md-6 mx-auto text-center ">
                 <div class="mt-4"> 
@@ -19,15 +19,9 @@
                     <a href="#" class="btn btn-block btn-outline-success p-3">দৈনিক প্রতিবেদন দেখুন</a> 
                 </div> 
                 
-                <div class="mt-4">
+                    <div class="mt-4">
                     <a href="#" class="btn btn-block btn-outline-success p-3" data-toggle="modal" data-target="#searchByDate">
                         নির্দিষ্ট তারিখের প্রতিবেদন দেখুন
-                    </a>  
-                </div>
-
-                <div class="mt-4">
-                    <a href="#" class="btn btn-block btn-outline-success p-3" data-toggle="modal" data-target="#searchByDate">
-                        অফিসার রেজিষ্ট্রেশন 
                     </a>  
                 </div>
             </div> 
@@ -39,7 +33,7 @@
         <div class="modal-content">
             <div class="modal-body">
 
-                <form accept="#" method="POST">
+                <form action="#" method="POST">
                     <div class="form-group mx-auto">
                         <label>নির্দিষ্ট তারিখ প্রবেশ করান<span>*</span></label>
                         <input type="date" class="form-control mb-2">

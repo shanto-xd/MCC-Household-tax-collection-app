@@ -1,0 +1,44 @@
+<!-- Search Assessment Info Modal -->
+<div class="modal fade" id="searchAssessment">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="searchAssessmentLabel">
+                    এসেসমেন্টের তথ্য খুঁজুন
+                </h5>
+                <button class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <form accept="#" method="POST">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>ক্যাটাগরি বাছাই করুন<span>*</span></label>
+                            <select class="form-control" >
+                                <option disabled selected>বাছাই করুন.....</option>
+                                <option value="এসেসমেন্ট আইডি">এসেসমেন্ট আইডি</option>
+                                <option value="হোল্ডিং নং">হোল্ডিং নং</option>
+                                <option value="ওয়ার্ড নং">ওয়ার্ড নং</option>
+                                <option value="মালিকের নাম">মালিকের নাম</option>
+                                <option value="হোল্ডিং এর ধরন">হোল্ডিং এর ধরন</option> 
+                                <option value="ব্লক">ব্লক</option>
+                                <option value="অঞ্চল">অঞ্চল</option>
+                                <option value="রাস্তা/মহল্লা">রাস্তা/মহল্লা</option>
+                                <option value="মোবাইল নং">মোবাইল নং</option>
+                                <option value="হোল্ডিং এর নাম">হোল্ডিং এর নাম</option>
+                                <option value="থানা">থানা</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-8">
+                            <label >অনুসন্ধান তথ্য<span>*</span></label>
+                            <input type="text" class="form-control" placeholder="হোল্ডিং নং, ওয়ার্ড নং ইংরেজিতে লিখুন"> 
+                        </div>
+                    </div>
+                    <button class="btn btn-block btn-success"><span class="fa fa-search"></span> খুঁজুন</button> 
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
