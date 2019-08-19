@@ -10,29 +10,31 @@
             </div>
             <div class="modal-body">
 
-                <form accept="#" method="POST">
+                <form action="/search-info?role=প্রোডাকশন অফিসার" method="POST"> 
                     <div class="form-row">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-12">
                             <label>ক্যাটাগরি বাছাই করুন<span>*</span></label>
-                            <select class="form-control" >
+                            <select name="filter" class="form-control" multiple>
                                 <option disabled selected>বাছাই করুন.....</option>
-                                <option value="এসেসমেন্ট আইডি">এসেসমেন্ট আইডি</option>
-                                <option value="হোল্ডিং নং">হোল্ডিং নং</option>
-                                <option value="ওয়ার্ড নং">ওয়ার্ড নং</option>
-                                <option value="মালিকের নাম">মালিকের নাম</option>
-                                <option value="হোল্ডিং এর ধরন">হোল্ডিং এর ধরন</option> 
-                                <option value="ব্লক">ব্লক</option>
-                                <option value="অঞ্চল">অঞ্চল</option>
-                                <option value="রাস্তা/মহল্লা">রাস্তা/মহল্লা</option>
-                                <option value="মোবাইল নং">মোবাইল নং</option>
-                                <option value="হোল্ডিং এর নাম">হোল্ডিং এর নাম</option>
-                                <option value="থানা">থানা</option>
+                                <option value="assessment_id">এসেসমেন্ট আইডি</option>
+                                <option value="holding">হোল্ডিং নং</option>
+                                <option value="ward">ওয়ার্ড নং</option>
+                                <option value="ownerName">মালিকের নাম</option>
+                                <option value="holdingType">হোল্ডিং এর ধরন</option> 
+                                <option value="block">ব্লক</option>
+                                <option value="areaName">অঞ্চল</option>
+                                <option value="road">রাস্তা/মহল্লা</option>
+                                <option value="mobile">মোবাইল নং</option>
+                                <option value="holdingName">হোল্ডিং এর নাম</option>
+                                <option value="thana">থানা</option>
                             </select>
                         </div>
-
-                        <div class="form-group col-md-8">
-                            <label >অনুসন্ধান তথ্য<span>*</span></label>
-                            <input type="text" class="form-control" placeholder="হোল্ডিং নং, ওয়ার্ড নং ইংরেজিতে লিখুন"> 
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label >অনুসন্ধান তথ্য(একাধিক কি ওয়ার্ড কমা দিয়ে আলাদা করুন)<span>*</span></label>
+                            <input type="text" name="keys" class="form-control" placeholder="উদাহরন - 177/A,18,1234,A"> 
+                            <small class="text-danger">**হোল্ডিং নং, ওয়ার্ড নং, এসেসমেন্ট আইডি, ব্লক নং ইংরেজিতে লিখুন</small>
                         </div>
                     </div>
                     <button class="btn btn-block btn-success"><span class="fa fa-search"></span> খুঁজুন</button> 

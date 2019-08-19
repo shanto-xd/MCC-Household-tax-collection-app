@@ -15,7 +15,7 @@ const surveySchema = new Schema({
         required: true,
     },
     ward: {
-        type: Number,
+        type: String,
         required: true,
     },
     age: String,
@@ -70,23 +70,23 @@ const surveySchema = new Schema({
         required: true,
     },
     rent: {
-        type: Number,
+        type: String,
         default: 0,
     },
     maleMember: {
-        type: Number,
-        default: 0,
-        required: true,
+        type: String,
+        default: '',
+        // required: true,
     },
     femaleMember: {
-        type: Number,
-        default: 0,
-        required: true,
+        type: String,
+        default: '',
+        // required: true,
     },
     yearlyIncome: {
-        type: Number,
-        default: 0,
-        required: true,
+        type: String,
+        default: '',
+        // required: true,
     },
     waterSource: {
         type: String,
@@ -121,7 +121,7 @@ const surveySchema = new Schema({
         default: '',
     },
     yearlyTax: {
-        type: Number,
+        type: String,
         // required: true,
         default: 0,
     },
@@ -131,5 +131,6 @@ const surveySchema = new Schema({
         // required: true,
     }
 }, { timestamps: true });
+
 
 module.exports = mongoose.model('Survey', surveySchema);

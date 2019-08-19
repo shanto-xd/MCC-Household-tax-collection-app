@@ -1,0 +1,84 @@
+<%- include ../includes/header.ejs %>
+
+    <title>তথ্য পাতা | <%=userRole%></title>
+</head>
+
+<body>
+    <%- include('../includes/nav.ejs', {userRole: userRole}) %>
+    <h1 class="text-center mt-3">অনুসন্ধানকৃত তথ্য দেখুন</h1>
+    <% if(surveyInfo.length > 0) { %>
+    
+    <table border = "1" style="font-size: 13px">
+        <thead>
+            <tr>
+                <th>এসেসমেন্ট আইডি</th>
+                <th>মালিকের নাম</th>
+                <th>পিতা/স্বামীর নাম</th>
+                <th>অঞ্চল</th>
+                <th>ওয়ার্ড</th>
+                <th>বয়স</th>
+                <th>পেশা</th>
+                <th>রাস্তা/মহল্লা</th>
+                <th>হোল্ডিং নং</th>
+                <th>ব্লক</th>
+                <th>থানা</th>
+                <th>মুক্তিযোদ্ধা</th>
+                <th>মোবাইল</th>
+                <th>হোল্ডিং এর ধরন</th>
+                <th>হোল্ডিং এর নাম</th>
+                <th>হোল্ডিং এর গঠন</th>
+                <th>হোল্ডিং এর দৈর্ঘ্য</th>
+                <th>হোল্ডিং এর প্রস্থ</th>
+                <th>হোল্ডিং এর আয়তন</th>
+                <th>ভাড়া</th>
+                <th>মালিকানা</th>
+                <th>পুরুষ সদস্য</th>
+                <th>নারী সদস্য</th>
+                <th>বাৎসরিক উপার্জন</th>
+                <th>পানির উৎস</th>
+                <th>স্যানিটেশন ব্যবস্থা</th>
+                <th>গ্যাস সংযোগ</th>
+                <th>বাৎসরিক খাজনা</th>
+            </tr>
+        </thead>
+
+        <% surveyInfo.forEach(info => {%>
+             <tbody>
+                <tr>
+                    <td><a href="/survey-info/<%=info._id%>"><%= info.assessment_id %></a></td>
+                    <td><%= info.ownerName%></td>
+                    <td><%= info.ownersFH %></td>
+                    <td><%= info.areaName %></td>
+                    <td><%= info.ward %></td>
+                    <td><%= info.age %></td>
+                    <td><%= info.occupation %></td>
+                    <td><%= info.road %></td>
+                    <td><%= info.holding %></td>
+                    <td><%= info.block %></td>
+                    <td><%= info.thana %></td>
+                    <td><%= info.freedomFighter %></td>
+                    <td><%= info.mobile %></td>
+                    <td><%= info.holdingType %></td>
+                    <td><%= info.holdingName %></td>
+                    <td><%= info.holdingStructure %></td>
+                    <td><%= info.length %></td>
+                    <td><%= info.wide %></td>
+                    <td><%= info.volume %></td>
+                    <td><%= info.ownership %></td>
+                    <td><%= info.rent %></td>
+                    <td><%= info.maleMember %></td>
+                    <td><%= info.femaleMember%></td>
+                    <td><%= info.yearlyIncome%></td>
+                    <td><%= info.waterSource%></td>
+                    <td><%= info.sanitationStatus%></td>
+                    <td><%= info.gasConnection%></td>
+                    <td><%= info.yearlyTax%></td>
+                </tr>
+        </tbody>
+        <% }) %>
+    </table>
+<% } else { %>
+    <h1 class="text-center text-danger font-weight-bold">দুঃখিত, অনুসন্ধানকৃত তথ্য ডাটাবেজে পাওয়া যায় নি...</h1>
+<% } %>
+<%- include ../includes/footer-text.ejs %>
+<%- include ../includes/footer.ejs %>

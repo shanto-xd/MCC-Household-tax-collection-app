@@ -20,6 +20,11 @@ router.post('/confirm-order', formController.postConfirmOrder);
 
 router.get('/order-plate', formController.getOrderPlate);
 
+router.post('/order-plate', formController.postOrderPlate);
+
 router.get('/fo/daily-report', formController.getDailyReport);
+
+router.post('/search-info', formController.postSearchInfo);
+
 
 module.exports = router

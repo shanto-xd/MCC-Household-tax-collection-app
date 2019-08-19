@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-sequence')(mongoose);
 const Schema = mongoose.Schema;
 
 const orderSchema = new Schema({
@@ -18,7 +19,12 @@ const orderSchema = new Schema({
     paid: {
         type: String,
         // required: true,
+    },
+    bill: {
+        type: Number,
     }
 }, { timestamps: true });
+
+orderSchema.plugin(autoIncrement, { inc_field: 'bill' });
 
 module.exports = mongoose.model('Order', orderSchema);

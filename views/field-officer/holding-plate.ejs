@@ -11,10 +11,10 @@
             <h4>হোল্ডিং প্লেট নাম্বার অর্ডার</h4>
         </div>
 
-        <form class="mt-5" action="/order-plate" method="POST">
+        <form class="mt-5" action="/order-plate?role=<%=userRole%>" method="POST">
             <div class="form-group col-md-8 mx-auto">
                 <label>এর আগে তথ্য হালনাগাদ হয়ে থাকলে আপনার এসেসমেন্ট আইডি দিন, তথ্য হালনাগাদ না করে থাকলে <a href="/form">এখানে যান</a><span>*</span></label>
-                <input type="text" name="assess_id" class="form-control">
+                <input type="text" name="assessment_id" class="form-control">
                 <input type="submit" value="সাবমিট করুন" class="btn btn-primary mt-2">
             </div>
         </form>
