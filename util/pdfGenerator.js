@@ -3,11 +3,11 @@ const fs = require('fs');
 const path = require('path')
 
 
-exports.createInvoice = async (order, billNo, res) => {
+exports.createInvoice = async (survey, order, billNo, res) => {
 
     try {
         const pdf = new PDFKit({ margin: 50 });
-        const invoiceName = order.survey.holdingName + billNo + '.pdf';
+        const invoiceName = survey.holdingName + billNo + '.pdf';
         const invoicePath = path.join('data', 'invoices', invoiceName);
 
         res.set('Content-Type', 'application/pdf');
@@ -55,41 +55,34 @@ exports.createInvoice = async (order, billNo, res) => {
             .fontSize(18)
             .text('এসেসমেন্ট আইডি -     ', 50, 220)
             .font('Helvetica')
-            .text(order.survey.assessment_id, 180, 220)
+            .text(survey.assessment_id, 180, 220)
 
 
         await pdf
             .font('SolaimanLipi')
-            .text(`বাড়ির নাম -     ${order.survey.holdingName}`, 50, 240)
-            .text(`মালিকের নাম -     ${order.survey.ownerName}`)
-            .text(`রাস্তা/মহল্লার নাম -     ${order.survey.road}`)
-            .text(`অঞ্চল -     ${order.survey.areaName}`)
-            .text(`মোবাইল নং -     ${order.survey.mobile}`)
+            .text(`বাড়ির নাম -     ${survey.holdingName}`, 50, 240)
+            .text(`মালিকের নাম -     ${survey.ownerName}`)
+            .text(`রাস্তা/মহল্লার নাম -     ${survey.road}`)
+            .text(`মোবাইল নং -     ${survey.mobile}`)
             .text(`প্লেট সাইজ -     ${order.plateSize}`)
-
-        await pdf
-            .text('ব্লক -     ')
-            .font('Helvetica')
-            .fontSize(15)
-            .text(order.survey.block, 100, 370)
 
         await pdf
             .font('SolaimanLipi')
             .fontSize(18)
-            .text('হোল্ডিং নং -     ', 50, 390)
+            .text('হোল্ডিং নং -     ', 50, 350)
             .font('Helvetica')
             .fontSize(15)
-            .text(order.survey.holding, 120, 395)
+            .text(survey.holding, 120, 355)
 
         await pdf
             .font('SolaimanLipi', 18)
-            .text('ওয়ার্ড নং -     ', 50, 415)
+            .text('ওয়ার্ড নং -     ', 50, 375)
             .font('Helvetica', 15)
-            .text(order.survey.ward, 120, 420);
+            .text(survey.ward, 120, 380);
 
 
         await pdf
-            .text('---------------------------------------------------------------------------------------------', 50, 430);
+            .text('---------------------------------------------------------------------------------------------', 50, 400);
 
 
         await pdf

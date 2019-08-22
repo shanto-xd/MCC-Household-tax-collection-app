@@ -13,6 +13,7 @@ const uniqueRandom = require('unique-random');
 // const path = require('path');
 
 const uid = new shortUniqueId();
+const PER_PAGE = 25
 
 exports.getLandingPage = (req, res, next) => {
     res.render('landing');
@@ -43,17 +44,18 @@ exports.postForm = async (req, res, next) => {
     // saves all data to db then
     const survey = await new Survey({
         ownerName: req.body.ownerName,
-        ownersFH: req.body.ownersFH,
-        areaName: req.body.areaName,
+        fatherName: req.body.fatherName,
+        motherName: req.body.motherName,
+        postcode: req.body.postcode,
         ward: req.body.ward,
         age: req.body.age,
         occupation: req.body.occupation,
         road: req.body.road,
         holding: req.body.holding,
-        block: req.body.block,
         thana: req.body.thana,
         freedomFighter: req.body.freedomFighter,
         mobile: req.body.mobile,
+        id: req.body.id,
         holdingType: req.body.holdingType,
         holdingName: req.body.holdingName,
         holdingStructure: req.body.holdingStructure,
@@ -64,10 +66,14 @@ exports.postForm = async (req, res, next) => {
         rent: req.body.rent,
         maleMember: req.body.maleMember,
         femaleMember: req.body.femaleMember,
+        totalMember: req.body.totalMember,
         yearlyIncome: req.body.yearlyIncome,
         waterSource: req.body.waterSource,
         sanitationStatus: req.body.sanitationStatus,
         gasConnection: req.body.gasConnection,
+        roadExist: req.body.roadExist,
+        roadType: req.body.roadType,
+        streetlight: req.body.streetlight,
     });
 
     try {
@@ -138,16 +144,18 @@ exports.getConfirmOrder = async (req, res, next) => {
 exports.postConfirmOrder = async (req, res, next) => {
     try {
         const order = await new Order();
-        order.survey = req.query.sid;
-        await order.populate('survey').execPopulate();
         order.paid = 'Paid';
         order.plateSize = req.body.plateSize;
         order.orderStatus = 'প্রক্রিয়াধীন';
         await order.save();
 
+        const survey = await Survey.findById(req.query.sid);
+        survey.order = order._id;
+        await survey.save()
+
         //create invoice
         const billNo = uid.randomUUID(6);
-        await invoice.createInvoice(order, billNo, res);
+        await invoice.createInvoice(survey, order, billNo, res);
     } catch (err) {
         console.log(err);
     }
@@ -172,7 +180,7 @@ exports.getDailyReport = (req, res, next) => {
 
 exports.postSearchInfo = async (req, res, next) => {
     const filter = req.body.filter;
-    const keys = req.body.keys.split(',')
+    const keys = req.body.keys.split(' ')
     let obj = {}
 
     if (typeof filter !== 'string') {
@@ -185,5 +193,51 @@ exports.postSearchInfo = async (req, res, next) => {
 
     const survey = await Survey.find(obj)
     // console.log(survey);
-    res.render('form/show-info', { surveyInfo: survey, userRole: req.query.role });
-} 
+    console.log(survey)
+    // res.render('form/show-orders', { surveyInfo: survey, userRole: req.query.role, obJ: obj });
+    res.send(obj);
+}
+
+exports.getOrders = async (req, res, next) => {
+    const page = +req.query.page || 1;
+    let totalCount;
+
+    let obj = {
+        order: { $exists: true }
+    }
+
+    const orderCount = await Order.find().countDocuments()
+
+    Survey
+        .find(obj)
+        .skip((page - 1) * PER_PAGE)
+        .limit(PER_PAGE)
+        .populate('order')
+        .sort('holding')
+        .then(surveys => {
+            res.render('form/show-orders', {
+                surveys: surveys,
+                userRole: req.query.role,
+                currentPage: page,
+                lastPage: Math.ceil(orderCount / PER_PAGE),
+            });
+        })
+        .catch(err => console.log(err))
+}
+
+exports.postOrders = (req, res, next) => {
+    const filter = req.body.filter
+    const keys = req.body.keys.split(' ')
+    let searchObj = {}
+
+    if (typeof filter !== 'string') {
+        for (let i = 0; i < filter.length; i++) {
+            searchObj[filter[i]] = keys[i];
+        }
+    } else {
+        searchObj[filter] = keys[0]
+    }
+
+    Order
+
+}

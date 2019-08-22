@@ -26,5 +26,7 @@ router.get('/fo/daily-report', formController.getDailyReport);
 
 router.post('/search-info', formController.postSearchInfo);
 
+router.get('/orders', formController.getOrders);
+
 
 module.exports = router

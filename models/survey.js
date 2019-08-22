@@ -4,131 +4,149 @@ const Schema = mongoose.Schema;
 const surveySchema = new Schema({
     ownerName: {
         type: String,
-        required: true,
+        // required: true,
     },
-    ownersFH: {
+    fatherName: {
         type: String,
-        required: true,
+        // required: true,
     },
-    areaName: {
+    motherName: {
         type: String,
-        required: true,
+    },
+    postcode: {
+        type: String,
+
     },
     ward: {
         type: String,
-        required: true,
+        // required: true,
     },
     age: String,
     occupation: {
         type: String,
-        required: true,
+        // required: true,
     },
     road: {
         type: String,
-        required: true,
+        // required: true,
     },
     holding: {
         type: String,
-        required: true,
-    },
-    block: {
-        type: String,
-        required: true,
+        // required: true,
     },
     thana: {
         type: String,
-        required: true,
+        // required: true,
     },
     freedomFighter: {
         type: String,
-        required: true,
+        // required: true,
     },
     mobile: {
         type: String,
-        required: true,
+        // required: true,
+    },
+    id: {
+        type: String,
     },
     holdingType: {
         type: String,
-        required: true,
+        //required: true,
     },
     holdingName: {
         type: String,
-        required: true,
+        //required: true,
     },
     holdingStructure: {
         type: String,
-        required: true,
+        //required: true,
     },
     length: Number,
     wide: Number,
     volume: {
         type: Number,
-        required: true,
+        //required: true,
     },
     ownership: {
         type: String,
-        required: true,
+        //required: true,
     },
     rent: {
         type: String,
-        default: 0,
+        //default: 0,
     },
     maleMember: {
         type: String,
-        default: '',
+        //default: '',
         // required: true,
     },
     femaleMember: {
         type: String,
-        default: '',
+        //default: '',
         // required: true,
+    },
+    totalMember: {
+        type: String,
     },
     yearlyIncome: {
         type: String,
-        default: '',
+        //default: '',
         // required: true,
+    },
+    roadExist: {
+        type: String,
+    },
+    roadType: {
+        type: String,
     },
     waterSource: {
         type: String,
-        required: true,
+        //required: true,
     },
     sanitationStatus: {
         type: String,
-        required: true,
+        //required: true,
     },
     gasConnection: {
         type: String,
-        required: true,
+        //required: true,
+    },
+    streetlight: {
+        type: String,
     },
     imageUrl: {
         type: String,
         // required: true,
-        default: '',
+        //default: '',
     },
     assessment_id: {
         type: String,
         // required: true,
-        default: '',
+        //default: '',
     },
     monthlyRentPerSF: {
         type: Number,
         // required: true,
-        default: 0,
+        //default: 0,
     },
     yearlyEvalution: {
         type: String,
         // required: true,
-        default: '',
+        //default: '',
     },
     yearlyTax: {
         type: String,
         // required: true,
-        default: 0,
+        //default: 0,
     },
     conductedBy: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         // required: true,
+    },
+    order: {
+        type: Schema.Types.ObjectId,
+        ref: 'Order'
     }
 }, { timestamps: true });
 

@@ -5,11 +5,11 @@ const path = require('path')
 const mongoose = require('mongoose');
 const multer = require('multer');
 const shortUniqueId = require('short-unique-id');
-
+const seed = require('./seed');
 
 const uid = new shortUniqueId();
 
-
+seed();
 // const flash = require('connect-flash')
 
 // import routes

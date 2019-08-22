@@ -2,7 +2,7 @@
 <div class="modal fade" id="searchAssessment">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-success text-white">
+            <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="searchAssessmentLabel">
                     এসেসমেন্টের তথ্য খুঁজুন
                 </h5>
@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
 
-                <form action="/search-info?role=প্রোডাকশন অফিসার" method="POST"> 
+                <form action="/search-info?role=<%=userRole%>" method="POST"> 
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label>ক্যাটাগরি বাছাই করুন<span>*</span></label>
@@ -32,12 +32,12 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label >অনুসন্ধান তথ্য(একাধিক কি ওয়ার্ড কমা দিয়ে আলাদা করুন)<span>*</span></label>
-                            <input type="text" name="keys" class="form-control" placeholder="উদাহরন - 177/A,18,1234,A"> 
+                            <label >অনুসন্ধান তথ্য(একাধিক কি ওয়ার্ড স্পেস দিয়ে আলাদা করুন)<span>*</span></label>
+                            <input type="text" name="keys" class="form-control" placeholder="উদাহরন - 177/A 18 1234 A"> 
                             <small class="text-danger">**হোল্ডিং নং, ওয়ার্ড নং, এসেসমেন্ট আইডি, ব্লক নং ইংরেজিতে লিখুন</small>
                         </div>
                     </div>
-                    <button class="btn btn-block btn-success"><span class="fa fa-search"></span> খুঁজুন</button> 
+                    <button class="btn btn-block btn-primary"><span class="fa fa-search"></span> খুঁজুন</button> 
                 </form>
 
             </div>
