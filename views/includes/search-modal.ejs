@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
 
-                <form action="/search-info?role=<%=userRole%>" method="POST"> 
+                <form action="/orders?role=<%=userRole%>" method="POST"> 
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label>ক্যাটাগরি বাছাই করুন<span>*</span></label>
@@ -24,7 +24,7 @@
                                 <option value="block">ব্লক</option>
                                 <option value="areaName">অঞ্চল</option>
                                 <option value="road">রাস্তা/মহল্লা</option>
-                                <option value="mobile">মোবাইল নং</option>
+                                <option value="mobile">মোবাইল নং</option> 
                                 <option value="holdingName">হোল্ডিং এর নাম</option>
                                 <option value="thana">থানা</option>
                             </select>
@@ -32,8 +32,8 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label >অনুসন্ধান তথ্য(একাধিক কি ওয়ার্ড স্পেস দিয়ে আলাদা করুন)<span>*</span></label>
-                            <input type="text" name="keys" class="form-control" placeholder="উদাহরন - 177/A 18 1234 A"> 
+                            <label >অনুসন্ধান তথ্য(একাধিক কি ওয়ার্ড কমা দিয়ে আলাদা করুন)<span>*</span></label>
+                            <input type="text" name="keys" class="form-control" placeholder="উদাহরন - 177/A,18,1234,A"> 
                             <small class="text-danger">**হোল্ডিং নং, ওয়ার্ড নং, এসেসমেন্ট আইডি, ব্লক নং ইংরেজিতে লিখুন</small>
                         </div>
                     </div>

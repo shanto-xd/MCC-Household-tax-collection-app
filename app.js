@@ -9,7 +9,7 @@ const seed = require('./seed');
 
 const uid = new shortUniqueId();
 
-seed();
+// seed();
 // const flash = require('connect-flash')
 
 // import routes

@@ -2,6 +2,7 @@ const Survey = require('../models/survey');
 const User = require('../models/user');
 const Order = require('../models/order');
 const invoice = require('../util/pdfGenerator');
+const dateFormatter = require('../util/date-formatter');
 
 const sharp = require('sharp');
 const shortUniqueId = require('short-unique-id');
@@ -178,10 +179,51 @@ exports.getDailyReport = (req, res, next) => {
     res.render('field-officer/daily-report', { userRole: req.query.role });
 }
 
-exports.postSearchInfo = async (req, res, next) => {
+exports.getOrders = async (req, res, next) => {
+    const page = +req.query.page || 1;
+    const filter = req.query.filter || '';
+    let keys = req.query.keys || '';
+
+    let obj = { order: { $exists: true } }
+
+    if (filter !== '' && keys !== '') {
+        keys = keys.split(',')
+        if (typeof filter !== 'string') {
+            for (let i = 0; i < filter.length; i++) {
+                obj[filter[i]] = keys[i];
+            }
+        } else {
+            obj[filter] = keys[0]
+        }
+    }
+
+    const orderCount = await Survey.find(obj).countDocuments()
+
+    Survey
+        .find(obj)
+        .skip((page - 1) * PER_PAGE)
+        .limit(PER_PAGE)
+        .populate('order')
+        .sort('holding')
+        .then(surveys => {
+            console.log(surveys.length)
+            res.render('form/show-orders', {
+                surveys: surveys,
+                userRole: req.query.role,
+                currentPage: page,
+                lastPage: Math.ceil(orderCount / PER_PAGE),
+                filter: filter,
+                keys: keys,
+            });
+        })
+        .catch(err => console.log(err))
+}
+
+exports.postOrders = async (req, res, next) => {
     const filter = req.body.filter;
-    const keys = req.body.keys.split(' ')
-    let obj = {}
+    const keys = req.body.keys.split(',')
+    const page = +req.query.page || 1;
+    let obj = { order: { $exists: true } }
 
     if (typeof filter !== 'string') {
         for (let i = 0; i < filter.length; i++) {
@@ -191,53 +233,25 @@ exports.postSearchInfo = async (req, res, next) => {
         obj[filter] = keys[0]
     }
 
-    const survey = await Survey.find(obj)
-    // console.log(survey);
-    console.log(survey)
-    // res.render('form/show-orders', { surveyInfo: survey, userRole: req.query.role, obJ: obj });
-    res.send(obj);
+    const orderCount = await Survey.find(obj).countDocuments()
+    const surveys = await Survey.find(obj).populate('order').exec()
+    res.render('form/show-orders', {
+        surveys: surveys,
+        userRole: req.query.role,
+        currentPage: page,
+        lastPage: Math.ceil(orderCount / PER_PAGE),
+        filter: filter,
+        keys: keys,
+    });
 }
 
-exports.getOrders = async (req, res, next) => {
-    const page = +req.query.page || 1;
-    let totalCount;
+exports.getShowInfo = async (req, res, next) => {
+    const survey = await Survey.findById(req.params.sid).populate('order').exec()
 
-    let obj = {
-        order: { $exists: true }
-    }
-
-    const orderCount = await Order.find().countDocuments()
-
-    Survey
-        .find(obj)
-        .skip((page - 1) * PER_PAGE)
-        .limit(PER_PAGE)
-        .populate('order')
-        .sort('holding')
-        .then(surveys => {
-            res.render('form/show-orders', {
-                surveys: surveys,
-                userRole: req.query.role,
-                currentPage: page,
-                lastPage: Math.ceil(orderCount / PER_PAGE),
-            });
-        })
-        .catch(err => console.log(err))
-}
-
-exports.postOrders = (req, res, next) => {
-    const filter = req.body.filter
-    const keys = req.body.keys.split(' ')
-    let searchObj = {}
-
-    if (typeof filter !== 'string') {
-        for (let i = 0; i < filter.length; i++) {
-            searchObj[filter[i]] = keys[i];
-        }
-    } else {
-        searchObj[filter] = keys[0]
-    }
-
-    Order
-
+    res.render('form/show-info', {
+        survey: survey,
+        userRole: 'প্রডাকশন অফিসার',
+        created: dateFormatter.dateFormatter(survey.createdAt),
+        updated: dateFormatter.dateFormatter(survey.updatedAt),
+    })
 }

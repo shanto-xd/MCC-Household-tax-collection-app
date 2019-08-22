@@ -15,11 +15,9 @@
                 <th>এসেসমেন্ট আইডি</th>
                 <th>বিল নং</th>
                 <th>মালিকের নাম</th>
-                <!-- <th>পিতা/স্বামীর নাম</th> -->
                 <th>পোস্টকোড</th>
                 <th>ওয়ার্ড</th>
                 <th>রাস্তা/মহল্লা</th>
-                <th>ব্লক</th>
                 <th>থানা</th>
                 <th>মুক্তিযোদ্ধা</th>
                 <th>মোবাইল</th>
@@ -37,11 +35,9 @@
                     <td><a href="/show-info/<%=survey._id%>"><%= survey.assessment_id%></a></td>
                     <td><%= survey.order.bill%></td>
                     <td><%= survey.ownerName%></td>
-                    <!-- <td><%= survey.ownersFH %></td> -->
                     <td><%= survey.postcode %></td>
                     <td><%= survey.ward %></td>
                     <td><%= survey.road %></td>
-                    <td><%= survey.block %></td>
                     <td><%= survey.thana %></td>
                     <td><%= survey.freedomFighter %></td>
                     <td><%= survey.mobile %></td>
@@ -55,16 +51,22 @@
         <% }) %>
     </table>
 
+    <!-- <input type="text" name="filter" value="<%=filter%>">
+    <input type="text" name="keys" value="<%=keys%>"> -->
+
     <div class="container">
         <div class="row">
             <div class="col-md-10 offset-md-2 mx-auto">
                <% if (lastPage > 0) { %>
         <nav>
             <ul class="pagination offset-md-3">
+            <% if(filter !== '' && keys !== '') {%>
+                <li class="page-item"> <a href="/orders?role=<%=userRole%>" class="page-link">অর্ডার পাতা</a> </li>
+            <% } %>
             <% if (currentPage == 1) { %>
               <li class="page-item disabled"><a class="page-link">First</a></li>
             <% } else { %>
-              <li class="page-item"><a href="?page=1&role=<%=userRole%>" class="page-link">First</a></li>
+              <li class="page-item"><a href="?page=1&role=<%=userRole%>&filter=<%=filter%>&keys=<%=keys%>" class="page-link">First</a></li>
             <% } %>
             
             <% var i = (Number(currentPage) > 5 ? Number(currentPage) - 4 : 1) %>
@@ -75,7 +77,7 @@
                     <% if (i == currentPage) { %>
                         <li class="page-item active"><a class="page-link"><%= i %></a></li>
                     <% } else { %>
-                        <li class="page-item"><a class="page-link" href="?page=<%= i %>&role=<%=userRole%>"><%= i %></a></li>
+                        <li class="page-item"><a class="page-link" href="?page=<%= i %>&role=<%=userRole%>&filter=<%=filter%>&keys=<%=keys%>"><%= i %></a></li>
                     <% } %>
                     <% if (i == Number(currentPage) + 4 && i < lastPage) { %>
                         <li class="page-item disabled"><a class="page-link">...</a></li>
@@ -84,7 +86,7 @@
                 <% if (currentPage == lastPage) { %>
                     <li class="page-item disabled"><a class="page-link">Last</a></li>
                 <% } else { %>
-                    <li class="page-item"><a href="?page=<%= lastPage %>&role=<%=userRole%>" class="page-link">Last</a></li>
+                    <li class="page-item"><a href="?page=<%= lastPage %>&role=<%=userRole%>&filter=<%=filter%>&keys=<%=keys%>" class="page-link">Last</a></li>
                 <% } %>
             </ul>
         </nav>

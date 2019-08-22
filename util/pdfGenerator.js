@@ -1,6 +1,7 @@
 const PDFKit = require('pdfkit');
 const fs = require('fs');
 const path = require('path')
+const dateFormatter = require('./date-formatter')
 
 
 exports.createInvoice = async (survey, order, billNo, res) => {
@@ -18,12 +19,8 @@ exports.createInvoice = async (survey, order, billNo, res) => {
         await pdf.pipe(fs.createWriteStream(invoicePath));
         await pdf.pipe(res);
 
-        var dt = new Date();
-        var mm = dt.getMonth() + 1;
-        var dd = dt.getDate();
-        var yyyy = dt.getFullYear();
-        var format = dd + '/' + mm + '/' + yyyy
-
+        const dt = new Date()
+        const date = dateFormatter.dateFormatter(dt)
 
         await pdf
             .image('public\\images\\logo.png', 145, 42, { width: 50, align: 'center' })
@@ -45,7 +42,7 @@ exports.createInvoice = async (survey, order, billNo, res) => {
             .font('SolaimanLipi')
             .text('তারিখ - ', 400, 150)
             .font('Helvetica')
-            .text(format, 450, 150);
+            .text(date, 450, 150);
 
         await pdf
             .text('---------------------------------------------------------------------------------------------', 50, 170);
