@@ -6,6 +6,8 @@
             <a class="nav-link text-white" href="/profile/<%=userRole%>/"><span class="fa fa-user"></span> প্রোফাইল</a>
         </li>
         <li class="nav-item ml-auto">
-            <a class="nav-link text-white" href="/" tabindex="-1">লগ আউট</a>
+            <form action="/auth/logout" method="POST">
+                <button class="btn text-white" type="submit">লগ আউট</button>
+            </form>
         </li>
     </ul>

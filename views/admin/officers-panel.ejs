@@ -1,0 +1,140 @@
+<%- include ../includes/header.ejs %>
+
+    <title>অফিসার্স প্যানেল | এডমিন</title> 
+</head>
+
+<body>
+    <%- include('../includes/nav.ejs', {userRole: userRole}) %>
+    <section class=" my-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="/auth/signup?role=<%=userRole%>" class="btn btn-primary btn-block"><span class="fa fa-plus"></span> অফিসার রেজিষ্ট্রেশন</a>
+                </div>
+
+                <div class="col-md-9">
+                    <form action="/officers-panel?role=<%=userRole%>" method="POST">
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <select name="filter" class="form-control">
+                                    <option disabled selected>বাছাই করুন.....</option>
+                                    <option value="office_id">অফিস আইডি</option>
+                                    <option value="username">ইউজারনেম</option>
+                                    <option value="email">ই-মেইল</option>
+                                    <option value="role">পদ</option>
+                                    <option value="name">নাম</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <input type="text" name="keys" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary btn-block"><span class="fa fa-search"></span>অফিসার খুঁজুন</button>
+                            </div>
+                        </div> 
+                    </form>
+                </div>
+               
+            </div>
+        </div>
+    </section>
+  
+   
+   <% if(admin.length > 0) { %>
+     <hr>
+     <section class="my-5">
+        <h2 class="text-center mb-4">এডমিন প্যানেল</h2>
+        <div class="container">
+            <div class="row">
+               <% admin.forEach(p => { %>
+                   <div class="col-md-3 mx-auto my-2">
+                       <img src="/images/<%if(p.image) {%><%=p.image%><%}else{%>'profile.png'<%}%>" class="mx-auto d-block rounded-circle" width="150px" height="150px" alt="">
+                       <ul class="text-center list-group list-group-flush mt-2">
+                            <li class="list-group-item">নাম - <%=p.name%></li>
+                            <li class="list-group-item">অফিস আইডি - <%=p.office_id%></li>
+                        </ul>
+                       <div class="card-body text-center" >
+                              <a href="/officers/<%=p._id%>?role=<%=userRole%>" class="card-link btn btn-primary">বিস্তারিত...</a>
+                        </div>
+                   </div>
+               <% }) %>
+                
+            </div>
+        </div>
+    </section>
+  <% } %>
+
+<% if(inspection_officer.length > 0) { %>
+<hr>
+    <section class="my-5">
+        <h2 class="text-center mb-4">ইন্সপেকশন অফিসার প্যানেল</h2>
+        <div class="container">
+            <div class="row">
+               <%inspection_officer.forEach(p => { %>
+                   <div class="col-md-3 mx-auto my-2">
+                       <img src="/images/<%=p.image%>" class="mx-auto d-block rounded-circle" width="150px" height="150px" alt="">
+                       <ul class="text-center list-group list-group-flush mt-2">
+                            <li class="list-group-item">নাম - <%=p.name%></li>
+                            <li class="list-group-item">অফিস আইডি - <%=p.office_id%></li>
+                        </ul>
+                        <div class="card-body text-center" >
+                              <a href="/officers/<%=p._id%>?role=<%=userRole%>" class="card-link btn btn-primary">বিস্তারিত...</a>
+                        </div>
+                   </div>
+               <% }) %>
+                
+            </div>
+        </div>
+    </section>
+<% } %>
+
+<% if(field_officer.length > 0) { %>
+    <hr>
+
+     <section class="my-5">
+        <h2 class="text-center mb-4">ফিল্ড অফিসার প্যানেল</h2> 
+        <div class="container">
+            <div class="row">
+               <% field_officer.forEach(p => { %>
+                   <div class="col-md-3 mx-auto my-2">
+                       <img src="/images/<%=p.image%>" class="mx-auto d-block rounded-circle" width="150px" height="150px" alt="">
+                       <ul class="text-center list-group list-group-flush mt-2">
+                            <li class="list-group-item">নাম - <%=p.name%></li>
+                            <li class="list-group-item">অফিস আইডি - <%=p.office_id%></li>
+                        </ul>
+                        <div class="card-body text-center" >
+                              <a href="/officers/<%=p._id%>?role=<%=userRole%>" class="card-link btn btn-primary">বিস্তারিত...</a>
+                        </div>
+                   </div>
+               <% }) %>
+                
+            </div>
+        </div>
+    </section>
+<% } %>
+
+<% if(production_officer.length > 0) { %>
+    <hr>
+     <section class="my-5">
+        <h2 class="text-center mb-4">প্রডাকশন অফিসার প্যানেল</h2>
+        <div class="container"> 
+            <div class="row">
+               <% production_officer.forEach(p => { %>
+                   <div class="col-md-3 mx-auto my-2">
+                       <img src="/images/<%=p.image%>" class="mx-auto d-block rounded-circle" width="150px" height="150px" alt="">
+                       <ul class="text-center list-group list-group-flush mt-2">
+                            <li class="list-group-item">নাম - <%=p.name%></li>
+                            <li class="list-group-item">অফিস আইডি - <%=p.office_id%></li>
+                        </ul>
+                        <div class="card-body text-center" >
+                              <a href="/officers/<%=p._id%>?role=<%=userRole%>" class="card-link btn btn-primary">বিস্তারিত...</a>
+                        </div>
+                   </div>
+               <% }) %>
+                
+            </div>
+        </div>
+    </section>
+<% } %>
+    <%- include ../includes/footer-text.ejs %>
+    <%- include ../includes/footer.ejs %>

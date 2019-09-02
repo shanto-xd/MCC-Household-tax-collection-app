@@ -1,0 +1,96 @@
+<%- include ../includes/header.ejs %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.10/css/bootstrap-select.css" />
+
+<title>সার্ভে তথ্য | ইন্সপেকশন অফিসার</title> 
+</head> 
+
+<body>
+<%- include('../includes/nav.ejs', {userRole: userRole}) %>
+
+<% if(surveys.length > 0) { %>
+
+<div class="container my-5">
+    <form action="/survey-info?role=<%=userRole%>" method="POST"> 
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>ক্যাটাগরি বাছাই করুন<span>*</span></label>
+                <select name="filter" class="selectpicker form-control" multiple data-live-search="true" >
+                    <!-- <option disabled selected>বাছাই করুন.....</option> -->
+                    <option value="assessment_id">এসেসমেন্ট আইডি</option>
+                    <option value="holding">হোল্ডিং নং</option>
+                    <option value="orderBill">বিল নং</option>
+                    <option value="ward">ওয়ার্ড নং</option>
+                    <option value="ownerName">মালিকের নাম</option>
+                    <option value="holdingType">হোল্ডিং এর ধরন</option> 
+                    <option value="block">ব্লক</option>
+                    <option value="road">রাস্তা/মহল্লা</option>
+                    <option value="mobile">মোবাইল নং</option> 
+                    <option value="holdingName">হোল্ডিং এর নাম</option>
+                    <option value="thana">থানা</option>
+                </select>
+            </div>
+            <div class="form-group col-md-5">
+                <label >অনুসন্ধান তথ্য(একাধিক কি ওয়ার্ড কমা দিয়ে আলাদা করুন)<span>*</span></label>
+                <input type="text" name="keys" class="form-control" placeholder="উদাহরন - 177/A,18,1234,A"> 
+                <small class="text-danger">**হোল্ডিং নং, ওয়ার্ড নং, এসেসমেন্ট আইডি, ব্লক নং ইংরেজিতে লিখুন</small>
+            </div>
+            <div class="col-md-1 my-auto">
+                <button class="btn btn-primary btn-block mb-1"><span class="fa fa-search"></span></button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<table class="table table-sm" border = "1"  style="font-size: 13px !important">
+        <thead>
+            <tr>
+                <th>এসেসমেন্ট আইডি</th>
+                <th>বিল নং</th>
+                <th>মালিকের নাম</th>
+                <th>পোস্টকোড</th>
+                <th>ওয়ার্ড</th>
+                <th>রাস্তা/মহল্লা</th>
+                <th>থানা</th>
+                <th>মোবাইল</th>
+                <th>বিল পরিশোধ</th>
+                <th>হোল্ডিং নং</th>
+                <th>অর্ডার</th>
+                <th>হালনাগাদের তারিখ</th> 
+                <th>সার্ভে তথ্য হালনাগাদ</th>
+            </tr>
+        </thead>
+
+        <% surveys.forEach(survey => {%>
+             <tbody>
+                <tr>
+                    <td><a title="বিস্তারিত তথ্য দেখতে ক্লিক করুন" href="/show-info/<%=survey._id%>"><%= survey.assessment_id%></a></td>
+                    <td><%= survey.orderBill%></td>
+                    <td><%= survey.ownerName%></td>
+                    <td><%= survey.postcode %></td>
+                    <td><%= survey.ward %></td>
+                    <td><%= survey.road %></td>
+                    <td><%= survey.thana %></td>
+                    <td><%= survey.mobile %></td>
+                    <td><%= survey.orderPaid %></td>
+                    <td class="text-success"><%= survey.holding %></td>
+                    <td><%=survey.orderStatus%></td>
+                    <td><%=survey.created.toDateString()%></td>
+                    <td>
+                       <a href="/survey-info/update/<%=survey._id%>?role=<%=userRole%>&page=<%=currentPage%>" class="btn btn-primary btn-sm">আপডেট</a>
+                    </td>
+                </tr>
+        </tbody> 
+    <% }) %>
+</table> 
+<%} else {%>
+    <h1 class="mt-3 display-3 text-center text-danger">দুঃখিত, কোন তথ্য পাওয়া যায় নি</h1>
+<% } %>
+<%- include('../includes/pagination.ejs', {userRole: userRole, lastPage: lastPage, filter: filter, keys: keys, currentPage: currentPage}) %>
+
+<%- include ../includes/footer-text.ejs %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.10/js/bootstrap-select.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<script>
+    $('select').selectpicker();
+</script>
+<%- include ../includes/footer.ejs %>

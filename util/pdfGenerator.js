@@ -4,7 +4,7 @@ const path = require('path')
 const dateFormatter = require('./date-formatter')
 
 
-exports.createInvoice = async (survey, order, billNo, res) => {
+exports.createInvoice = async (survey, billNo, res) => {
 
     try {
         const pdf = new PDFKit({ margin: 50 });
@@ -36,7 +36,7 @@ exports.createInvoice = async (survey, order, billNo, res) => {
             .font('SolaimanLipi')
             .text('বিল নং -', 50, 150, { align: 'left' })
             .font('Helvetica')
-            .text(order.bill, 100, 150);
+            .text(survey.orderBill, 100, 150);
 
         await pdf
             .font('SolaimanLipi')
@@ -61,7 +61,7 @@ exports.createInvoice = async (survey, order, billNo, res) => {
             .text(`মালিকের নাম -     ${survey.ownerName}`)
             .text(`রাস্তা/মহল্লার নাম -     ${survey.road}`)
             .text(`মোবাইল নং -     ${survey.mobile}`)
-            .text(`প্লেট সাইজ -     ${order.plateSize}`)
+            .text(`প্লেট সাইজ -     ${survey.plateSize}`)
 
         await pdf
             .font('SolaimanLipi')

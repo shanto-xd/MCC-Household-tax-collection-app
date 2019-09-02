@@ -1,42 +1,42 @@
 <%- include ../includes/header.ejs %>
 
-	<title><%=userRole%> লগিন</title>
-</head> 
+<title><%=userRole%> লগিন</title>
+</head>
 
-<body> 
+<body>
+	<% include ../includes/alerts %>
 
-<section id="userLoginForm">
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <div class="card">
-          <div class="card-header text-center">
-            <h4> <%=userRole %> লগিন</h4>
-          </div>
-            <div class="card-block">
-              <form class="p-3" action="/auth/login?role=<%= userRole %>" method="POST">
-                <div class="form-group">
-                  <label class="form-control-label">ইউজারনেম/ই-মেইল</label>
-                  <input type="text" name="username"  class="form-control">
-                </div>
-                <div class="form-group"> 
-                  <label class="form-control-label">পাসওয়ার্ড</label>
-                  <input type="password" name="password"  class="form-control">
-                  <div class="mt-3">
-                    <input type="checkbox" name="remember">পাসওয়ার্ড সংরক্ষণ করুন
-                    <a href="/auth/reset-password" class="float-right text-danger">পাসওয়ার্ড ভূলে গেছি</a>
-                  </div> 
-                  
-                </div>
-                <button type="submit" class="btn btn-primary btn-block mt-1">লগিন করুন</button>
-              </form>
-            </div>
-        </div> 
-      </div>
-    </div>
-  </div>
-</section>
+	<section id="userLoginForm">
+		<div class="container mt-5">
+			<div class="row">
+				<div class="col-md-6 offset-md-3">
+					<div class="card">
+						<div class="card-header text-center">
+							<h4> <%=userRole %> লগিন</h4>
+						</div>
+						<div class="card-block">
+							<form class="p-3" action="/auth/login?role=<%= userRole %>" method="POST">
+								<div class="form-group">
+									<label class="form-control-label">ইউজারনেম</label>
+									<input type="text" name="username" class="form-control" required>
+								</div>
+								<div class="form-group">
+									<label class="form-control-label">পাসওয়ার্ড</label>
+									<input type="password" name="password" class="form-control" required>
+									<div class="mt-3">
+										<input type="checkbox" name="remember">পাসওয়ার্ড সংরক্ষণ করুন
+									</div>
 
-<%- include ../includes/footer-text.ejs %>
+								</div>
+								<button type="submit" class="btn btn-primary btn-block mt-1">লগিন করুন</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
-<%- include ../includes/footer.ejs %>
+	<%- include ../includes/footer-text.ejs %>
+
+	<%- include ../includes/footer.ejs %>

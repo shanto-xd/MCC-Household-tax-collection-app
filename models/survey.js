@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const autoIncrement = require('mongoose-sequence')(mongoose)
 
 const surveySchema = new Schema({
     ownerName: {
@@ -139,16 +140,24 @@ const surveySchema = new Schema({
         // required: true,
         //default: 0,
     },
+    orderBill: Number,
+    orderPaid: {
+        type: String
+    },
+    plateSize: {
+        type: String,
+    },
+    orderStatus: {
+        type: String,
+    },
+    created: Date,
+    updated: Date,
     conductedBy: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         // required: true,
     },
-    order: {
-        type: Schema.Types.ObjectId,
-        ref: 'Order'
-    }
-}, { timestamps: true });
+});
 
-
+surveySchema.plugin(autoIncrement, { inc_field: 'orderBill' })
 module.exports = mongoose.model('Survey', surveySchema);

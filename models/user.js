@@ -24,9 +24,18 @@ const userSchema = new Schema({
         required: true,
         unique: true,
     },
-    resetToken: String,
-    resetTokenExpiration: Date,
-
+    mobile: {
+        type: String,
+        required: true,
+    },
+    office_id: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    image: {
+        type: String,
+    },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

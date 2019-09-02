@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const formController = require('../controllers/form')
+const auth = require('../middleware')
 
 router.get('/', formController.getLandingPage)
 
-router.get('/dashboard', formController.getDashboard)
+router.get('/dashboard', auth.isAuthenticated, formController.getDashboard)
 
 router.get('/form', formController.getForm)
 
@@ -29,4 +30,25 @@ router.get('/orders', formController.getOrders);
 router.post('/orders', formController.postOrders);
 
 router.get('/show-info/:sid', formController.getShowInfo);
+
+router.post('/orders/plate-delivery/:sid', formController.postPlateDelivery)
+
+router.get('/survey-info', formController.getSurveyInfo)
+
+router.post('/survey-info', formController.postSurveyInfo)
+
+router.get('/survey-info/update/:sid', formController.getUpdateSurveyInfo)
+
+router.post('/survey-info/update/:sid', formController.postUpdateSurveyInfo)
+
+router.get('/survey-info/date', formController.getSurveyInfoByDate)
+
+router.post('/survey-info/date', formController.postSurveyInfoByDate)
+
+router.get('/officers-panel', auth.isAdmin, formController.getOfficersPanel)
+
+router.post('/officers-panel', auth.isAdmin, formController.postOfficersPanel)
+
+router.get('/officers/:user_id', auth.isAdmin, formController.getOfficers)
+
 module.exports = router

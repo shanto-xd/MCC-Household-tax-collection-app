@@ -1,0 +1,328 @@
+<%- include ../includes/header.ejs %>
+
+<title>সার্ভে তথ্য | ইন্সপেকশন অফিসার</title> 
+</head>
+
+<body>
+<%- include('../includes/nav.ejs', {userRole: userRole}) %>
+
+    <div class="container">
+
+        <div  class="text-center my-5">
+            <h4 class="bg-dark text-white p-1 font-weight-bold d-inline">তথ্য হালনাগাদ ফরম</h4>
+        </div>
+        
+        <form action="/survey-info/update/<%=survey._id%>?role=<%=userRole%>&page=<%=page%>" method="POST"> 
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>মালিকের নাম<span>*</span></label>
+                    <input name="ownerName" type="text" class="form-control" value="<%=survey.ownerName%>">
+                </div>
+                <div class="form-group col-md-4">
+                    <label>পিতা/স্বামীর নাম<span>*</span></label>
+                    <input name="fatherName" type="text" class="form-control" value="<%=survey.fatherName%>">
+                </div>
+                <div class="form-group col-md-4">
+                    <label>মাতার নাম<span>*</span></label>
+                    <input name="motherName" type="text" class="form-control" value="<%=survey.motherName%>">
+                </div>
+            </div>
+
+
+            <div class="form-row"> 
+                <div class="form-group col-md-3">
+                    <label>পোস্ট কোড<span>*</span></label> 
+                    <input name="postcode" type="text" class="form-control" value="<%=survey.postcode%>">
+                </div>  
+
+                <div class="form-group col-md-2">
+                    <label>ওয়ার্ড নং<span>*</span></label>
+                    <input name="ward" placeholder="ইংরেজিতে লিখুন" type="number" class="form-control" value="<%=survey.ward%>">
+                </div>
+ 
+                 <div class="form-group col-md-2">
+                    <label>বয়স<span>*</span></label>
+                    <input name="age"  type="text" class="form-control" value="<%=survey.age%>">
+                </div> 
+               
+                 <div class="form-group col-md-2">
+                    <label>পেশা<span>*</span></label>
+                    <input name="occupation" type="text" class="form-control" value="<%=survey.occupation%>">
+                </div>
+ 
+                 <div class="form-group col-md-3">
+                    <label>রাস্তা/মহল্লার নাম<span>*</span></label>
+                    <input name="road" type="text" class="form-control" value="<%=survey.road%>">
+                </div>
+            </div>
+
+             <div class="form-row"> 
+                <div class="form-group col-md-4">
+                    <label>হোল্ডিং নং<span>*</span></label> 
+                    <input name="holding" type="text" placeholder="ইংরেজিতে লিখুন" class="form-control" value="<%=survey.holding%>">  
+                </div> 
+ 
+                 <div class="form-group col-md-4"> 
+                    <label>থানা<span>*</span></label>
+                    <input name="thana" type="text" class="form-control" value="<%=survey.thana%>">
+                </div> 
+               
+                <div class="form-group col-md-3 ml-1 d-flex">
+                    <label class="align-self-end"> মুক্তিযোদ্ধা*
+                        <span>
+                            <% if(survey.freedomFighter == 'হ্যাঁ') { %>
+                                <input type="radio" name="freedomFighter" checked value="হ্যাঁ"> হ্যাঁ
+                                <input type="radio" name="freedomFighter" value="না"> না
+                            <% } else { %>
+                                <input type="radio" name="freedomFighter" value="হ্যাঁ"> হ্যাঁ
+                                <input type="radio" name="freedomFighter" checked value="না"> না
+                            <% } %>
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-grop col-md-6">
+                    <label>মোবাইল<span>*</span></label>
+                    <input name="mobile" class="form-control" type="text" value="<%=survey.mobile%>">
+                </div>
+
+                <div class="form-grop col-md-6">
+                    <label>ভোটার আইডি/জন্মনিবন্ধন/পাসপোর্ট নাম্বার<span>*</span></label>
+                    <input name="id" class="form-control" type="text" value="<%=survey.mobile%>">
+                </div>
+                
+            </div>
+           
+            <div class="form-row mt-2">
+                <div class="form-group col-md-4">
+                    <label>হোল্ডিং এর ধরন<span>(<%=survey.holdingType%>)*</span></label>
+                     <select class="form-control" name="holdingType">
+                        <option selected disabled>বাছাই করুন...</option>
+                        <option value="আবাসিক">আবাসিক</option>
+                        <option value="বাণিজ্যিক">বাণিজ্যিক</option>  
+                        <option value="দোকান">দোকান</option>
+                        <option value="শিল্প প্রতিষ্ঠান">শিল্প প্রতিষ্ঠান</option> 
+                        <option value="উপাসানলয়">উপাসানলয়</option>
+                        <option value="সরকারি প্রতিষ্ঠান">সরকারি প্রতিষ্ঠান</option>
+                        <option value="হাসপাতাল">হাসপাতাল</option>
+                        <option value="ক্লাব">ক্লাব</option>
+                        <option value="সাংস্কৃতিক সংগঠন">সাংস্কৃতিক সংগঠন</option>
+                        <option value="এনজিও">এনজিও</option>
+                        <option value="অন্যান্য">অন্যান্য</option>
+                    </select> 
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>হোল্ডিং এর নাম<span>*</span></label>
+                    <input type="text" name="holdingName" class="form-control" value="<%=survey.holdingName%>">
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>হোল্ডিং এর কাঠামো<span>(<%=survey.holdingStructure%>)*</span></label> 
+                    <select class="form-control" name="holdingStructure"> 
+                        <option selected disabled>বাছাই করুন...</option>
+                        <option value="পাকা">পাকা</option>
+                        <option value="আধা পাকা">আধা পাকা/স্টিল স্ট্রাকচার</option>  
+                        <option value="কাঁচা">কাঁচা/অন্যান্য</option>  
+                    </select>    
+                </div> 
+            </div> 
+
+            <div class="form-row"> 
+                <div class="form-group col-md-2"> 
+                    <label>দৈর্ঘ্য(ফুট)<span>*</span></label> 
+                    <input name="length" type="number" placeholder="ইংরেজিতে লিখুন" min="0" class="form-control" value="<%=survey.length%>">
+                </div>
+ 
+                 <div class="form-group col-md-2"> 
+                    <label>প্রস্থ(ফুট)<span>*</span></label> 
+                    <input name="wide" type="number" placeholder="ইংরেজিতে লিখুন" min="0" class="form-control" value="<%=survey.wide%>">
+                </div>
+ 
+                <div class="form-group col-md-2"> 
+                    <label>আয়তন(বর্গফুট)<span>*</span></label> 
+                    <input name="volume" type="number" min="0" class="form-control" value="<%=survey.volume%>">
+                </div>
+
+                 <div class="form-group col-md-3 d-flex">
+                    <label class="align-self-end">মালিকানা* 
+                        <span>
+                            <% if(survey.ownership == 'নিজস্ব') { %>
+                                <input type="radio" name="ownership" checked value="নিজস্ব"> নিজস্ব
+                                <input type="radio" name="ownership" value="ভাড়া"> ভাড়া
+                            <% } else if(survey.ownership == 'ভাড়া') { %>
+                                <input type="radio" name="ownership"  value="নিজস্ব"> নিজস্ব
+                                <input type="radio" name="ownership" checked value="ভাড়া"> ভাড়া
+                            <% } %>
+                        </span>
+                    </label>
+                </div>
+
+                <div class="form-group col-md-3"> 
+                    <label>ভাড়া<span>*</span></label>  
+                    <input name="rent" type="text" class="form-control" value="<%=survey.rent%>">
+                </div>
+
+            </div>
+
+
+            <p class="mt-3">পরিবারের সদস্য সংখ্যা<span class="text-danger">*</span></p>
+            <hr>
+
+            <div class="form-row"> 
+                <div class="form-group col-md-3">
+                    <label>পুরুষ<span>*</span></label> 
+                    <input name="maleMember" type="text" class="form-control" value="<%=survey.maleMember%>">  
+                </div> 
+
+                <div class="form-group col-md-3">
+                    <label>মহিলা<span>*</span></label> 
+                    <input name="femaleMember" type="text" class="form-control"  value="<%=survey.femaleMember%>">
+                </div>
+                
+                <div class="form-group col-md-3">
+                    <label>মোট<span>*</span></label> 
+                    <input name="totalMember" type="text" class="form-control"  value="<%=survey.totalMember%>">
+                </div>
+
+                <div class="form-group col-md-3"> 
+                    <label>বার্ষিক আয়<span>*</span></label>
+                    <input name="yearlyIncome" type="text" class="form-control"  value="<%=survey.yearlyIncome%>">
+                </div> 
+            </div>
+
+            <p class="mt-3">সেবার ধরন<span class="text-danger">*</span></p>
+            <hr> 
+
+            <div class="form-row"> 
+
+                <div class="form-group col-md-4 d-flex">
+                    <label class="align-self-end"> রাস্তা* 
+                        <span>
+                            <% if(survey.roadExist == 'yes') { %>
+                                <input type="radio" checked name="roadExist" checked value="yes"> আছে
+                                <input type="radio" name="roadExist" value="no"> নেই
+                            <% } else { %>
+                               <input type="radio" name="roadExist"  value="yes"> আছে
+                               <input type="radio" checked name="roadExist" checked value="no"> নেই
+                            <% } %>
+                        </span>
+                    </label>
+                </div>
+
+                 <div class="form-group col-md-4">
+                    <label>রাস্তার ধরন<span>(<%=survey.roadType%>)*</span></label> 
+                    <select class="form-control" name="roadType">
+                        <option selected disabled>বাছাই করুন...</option>
+                        <option value="raw">কাঁচা</option>
+                        <option value="hbb">এইচ বি বি </option>  
+                        <option value="flat">ফ্ল্যাট সোলিং</option>  
+                        <option value="rcc">আর সি সি</option>
+                        <option value="carpet">কার্পেটিং</option>  
+                        <option value="cc">সি সি</option>  
+                        <option value="others">অন্যান্য</option>  
+                    </select>  
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>স্যানিটেশন ব্যবস্থা<span>(<%=survey.sanitationStatus%>)*</span></label> 
+                    <select class="form-control" name="sanitationStatus">
+                        <option selected disabled>বাছাই করুন...</option>
+                        <option value="কাঁচা">কাঁচা</option>
+                        <option value="আধা পাকা">আধা পাকা</option>
+                        <option value="পাকা">পাকা</option>  
+                    </select>  
+                </div>
+            </div>
+
+             <div class="form-row"> 
+                <div class="form-group col-md-4 d-flex">
+                    <label class="align-self-end"> পানির সরবরাহ* 
+                        <span>
+                            <% if(survey.waterSource == 'yes') { %>
+                                <input type="radio" checked name="waterSource" checked value="yes"> আছে
+                                <input type="radio" name="waterSource" value="no"> নেই
+                            <% } else { %>
+                               <input type="radio" name="waterSource"  value="yes"> আছে
+                               <input type="radio" checked name="waterSource" checked value="no"> নেই
+                            <% } %>
+                        </span>
+                    </label>
+                </div>
+
+                <div class="form-group col-md-4 d-flex">
+                    <label class="align-self-end"> সড়ক বাতি* 
+                        <span>
+                           <% if(survey.streetlight == 'yes') { %>
+                                <input type="radio" checked name="streetlight" checked value="yes"> আছে
+                                <input type="radio" name="streetlight" value="no"> নেই
+                            <% } else { %>
+                               <input type="radio" name="streetlight"  value="yes"> আছে
+                               <input type="radio" checked name="streetlight" checked value="no"> নেই
+                            <% } %>
+                        </span>
+                        
+                    </label>
+                </div>
+ 
+                <div class="form-group col-md-4 d-flex">
+                    <label class="align-self-end"> গ্যাস সংযোগ* 
+                        <span>
+                           <% if(survey.gasConnection == 'yes') { %>
+                                <input type="radio" checked name="gasConnection" checked value="yes"> আছে
+                                <input type="radio" name="gasConnection" value="no"> নেই
+                            <% } else { %>
+                               <input type="radio" name="gasConnection"  value="yes"> আছে
+                               <input type="radio" checked name="gasConnection" checked value="no"> নেই
+                            <% } %>
+                        </span>
+                        
+                    </label>
+                </div>
+            </div>
+
+            <p class="mt-3">অর্ডার তথ্য<span class="text-danger">*</span></p>
+            <hr> 
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label>বিল নং<span>*</span></label>
+                    <input readonly class="form-control" type="number" name="orderBill" value="<%=survey.orderBill%>">
+                </div>
+                <div class="form-group col-md-3">
+                    <label>অর্ডারের বর্তমান অবস্থা<span>*</span></label>
+                    <input class="form-control" type="text" name="orderStatus" value="<%=survey.orderStatus%>">
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label>প্লেট সাইজ(<span><%=survey.plateSize%>*</span>)</label>
+                    <select  class="form-control" name="plateSize"> 
+                        <option value="৬ * ৯ ইঞ্চি">৬ * ৯ ইঞ্চি</option>
+                        <option value="৮ * ১২ ইঞ্চি">৮ * ১২ ইঞ্চি</option>    
+                    </select>    
+                </div>
+
+                <div class="form-group col-md-3 d-flex">
+                    <label class="align-self-end"> বিল পরিশোধ* 
+                        <span>
+                           <% if(survey.orderPaid == 'Yes') { %>
+                                <input type="radio" checked name="orderPaid" checked value="Yes">হয়েছে
+                                <input type="radio" name="orderPaid" value="No"> হয়নি
+                            <% } else { %>
+                               <input type="radio" name="orderPaid" checked value="Yes">হয়েছে
+                               <input type="radio" checked name="orderPaid" value="No"> হয়নি
+                            <% } %>
+                        </span>
+                        
+                    </label>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">হালনাগাদ করুন</button>
+        </form>
+    </div>
+
+<%- include ../includes/footer-text.ejs %>
+<%- include ../includes/footer.ejs %>
