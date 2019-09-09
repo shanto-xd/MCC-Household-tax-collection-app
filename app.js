@@ -8,6 +8,7 @@ const shortUniqueId = require('short-unique-id');
 const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
 const flash = require('connect-flash')
+
 const seed = require('./seed');
 
 const uid = new shortUniqueId();
@@ -56,8 +57,6 @@ const fileFilter = (req, file, cb) => {
 	}
 }
 
-
-// configure authentication
 // configure csrf token
 
 app.set('view engine', 'ejs')

@@ -30,7 +30,7 @@ const paid = ['হ্যাঁ', 'না', 'বকেয়া']
 const plate = ['৬ * ৯ ইঞ্চি', '৮ * ১২ ইঞ্চি']
 async function seed() {
     // const orders = await Order.find()
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 20; i++) {
         const random1 = uniqueRandom(0, 9);
         const random2 = uniqueRandom(0, 2);
         const random3 = uniqueRandom(200, 500)
@@ -64,7 +64,7 @@ async function seed() {
                 rent: random3() * 80,
                 maleMember: random4(),
                 femaleMember: random2(),
-                totalMember: this.maleMember + this.femaleMember,
+                totalMember: random4(),
                 yearlyIncome: String(random3() * random3()),
                 waterSource: paid[random2()],
                 sanitationStatus: sanitation[random2()],
@@ -74,10 +74,11 @@ async function seed() {
                 roadType: roadType[random1()],
                 streetlight: paid[random2()],
                 orderPaid: paid[random2()],
-                orderStatus: orderStatus[random2()],
-                plateSize: plate[0],
+                orderStatus: 'In progress',
+                plateSize: '৮ * ১২ ইঞ্চি',
                 created: new Date().toDateString(),
-                updated: new Date().toDateString()
+                updated: new Date().toDateString(),
+                conductedBy: '5d71f9c950d8721194673761'
             })
 
             await survey.save()

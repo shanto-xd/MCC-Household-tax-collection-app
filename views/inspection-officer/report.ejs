@@ -1,0 +1,64 @@
+<%- include ../includes/header.ejs %>
+
+<title>দৈনিক প্রতিবেদন | ইন্সপেকশন অফিসার</title>
+</head>
+
+<body>
+    <%- include('../includes/nav.ejs', {userRole: userRole}) %>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-9">
+                <h1 class="text-center">মাঠকর্মীদের দৈনিক প্রতিবেদন</h1>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">ক্রমিক</th>
+                            <th scope="col">কর্মীর নাম</th>
+                            <th scope="col">অফিস আইডি</th>
+                            <th scope="col">মোট এন্ট্রি</th>
+                            <th scope="col">মোট প্লেট অর্ডার</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i = 0; i < orderCount.length; i++) { %>
+                        <tr>
+                            <th scope="row"><%=i+1%></th>
+                            <td><a href="/officers/<%=users[i]._id%>?role=<%=userRole%>"
+                                    title="প্রোফাইল দেখুন"><%=users[i].name%></a></td>
+                            <td><%=users[i].office_id%></td>
+                            <td><%=surveyCount[i].length%></td>
+                            <td><%=orderCount[i].length%></td>
+
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-info my-3">
+                    <div class="card-header">আজকের পরিসংখ্যান</div>
+                    <div class="card-body">
+                        <p class="card-text lead">এন্ট্রি - <%=todaysEntry%></p>
+                        <p class="card-text lead">প্রক্রিয়াধীন অর্ডার - <%=todaysOrder%></p>
+                        <p class="card-text lead">ডেলিভারি - <%=todaysDelivery%></p>
+                    </div>
+                </div>
+
+                <div class="card text-white bg-info my-3">
+                    <div class="card-header">মোট পরিসংখ্যান</div>
+                    <div class="card-body">
+                        <p class="card-text lead">মোট এন্ট্রি - <%=totalEntry%></p>
+                        <p class="card-text lead">মোট প্রক্রিয়াধীন অর্ডার - <%=totalOrder%></p>
+                        <p class="card-text lead">মোট ডেলিভারি - <%=totalDelivery%></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <%- include ../includes/footer-text.ejs %>
+    <%- include ../includes/footer.ejs %>

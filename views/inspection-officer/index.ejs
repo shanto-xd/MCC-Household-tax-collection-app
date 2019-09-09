@@ -1,6 +1,6 @@
 <%- include ../includes/header.ejs %>
 
-    <title>ড্যাশবোর্ড | ইন্সপেকশন অফিসার</title> 
+<title>ড্যাশবোর্ড | ইন্সপেকশন অফিসার</title>
 </head>
 
 <body>
@@ -9,49 +9,51 @@
     <div class="container">
         <div class="row mt-2">
             <div class="col-md-6 mx-auto text-center ">
-                <div class="mt-4"> 
+                <div class="mt-4">
                     <a href="/survey-info?role=<%=userRole%>" class="btn btn-block btn-outline-success p-3">
                         এসেসমেন্টের তথ্য দেখুন
                     </a>
                 </div>
 
-                <div class="mt-4"> 
+                <div class="mt-4">
                     <a href="/form?role=<%=userRole%>" class="btn btn-block btn-outline-success p-3">
                         এসেসমেন্ট এন্ট্রি করুন
                     </a>
                 </div>
 
                 <div class="mt-4">
-                    <a href="#" class="btn btn-block btn-outline-success p-3">দৈনিক প্রতিবেদন দেখুন</a> 
-                </div> 
-                
-                <div class="mt-4">
-                    <a href="#" class="btn btn-block btn-outline-success p-3" data-toggle="modal" data-target="#searchByDate">
-                        নির্দিষ্ট তারিখের প্রতিবেদন দেখুন
-                    </a>  
+                    <a href="/reports?role=<%=userRole%>" class="btn btn-block btn-outline-success p-3">দৈনিক প্রতিবেদন
+                        দেখুন</a>
                 </div>
-            </div> 
-        </div>
-    </div>
 
-<div class="modal fade" id="searchByDate">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <button class="close" data-dismiss="modal"><span>&times;</span></button>
-                <form action="/survey-info/date?role=<%=userRole%>" method="POST">
-                    <div class="form-group mx-auto">
-                        <label>নির্দিষ্ট তারিখ প্রবেশ করান<span>*</span></label>
-                        <input type="date" name="date" class="form-control mb-2">
-                        <button class="btn btn-block btn-success"><span class="fa fa-search"></span> খুঁজুন</button>
-                    </div>
-                </form>
-
+                <div class="mt-4">
+                    <a href="#" class="btn btn-block btn-outline-success p-3" data-toggle="modal"
+                        data-target="#searchByDate">
+                        নির্দিষ্ট তারিখের প্রতিবেদন দেখুন
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
-    
 
-<%- include ../includes/footer-text.ejs %>
-<%- include ../includes/footer.ejs %>
+    <div class="modal fade" id="searchByDate">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <form action="/survey-info/date?role=<%=userRole%>" method="POST">
+                        <div class="form-group mx-auto">
+                            <label>নির্দিষ্ট তারিখ প্রবেশ করান<span>*</span></label>
+                            <input type="date" name="date" class="form-control mb-2">
+                            <button class="btn btn-block btn-success"><span class="fa fa-search"></span> খুঁজুন</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <%- include ../includes/footer-text.ejs %>
+    <%- include ../includes/footer.ejs %>

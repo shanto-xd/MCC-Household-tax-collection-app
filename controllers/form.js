@@ -7,9 +7,10 @@ const sharp = require('sharp');
 const shortUniqueId = require('short-unique-id');
 const fs = require('fs');
 const uniqueRandom = require('unique-random');
+const csv = require('csv-express')
 
 const uid = new shortUniqueId();
-const PER_PAGE = 5
+const PER_PAGE = 20
 
 exports.getLandingPage = (req, res, next) => {
 	res.render('landing');
@@ -38,7 +39,8 @@ exports.getDashboard = async (req, res, next) => {
 }
 
 exports.getForm = (req, res, next) => {
-	res.render('form/survey-form');
+
+	res.render('form/survey-form', { userRole: req.query.role });
 }
 
 exports.postForm = async (req, res, next) => {
@@ -77,6 +79,7 @@ exports.postForm = async (req, res, next) => {
 			roadType: req.body.roadType,
 			streetlight: req.body.streetlight,
 			created: new Date().toDateString(),
+			conductedBy: req.user._id
 		});
 		const result = await survey.save();
 		// console.log(result);
@@ -156,7 +159,8 @@ exports.postConfirmOrder = async (req, res, next) => {
 		const survey = await Survey.findById(req.query.sid);
 		survey.orderPaid = 'Paid';
 		survey.plateSize = req.body.plateSize;
-		survey.orderStatus = 'In progress...';
+		survey.orderStatus = 'In progress';
+
 		await survey.save()
 
 		//create invoice
@@ -184,8 +188,95 @@ exports.postOrderPlate = async (req, res, next) => {
 	}
 }
 
-exports.getDailyReport = (req, res, next) => {
-	res.render('field-officer/daily-report', { userRole: req.query.role });
+exports.getDailyReport = async (req, res, next) => {
+	try {
+		const page = +req.query.page || 1
+		var filter = req.query.filter || ''
+		var keys = req.query.keys || ''
+		const startDate = new Date()
+		const day = 60 * 60 * 24 * 1000;
+		const endDate = new Date(startDate.getTime() + day);
+		let searchObj = {
+			conductedBy: req.user._id,
+			created: {
+				$gte: startDate.toDateString(),
+				$lt: endDate.toDateString()
+			},
+		}
+
+		if (filter !== '' && keys !== '') {
+			keys = keys.split(',')
+			if (typeof filter !== 'string') {
+				for (let i = 0; i < filter.length; i++) {
+					searchObj[filter[i]] = keys[i];
+				}
+			} else {
+				searchObj[filter] = keys[0]
+			}
+		}
+
+		const count = await Survey.find(searchObj).countDocuments()
+		const surveys = await Survey.find(searchObj).skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding')
+		res.render('field-officer/daily-report', {
+			surveys: surveys,
+			userRole: req.query.role,
+			currentPage: page,
+			lastPage: Math.ceil(count / PER_PAGE),
+			filter: filter,
+			keys: keys,
+		})
+	} catch (err) {
+		const error = new Error(err)
+		error.httpStatusCode = 500
+		return next(error)
+	}
+}
+
+exports.postDailyReport = async (req, res, next) => {
+	try {
+		const filter = req.body.filter || '';
+		let keys = req.body.keys || ''
+		const page = +req.query.page || 1;
+		const startDate = new Date()
+		const day = 60 * 60 * 24 * 1000;
+		const endDate = new Date(startDate.getTime() + day);
+
+		let searchObj = {
+			conductedBy: req.user._id,
+			created: {
+				$gte: startDate.toDateString(),
+				$lt: endDate.toDateString()
+			},
+		}
+
+		if (filter !== '' && keys !== '') {
+			keys = keys.split(',')
+			if (typeof filter !== 'string') {
+				for (let i = 0; i < filter.length; i++) {
+					searchObj[filter[i]] = keys[i];
+				}
+			} else {
+				searchObj[filter] = keys[0]
+			}
+		}
+
+		console.log(searchObj)
+
+		const count = await Survey.find(searchObj).countDocuments()
+		const surveys = await Survey.find(searchObj).skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding')
+		res.render('field-officer/daily-report', {
+			surveys: surveys,
+			userRole: req.user.role,
+			currentPage: page,
+			lastPage: Math.ceil(count / PER_PAGE),
+			filter: filter,
+			keys: keys,
+		})
+	} catch (err) {
+		const error = new Error(err)
+		error.httpStatusCode = 500
+		return next(error)
+	}
 }
 
 exports.getOrders = async (req, res, next) => {
@@ -193,7 +284,7 @@ exports.getOrders = async (req, res, next) => {
 	const filter = req.query.filter || '';
 	let keys = req.query.keys || '';
 
-	let obj = { orderStatus: 'In progress...' }
+	let obj = { orderStatus: 'In progress' }
 
 	try {
 		if (filter !== '' && keys !== '') {
@@ -208,8 +299,8 @@ exports.getOrders = async (req, res, next) => {
 		}
 
 		const orderCount = await Survey.find(obj).countDocuments()
-		const surveys = await Survey.find(obj).skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding').exec()
-
+		const surveys = await Survey.find(obj).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding').exec()
+		console.log(surveys.conductedBy)
 		res.render('form/show-orders', {
 			surveys: surveys,
 			userRole: req.query.role,
@@ -230,7 +321,7 @@ exports.postOrders = async (req, res, next) => {
 	let keys = req.body.keys || ''
 	const page = +req.query.page || 1;
 
-	let obj = { orderStatus: 'In progress...' }
+	let obj = { orderStatus: 'In progress' }
 
 	try {
 		if (filter !== '' && keys !== '') {
@@ -245,7 +336,7 @@ exports.postOrders = async (req, res, next) => {
 		}
 
 		const orderCount = await Survey.find(obj).countDocuments()
-		const surveys = await Survey.find(obj).sort('holding')
+		const surveys = await Survey.find(obj).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding')
 		res.render('form/show-orders', {
 			surveys: surveys,
 			userRole: req.query.role,
@@ -267,9 +358,7 @@ exports.getShowInfo = async (req, res, next) => {
 
 		res.render('form/show-info', {
 			survey: survey,
-			userRole: 'প্রডাকশন অফিসার',
-			created: dateFormatter.dateFormatter(survey.createdAt),
-			updated: dateFormatter.dateFormatter(survey.updatedAt),
+			userRole: req.user.role,
 		})
 	} catch (err) {
 		const error = new Error(err);
@@ -292,6 +381,7 @@ exports.postPlateDelivery = async (req, res, next) => {
 			survey.orderPaid = ''
 			survey.plateSize = ''
 		}
+
 		await survey.save()
 		res.redirect('/orders?page=' + page + '&role=প্রডাকশন অফিসার')
 	} catch (err) {
@@ -318,7 +408,7 @@ exports.getSurveyInfo = async (req, res, next) => {
 			}
 		}
 		const count = await Survey.find(obj).countDocuments()
-		const surveys = await Survey.find(obj).skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding').exec()
+		const surveys = await Survey.find(obj).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding')
 		res.render('inspection-officer/survey-info', {
 			surveys: surveys,
 			userRole: req.query.role,
@@ -352,7 +442,7 @@ exports.postSurveyInfo = async (req, res, next) => {
 			}
 		}
 		const count = await Survey.find(obj).countDocuments()
-		const surveys = await Survey.find(obj).sort('holding')
+		const surveys = await Survey.find(obj).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding')
 		res.render('inspection-officer/survey-info', {
 			surveys: surveys,
 			userRole: req.query.role,
@@ -433,15 +523,16 @@ exports.getSurveyInfoByDate = async (req, res, next) => {
 	try {
 		var filter = req.query.filter || ''
 		var keys = req.query.keys || ''
-		var page = req.query.page || 1
+		var page = +req.query.page || 1
 		let obj = {}
 
 		if (filter != '' && keys != '') {
 			obj[filter] = keys
 		}
-		const count = await Survey.find(obj).countDocuments()
-		const surveys = await Survey.find(obj).skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding').exec()
 
+		const surveys = await Survey.find(obj).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding').exec()
+		const count = await Survey.find(obj).countDocuments()
+		console.log(count)
 		res.render('inspection-officer/survey-info', {
 			surveys: surveys,
 			userRole: req.query.role,
@@ -460,15 +551,15 @@ exports.getSurveyInfoByDate = async (req, res, next) => {
 exports.postSurveyInfoByDate = async (req, res, next) => {
 	try {
 		var date = new Date(req.body.date).toDateString()
-		const page = 1
+		var page = +req.query.page || 1;
 
-		const surveys = await Survey.find({ created: date }).skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding').exec()
+		const surveys = await Survey.find({ created: date }).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding').exec()
 		const count = await Survey.find({ created: date }).countDocuments()
-
+		console.log(count)
 		res.render('inspection-officer/survey-info', {
 			surveys: surveys,
 			userRole: req.query.role,
-			currentPage: 1,
+			currentPage: page,
 			lastPage: Math.ceil(count / PER_PAGE),
 			filter: 'created',
 			keys: date,
@@ -558,6 +649,106 @@ exports.getOfficers = async (req, res, next) => {
 		const user_id = req.params.user_id
 		const user = await User.findById(user_id)
 		res.render('admin/officer-info', { user: user, userRole: req.query.role })
+	} catch (err) {
+		const error = new Error(err)
+		error.httpStatusCode = 500
+		return next(error)
+	}
+}
+
+exports.postDownloadSurveyInfo = async (req, res, next) => {
+	try {
+		let filename = 'survey_info_ward_' + req.body.ward + '.csv'
+		const surveys = await Survey.find({ ward: req.body.ward }).select('-_id -created -updated -__v').sort('holding').lean()
+		res.statusCode = 200
+
+		res.setHeader('Content-Type', 'text/csv');
+		res.setHeader("Content-Disposition", 'attachment; filename=' + filename);
+		res.csv(surveys, true);
+	} catch (err) {
+		const error = new Error(err)
+		error.httpStatusCode = 500
+		return next(error)
+	}
+}
+
+exports.getReports = async (req, res, next) => {
+	try {
+		let start = new Date().toDateString()
+		let orderCount = []
+		let surveyCount = []
+		const todaysEntry = await Survey.find({ created: start }).countDocuments()
+		const todaysOrder = await Survey.find({ orderStatus: 'In progress', created: start }).countDocuments()
+		const todaysDelivery = await Survey.find({ orderStatus: 'Delivered', updated: start }).countDocuments()
+		const totalEntry = await Survey.find().countDocuments()
+		const totalOrder = await Survey.find({ orderStatus: 'In progress' }).countDocuments()
+		const totalDelivery = await Survey.find({ orderStatus: 'Delivered' }).countDocuments()
+		const field_officers = await User.find({ role: 'ফিল্ড অফিসার' })
+
+		for (let i = 0; i < field_officers.length; i++) {
+			let orders = await Survey.find({
+				conductedBy: field_officers[i]._id,
+				created: start,
+				$or: [
+					{ orderStatus: 'In progress' },
+					{ orderStatus: 'Delivered' }
+				],
+			})
+			let entry = await Survey.find({ created: start, conductedBy: field_officers[i]._id })
+			orderCount.push(orders)
+			surveyCount.push(entry)
+		}
+
+		res.render('inspection-officer/report', {
+			todaysEntry: todaysEntry,
+			todaysOrder: todaysOrder,
+			todaysDelivery: todaysDelivery,
+			totalEntry: totalEntry,
+			totalOrder: totalOrder,
+			totalDelivery: totalDelivery,
+			orderCount: orderCount,
+			surveyCount: surveyCount,
+			userRole: req.user.role,
+			users: field_officers,
+		})
+	} catch (err) {
+		const error = new Error(err)
+		error.httpStatusCode = 500
+		return next(error)
+	}
+}
+
+exports.getReportsDetail = async (req, res, next) => {
+	try {
+		var filter = req.query.filter || ''
+		var keys = req.query.keys || ''
+		var page = req.query.page || 1
+
+		let obj = {
+			conductedBy: req.params.uid,
+			created: new Date().toDateString(),
+		}
+		if (filter !== '' && keys !== '') {
+			keys = keys.split(',')
+			if (typeof filter !== 'string') {
+				for (let i = 0; i < filter.length; i++) {
+					obj[filter[i]] = keys[i];
+				}
+			} else {
+				obj[filter] = keys[0]
+			}
+		}
+
+		const surveys = await Survey.find(obj).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding')
+		const count = await Survey.find(obj).countDocuments()
+		res.render('inspection-officer/survey-info', {
+			surveys: surveys,
+			userRole: req.user.role,
+			currentPage: page,
+			lastPage: Math.ceil(count / PER_PAGE),
+			filter: filter,
+			keys: keys,
+		})
 	} catch (err) {
 		const error = new Error(err)
 		error.httpStatusCode = 500

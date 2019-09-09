@@ -63,10 +63,10 @@
         <div class="modal-content">
             <div class="modal-body">
                 <button class="close" data-dismiss="modal"><span>&times;</span></button>
-                <form action="" method="POST">
+                <form action="/survey-info/download?role=<%=userRole%>" method="POST">
                     <div class="form-group mx-auto">
                         <label>ওয়ার্ড নং<span>*</span></label>
-                        <input type="text" name="date" class="form-control mb-2">
+                        <input type="text" name="ward" class="form-control mb-2">
                         <button class="btn btn-block btn-success"><span class="fa fa-download"></span> ডাউনলোড করুন</button>
                     </div>
                 </form>

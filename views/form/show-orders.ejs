@@ -1,11 +1,41 @@
 <%- include ../includes/header.ejs %>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.10/css/bootstrap-select.css" />
     <title>প্লেট অর্ডার | <%=userRole%></title>
 </head>
 
 <body>
     <%- include('../includes/nav.ejs', {userRole: userRole}) %>
-    <h1 class="text-center my-3">অর্ডারের তথ্য দেখুন <span class="ml-5"><a class="btn btn-lg btn-primary" data-toggle="modal" data-target="#searchAssessment" href="">তথ্য খুঁজুন</a></span></h1> 
+    <div class="container my-5">
+        <form action="/orders?role=<%=userRole%>" method="POST">
+            <div class="form-row">
+                 <div class="form-group col-md-6">
+                    <label>ক্যাটাগরি বাছাই করুন<span>*</span></label>
+                    <select name="filter" class="selectpicker form-control" multiple data-live-search="true" >
+                        <!-- <option disabled selected>বাছাই করুন.....</option> -->
+                        <option value="assessment_id">এসেসমেন্ট আইডি</option>
+                        <option value="holding">হোল্ডিং নং</option>
+                        <option value="orderBill">বিল নং</option>
+                        <option value="ward">ওয়ার্ড নং</option>
+                        <option value="ownerName">মালিকের নাম</option>
+                        <option value="holdingType">হোল্ডিং এর ধরন</option> 
+                        <option value="block">ব্লক</option>
+                        <option value="road">রাস্তা/মহল্লা</option>
+                        <option value="mobile">মোবাইল নং</option> 
+                        <option value="holdingName">হোল্ডিং এর নাম</option>
+                        <option value="thana">থানা</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-5">
+                    <label>অনুসন্ধান তথ্য(একাধিক কি ওয়ার্ড কমা দিয়ে আলাদা করুন)<span>*</span></label>
+                    <input type="text" name="keys" class="form-control" placeholder="উদাহরন - 177/A,18,1234,A">
+                    <small class="text-danger">**হোল্ডিং নং, ওয়ার্ড নং, এসেসমেন্ট আইডি, ব্লক নং ইংরেজিতে লিখুন</small>
+                </div>
+                <div class="col-md-1 my-auto">
+                    <button class="btn btn-primary btn-block mb-1"><span class="fa fa-search"></span></button>
+                </div>
+            </div>
+        </form>
+    </div>
 
     <% if(surveys.length > 0) { %>
     
@@ -20,12 +50,12 @@
                 <th>রাস্তা/মহল্লা</th>
                 <th>থানা</th>
                 <th>মোবাইল</th>
-                <th>হোল্ডিং এর ধরন</th>
                 <th>হোল্ডিং এর নাম</th>
                 <th>প্লেট সাইজ</th> 
                 <th>বিল পরিশোধ</th>
                 <th>হোল্ডিং নং</th>
                 <th>অর্ডার</th>
+                <th>তথ্য সংগ্রহকারী</th> 
                 <th>প্লেট ডেলিভারি</th>
             </tr>
         </thead>
@@ -41,12 +71,12 @@
                     <td><%= survey.road %></td>
                     <td><%= survey.thana %></td>
                     <td><%= survey.mobile %></td>
-                    <td><%= survey.holdingType %></td>
                     <td><%= survey.holdingName %></td>
                     <td class="text-danger" ><%= survey.plateSize %></td>
                     <td><%= survey.orderPaid %></td>
                     <td class="text-success"><%= survey.holding %></td>
                     <td><%=survey.orderStatus%></td>
+                     <td><%=survey.conductedBy.name%></td>
                     <td>
                         <div class="row">
                             <div class="col-sm-4 mx-auto">
@@ -72,6 +102,11 @@
 <% } %>
 
 
-<%- include('../includes/search-modal.ejs', {userRole: userRole}) %>
+
 <%- include ../includes/footer-text.ejs %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.10/js/bootstrap-select.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<script>
+    $('select').selectpicker();
+</script>
 <%- include ../includes/footer.ejs %>

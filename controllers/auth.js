@@ -114,6 +114,7 @@ exports.postUpdateProfile = async (req, res, next) => {
             mobile: req.body.mobile,
             role: req.body.role,
         }
+        console.log(req.body.role)
         const user = await User.findByIdAndUpdate(user_id, updateInfo)
         res.redirect('/officers/' + user_id + '?role=' + req.query.role)
     } catch (err) {

@@ -11,10 +11,13 @@
         <div class="row">
             <div class="col-md-3">
               <img src="/images/profile.png" class="card-img-top rounded-circle">
-              <a href="" class="text-muted ml-5 my-1"><i class="fa fa-camera"></i> ডাউনলোড করুন</a>
+              <% if(userRole != 'ফিল্ড অফিসার') { %>
+                <a href="" class="text-muted ml-5 my-1"><i class="fa fa-camera"></i> ডাউনলোড করুন</a>
+              <% } %> 
+            
                 <ul class="list-group list-group-flush my-2">
-                  <li class="list-group-item">তথ্য হালনাগাদের তারিখ : <%=created%></li>
-                  <li class="list-group-item">সর্বশেষ আপডেটের তারিখ : <%=updated%></li>
+                  <li class="list-group-item">তথ্য হালনাগাদের তারিখ : <%=survey.created.toDateString()%></li>
+                  <li class="list-group-item">সর্বশেষ আপডেটের তারিখ : <%=survey.updated.toDateString()%></li>
                 </ul>
             </div> 
             <div class="col-md-6 mx-auto">

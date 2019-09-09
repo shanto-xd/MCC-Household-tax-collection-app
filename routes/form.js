@@ -25,6 +25,8 @@ router.post('/order-plate', formController.postOrderPlate);
 
 router.get('/fo/daily-report', formController.getDailyReport);
 
+router.post('/fo/daily-report', formController.postDailyReport)
+
 router.get('/orders', formController.getOrders);
 
 router.post('/orders', formController.postOrders);
@@ -49,6 +51,13 @@ router.get('/officers-panel', auth.isAdmin, formController.getOfficersPanel)
 
 router.post('/officers-panel', auth.isAdmin, formController.postOfficersPanel)
 
-router.get('/officers/:user_id', auth.isAdmin, formController.getOfficers)
+router.get('/officers/:user_id', auth.isAdmin && auth.isInspectionOfficer, formController.getOfficers)
+
+router.post('/survey-info/download', auth.isAdmin, formController.postDownloadSurveyInfo)
+
+router.get('/reports', formController.getReports)
+
+router.get('/reports/details/:uid', formController.getReportsDetail)
+
 
 module.exports = router
