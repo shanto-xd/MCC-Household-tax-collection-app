@@ -1,8 +1,9 @@
 <%- include ../includes/header.ejs %>
-    <title>অর্ডার</title>
-</head> 
+<title>অর্ডার</title>
+</head>
 
 <body>
+    <%- include('../includes/nav.ejs', {userRole: userRole}) %>
     <div class="container">
         <div class="text-center mt-3">
             <h1 class=" font-weight-bold">ময়মনসিংহ সিটি কর্পোরেশন</h1>
@@ -11,7 +12,8 @@
 
         <div class="mt-5">
             <h4 class="text-center">স্বাগতম! আপনার প্রদানকৃত সকল তথ্য ডাটাবেজে হালনাগাদ করা হয়েছে</h4>
-            <h4 class="text-center">আপনার এসেসমেন্ট আইডি - <span class="text-danger"><%=assessment_id%></span>. এই আইডিটি সংরক্ষণ করুন</h4>
+            <h4 class="text-center">আপনার এসেসমেন্ট আইডি - <span class="text-danger"><%=assessment_id%></span>. এই
+                আইডিটি সংরক্ষণ করুন</h4>
         </div>
 
         <div class="mt-5 text-center">
@@ -20,35 +22,35 @@
                 <div class="col-md-3 my-2 mx-auto">
                     <a class="btn btn-success btn-block" href="" data-toggle="modal" data-target="#plateSize">হ্যাঁ</a>
                 </div>
-                <div class="col-md-3 my-2 mx-auto"> 
+                <div class="col-md-3 my-2 mx-auto">
                     <a class="btn btn-danger btn-block" href="/dashboard?role=ফিল্ড অফিসার">এখন নয়</a>
                 </div>
             </div>
         </div>
     </div>
 
-<div class="modal fade" id="plateSize">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
+    <div class="modal fade" id="plateSize">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
 
-                <form action="/confirm-order?sid=<%=id%>" method="POST">
-                    <div class="form-group mx-auto">
-                        <label>প্লেট সাইজ বাছাই করুন<span>*</span></label>
-                        <select  class="form-control mb-2" name="plateSize"> 
-                            <option selected disabled>বাছাই করুন...</option>
-                            <option value="৬ * ৯ ইঞ্চি">৬ * ৯ ইঞ্চি</option>
-                            <option value="৮ * ১২ ইঞ্চি">৮ * ১২ ইঞ্চি</option>    
-                        </select>    
-                        <button class="btn btn-block btn-success">অর্ডার করুন</button>
-                    </div>
-                </form>
+                    <form action="/confirm-order?sid=<%=id%>" method="POST">
+                        <div class="form-group mx-auto">
+                            <label>প্লেট সাইজ বাছাই করুন<span>*</span></label>
+                            <select class="form-control mb-2" name="plateSize">
+                                <option selected disabled>বাছাই করুন...</option>
+                                <option value="৬ * ৯ ইঞ্চি">৬ * ৯ ইঞ্চি - ৪০০ টাকা</option>
+                                <option value="৮ * ১২ ইঞ্চি">৮ * ১২ ইঞ্চি - ৬০০ টাকা</option>
+                            </select>
+                            <button class="btn btn-block btn-success">অর্ডার করুন</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
 
-<%- include ../includes/footer-text.ejs %>
-<%- include ../includes/footer.ejs %>
+    <%- include ../includes/footer-text.ejs %>
+    <%- include ../includes/footer.ejs %>

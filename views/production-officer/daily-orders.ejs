@@ -1,18 +1,17 @@
 <%- include ../includes/header.ejs %>
 <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.10/css/bootstrap-select.css" />
-<title>প্লেট অর্ডার | <%=userRole%></title>
+<title>আজকের প্লেট অর্ডার | <%=userRole%></title>
 </head>
 
 <body>
     <%- include('../includes/nav.ejs', {userRole: userRole}) %>
     <div class="container my-5">
-        <form action="/orders?role=<%=userRole%>" method="POST">
+        <form action="/po/daily-orders?role=<%=userRole%>" method="POST">
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label>ক্যাটাগরি বাছাই করুন<span>*</span></label>
                     <select name="filter" class="selectpicker form-control" multiple data-live-search="true">
-                        <!-- <option disabled selected>বাছাই করুন.....</option> -->
                         <option value="assessment_id">এসেসমেন্ট আইডি</option>
                         <option value="mobile">মোবাইল নং</option>
                         <option value="id">ভোটার/এনআইডি/পাসপোর্ট</option>
@@ -21,7 +20,6 @@
                         <option value="ward">ওয়ার্ড নং</option>
                         <option value="ownerName">মালিকের নাম</option>
                         <option value="holdingType">হোল্ডিং এর ধরন</option>
-                        <option value="block">ব্লক</option>
                         <option value="road">রাস্তা/মহল্লা</option>
                         <option value="holdingName">হোল্ডিং এর নাম</option>
                     </select>
@@ -40,13 +38,14 @@
 
     <% if(surveys.length > 0) { %>
 
+    <h3 class="text-center my-3">আজকের প্লেট অর্ডার</h3>
+
     <table class="table table-sm" border="1" style="font-size: 13px !important">
         <thead>
             <tr>
                 <th>এসেসমেন্ট আইডি</th>
                 <th>বিল নং</th>
                 <th>মালিকের নাম</th>
-                <th>পোস্টকোড</th>
                 <th>ওয়ার্ড</th>
                 <th>রাস্তা/মহল্লা</th>
                 <th>মোবাইল</th>
@@ -55,7 +54,7 @@
                 <th>বিল পরিশোধ</th>
                 <th>হোল্ডিং নং</th>
                 <th>অর্ডার</th>
-                <!-- <th>তথ্য সংগ্রহকারী</th> -->
+                <th>তথ্য সংগ্রহকারী</th>
                 <th>প্লেট ডেলিভারি</th>
             </tr>
         </thead>
@@ -67,7 +66,6 @@
                         href="/show-info/<%=survey._id%>"><%= survey.assessment_id%></a></td>
                 <td><%= survey.orderBill%></td>
                 <td><%= survey.ownerName%></td>
-                <td><%= survey.postcode %></td>
                 <td><%= survey.ward %></td>
                 <td><%= survey.road %></td>
                 <td><%= survey.mobile %></td>
@@ -76,7 +74,7 @@
                 <td><%= survey.orderPaid %></td>
                 <td class="text-success"><%= survey.holding %></td>
                 <td><%=survey.orderStatus%></td>
-
+                <td><%=survey.conductedBy.name%></td>
 
                 <td>
                     <div class="row">

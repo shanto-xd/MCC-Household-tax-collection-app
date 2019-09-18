@@ -3,7 +3,7 @@ exports.isAuthenticated = (req, res, next) => {
         return next()
     } else {
         req.flash('warning', 'Please Login to continue...')
-        return res.redirect('/')
+        return res.redirect('back')
     }
 
 }
@@ -13,7 +13,7 @@ exports.isAdmin = (req, res, next) => {
         return next()
     } else {
         req.flash('error', 'Sorry, you are not allowed for the requested route...')
-        return res.redirect('/')
+        return res.redirect('back')
     }
 }
 
@@ -22,7 +22,7 @@ exports.isFieldOfficer = (req, res, next) => {
         return next()
     } else {
         req.flash('error', 'Sorry, you are not allowed for the requested route...')
-        return res.redirect('/')
+        return res.redirect('back')
     }
 }
 
@@ -31,7 +31,7 @@ exports.isInspectionOfficer = (req, res, next) => {
         return next()
     } else {
         req.flash('error', 'Sorry, you are not allowed for the requested route...')
-        return res.redirect('/')
+        return res.redirect('back')
     }
 }
 
@@ -40,6 +40,6 @@ exports.isProductionOfficer = (req, res, next) => {
         return next()
     } else {
         req.flash('error', 'Sorry, you are not allowed for the requested route...')
-        return res.redirect('/')
+        return res.redirect('back')
     }
 }

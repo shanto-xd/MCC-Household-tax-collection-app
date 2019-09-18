@@ -1,65 +1,69 @@
 <%- include ../includes/header.ejs %>
 
-    <title>বিস্তারিত হোল্ডিং তথ্য  | <%=userRole%></title>
+<title>বিস্তারিত হোল্ডিং তথ্য | <%=userRole%></title>
 </head>
 
 <body>
-    <%- include('../includes/nav.ejs', {userRole: userRole}) %>
-    <h1 class="font-weight bold text-center my-3">বিস্তারিত হোল্ডিং তথ্য</h1>
-    
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-              <img src="/images/profile.png" class="card-img-top rounded-circle">
-              <% if(userRole != 'ফিল্ড অফিসার') { %>
-                <a href="" class="text-muted ml-5 my-1"><i class="fa fa-camera"></i> ডাউনলোড করুন</a>
-              <% } %> 
-            
-                <ul class="list-group list-group-flush my-2">
-                  <li class="list-group-item">তথ্য হালনাগাদের তারিখ : <%=survey.created.toDateString()%></li>
-                  <li class="list-group-item">সর্বশেষ আপডেটের তারিখ : <%=survey.updated.toDateString()%></li>
-                </ul>
-            </div> 
-            <div class="col-md-6 mx-auto">
-                <ul class="list-group list-group-flush my-2">
-                  <li class="list-group-item">এসেসমেন্ট আইডি : <%=survey.assessment_id%></li>
-                  <li class="list-group-item text-danger">প্লেট সাইজ : <%=survey.plateSize%></li>
-                  <li class="list-group-item">অর্ডার বিল নং : <%=survey.orderBill%></li>
-                  <li class="list-group-item">মালিকের নাম : <%=survey.ownerName%></li>
-                  <li class="list-group-item">পিতা/স্বামীর নাম : <%=survey.fatherName%></li>
-                  <li class="list-group-item">মাতার নাম : <%=survey.motherName%></li>
-                  <li class="list-group-item">বয়স : <%=survey.age%></li>
-                  <li class="list-group-item">পেশা : <%=survey.occupation%></li>
-                  <li class="list-group-item">রাস্তা/মহল্লার নাম : <%=survey.road%></li>
-                  <li class="list-group-item">হোল্ডিং নং : <%=survey.holding%></li>
-                  <li class="list-group-item">বাড়ির নাম : <%=survey.holdingName%></li>
-                  <li class="list-group-item">পোস্টকোড : <%=survey.postcode%></li>
-                  <li class="list-group-item">ওয়ার্ড নং : <%=survey.ward%></li>
-                  <li class="list-group-item">থানা : <%=survey.thana%></li>
-                  <li class="list-group-item">মুক্তিযোদ্ধা : <%=survey.freedomFighter%></li>
-                  <li class="list-group-item">মোবাইল : <%=survey.mobile%></li>
-                  <li class="list-group-item">ভোটার আইডি/জন্মনিবন্ধন/পাসপোর্ট নাম্বার : <%=survey.id%></li>
-                  <li class="list-group-item">হোল্ডিং এর ধরন : <%=survey.holdingType%></li>
-                  <li class="list-group-item">হোল্ডিং এর কাঠামো : <%=survey.holdingStructure%></li>
-                  <li class="list-group-item">হোল্ডিং এর দৈর্ঘ্য : <%=survey.length%></li>
-                  <li class="list-group-item">হোল্ডিং এর প্রস্থ : <%=survey.wide%></li>
-                  <li class="list-group-item">হোল্ডিং এর আয়তন : <%=survey.volume%></li>
-                  <li class="list-group-item">হোল্ডিং এর মালিকানা : <%=survey.ownership%></li>
-                  <li class="list-group-item">ভাড়ার পরিমাণ : <%=survey.rent%></li>
-                  <li class="list-group-item">পুরুষ সদস্য : <%=survey.maleMember%></li>
-                  <li class="list-group-item">নারী সদস্য : <%=survey.femaleMember%></li>
-                  <li class="list-group-item">মোট সদস্য : <%=survey.totalMember%></li>
-                  <li class="list-group-item">বার্ষিক আয় : <%=survey.yearlyIncome%></li>
-                  <li class="list-group-item">রাস্তা : <%=survey.roadType%></li>
-                  <li class="list-group-item">স্যানিটেশন : <%=survey.sanitationStatus%></li>
-                  <li class="list-group-item">পানির সরবরাহ : <%=survey.waterSource%></li>
-                  <li class="list-group-item">সড়ক বাতি : <%=survey.streetlight%></li>
-                  <li class="list-group-item">গ্যাস সংযোগ : <%=survey.gasConnection%></li>
-                </ul>
-            </div>
-        </div>
-    </div>
- 
+  <%- include('../includes/nav.ejs', {userRole: userRole}) %>
+  <h1 class="font-weight bold text-center my-3">বিস্তারিত হোল্ডিং তথ্য</h1>
 
-    <%- include ../includes/footer-text.ejs %>
-    <%- include ../includes/footer.ejs %> <i class="fas fa-construction"></i>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <img src="/images/<%=survey.imageUrl%>" class="card-img-top rounded-circle">
+
+        <% if(userRole != 'ফিল্ড অফিসার') { %>
+        <a href="/download/image/<%=survey.imageUrl%>" class="text-muted ml-5 my-1"><i class="fa fa-download"></i>
+          ডাউনলোড করুন</a>
+        <% } %>
+
+        <a href="" class="text-muted ml-5 "><i class="fa fa-camera"></i> আপডেট করুন</a>
+
+        <ul class="list-group list-group-flush my-2">
+          <li class="list-group-item">তথ্য হালনাগাদের তারিখ : <%=survey.created.toDateString()%></li>
+          <li class="list-group-item">সর্বশেষ আপডেটের তারিখ : <%=survey.updated.toDateString()%></li>
+        </ul>
+      </div>
+      <div class="col-md-6 mx-auto">
+        <ul class="list-group list-group-flush my-2">
+          <li class="list-group-item">এসেসমেন্ট আইডি : <%=survey.assessment_id%></li>
+          <li class="list-group-item text-danger">প্লেট সাইজ : <%=survey.plateSize%></li>
+          <li class="list-group-item">অর্ডার বিল নং : <%=survey.orderBill%></li>
+          <li class="list-group-item">মালিকের নাম : <%=survey.ownerName%></li>
+          <li class="list-group-item">পিতা/স্বামীর নাম : <%=survey.fatherName%></li>
+          <li class="list-group-item">মাতার নাম : <%=survey.motherName%></li>
+          <li class="list-group-item">বয়স : <%=survey.age%></li>
+          <li class="list-group-item">পেশা : <%=survey.occupation%></li>
+          <li class="list-group-item">রাস্তা/মহল্লার নাম : <%=survey.road%></li>
+          <li class="list-group-item">হোল্ডিং নং : <%=survey.holding%></li>
+          <li class="list-group-item">বাড়ির নাম : <%=survey.holdingName%></li>
+          <li class="list-group-item">পোস্টকোড : <%=survey.postcode%></li>
+          <li class="list-group-item">ওয়ার্ড নং : <%=survey.ward%></li>
+          <li class="list-group-item">থানা : <%=survey.thana%></li>
+          <li class="list-group-item">মুক্তিযোদ্ধা : <%=survey.freedomFighter%></li>
+          <li class="list-group-item">মোবাইল : <%=survey.mobile%></li>
+          <li class="list-group-item">ভোটার আইডি/জন্মনিবন্ধন/পাসপোর্ট নাম্বার : <%=survey.id%></li>
+          <li class="list-group-item">হোল্ডিং এর ধরন : <%=survey.holdingType%></li>
+          <li class="list-group-item">হোল্ডিং এর কাঠামো : <%=survey.holdingStructure%></li>
+          <li class="list-group-item">হোল্ডিং এর দৈর্ঘ্য : <%=survey.length%></li>
+          <li class="list-group-item">হোল্ডিং এর প্রস্থ : <%=survey.wide%></li>
+          <li class="list-group-item">হোল্ডিং এর আয়তন : <%=survey.volume%></li>
+          <li class="list-group-item">হোল্ডিং এর মালিকানা : <%=survey.ownership%></li>
+          <li class="list-group-item">ভাড়ার পরিমাণ : <%=survey.rent%></li>
+          <li class="list-group-item">পুরুষ সদস্য : <%=survey.maleMember%></li>
+          <li class="list-group-item">নারী সদস্য : <%=survey.femaleMember%></li>
+          <li class="list-group-item">মোট সদস্য : <%=survey.totalMember%></li>
+          <li class="list-group-item">বার্ষিক আয় : <%=survey.yearlyIncome%></li>
+          <li class="list-group-item">রাস্তা : <%=survey.roadType%></li>
+          <li class="list-group-item">স্যানিটেশন : <%=survey.sanitationStatus%></li>
+          <li class="list-group-item">পানির সরবরাহ : <%=survey.waterSource%></li>
+          <li class="list-group-item">সড়ক বাতি : <%=survey.streetlight%></li>
+          <li class="list-group-item">গ্যাস সংযোগ : <%=survey.gasConnection%></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <%- include ../includes/footer-text.ejs %>
+  <%- include ../includes/footer.ejs %> <i class="fas fa-construction"></i>

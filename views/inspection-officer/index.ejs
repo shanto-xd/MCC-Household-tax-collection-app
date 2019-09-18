@@ -43,8 +43,10 @@
                     <button class="close" data-dismiss="modal"><span>&times;</span></button>
                     <form action="/survey-info/date?role=<%=userRole%>" method="POST">
                         <div class="form-group mx-auto">
-                            <label>নির্দিষ্ট তারিখ প্রবেশ করান<span>*</span></label>
-                            <input type="date" name="date" class="form-control mb-2">
+                            <label>শুরুর তারিখ<span>*</span></label>
+                            <input type="date" name="startDate" class="form-control mb-2">
+                            <label>শেষের তারিখ<span>*</span></label>
+                            <input type="date" name="endDate" class="form-control mb-2">
                             <button class="btn btn-block btn-success"><span class="fa fa-search"></span> খুঁজুন</button>
                         </div>
                     </form>

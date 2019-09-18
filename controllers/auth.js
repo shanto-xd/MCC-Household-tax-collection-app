@@ -79,8 +79,9 @@ exports.postSignup = async (req, res, next) => {
         let imageUrl = uid.randomUUID(13) + req.file.originalname
         let filename = 'images/' + imageUrl
         await sharp(req.file.path).rotate().resize(800, 800).toFile(filename)
-        await fs.unlink(req.file.path, err => {
-            if (err) next(err);
+        fs.unlink(req.file.path, err => {
+            if (err)
+                next(err);
         })
 
         // console.log(req.query.role)
@@ -113,9 +114,10 @@ exports.postUpdateProfile = async (req, res, next) => {
             email: req.body.email,
             mobile: req.body.mobile,
             role: req.body.role,
+            office_id: req.body.office_id,
         }
         console.log(req.body.role)
-        const user = await User.findByIdAndUpdate(user_id, updateInfo)
+        await User.findByIdAndUpdate(user_id, updateInfo)
         res.redirect('/officers/' + user_id + '?role=' + req.query.role)
     } catch (err) {
         const error = new Error(err)
@@ -128,6 +130,11 @@ exports.postChangePassword = async (req, res, next) => {
     try {
         const user_id = req.params.user_id
         const password = req.body.password
+        const confirmPassword = req.body.confirmPassword
+        if (password != confirmPassword) {
+            req.flash('error', 'সঠিকভাবে পাসওয়ার্ড দিন')
+            return res.redirect('back')
+        }
         const hashedPassword = await bcrypt.hash(password, 12)
         const updateInfo = { password: hashedPassword }
         const user = await User.findByIdAndUpdate(user_id, updateInfo)

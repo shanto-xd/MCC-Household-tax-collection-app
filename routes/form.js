@@ -51,13 +51,20 @@ router.get('/officers-panel', auth.isAdmin, formController.getOfficersPanel)
 
 router.post('/officers-panel', auth.isAdmin, formController.postOfficersPanel)
 
-router.get('/officers/:user_id', auth.isAdmin && auth.isInspectionOfficer, formController.getOfficers)
+router.get('/officers/:user_id', auth.isAdmin, formController.getOfficers)
 
 router.post('/survey-info/download', auth.isAdmin, formController.postDownloadSurveyInfo)
 
 router.get('/reports', formController.getReports)
 
-router.get('/reports/details/:uid', formController.getReportsDetail)
+// router.get('/reports/details/:uid', formController.getReportsDetail)
 
+router.get('/survey-info/delete/:sid', formController.getDeleteSurvey)
+
+router.get('/po/daily-orders', formController.getDailyOrders)
+
+router.post('/po/daily-orders', formController.postDailyOrders)
+
+router.get('/download/invoice/:sid', formController.getDownloadInvoice)
 
 module.exports = router

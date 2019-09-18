@@ -5,7 +5,7 @@
 
 <body>
     <%- include('../includes/nav.ejs', {userRole: userRole}) %>
-
+    <%- include ../includes/alerts.ejs %>
     <%if(userRole == 'এডমিন') { %>
     <section class=" my-5">
         <div class="container">
@@ -92,14 +92,19 @@
                             <label class="form-control-label">পদ</label>
                             <select name="role" class="form-control">
                                 <!-- <option disabled selected>বাছাই করুন.....</option> -->
-                                <option <% if(user.role == 'admin') {%>selected <% } %> value="admin">এডমিন</option>
-                                <option <% if(user.role == 'inspection_officer') {%>selected <% } %>
-                                    value="inspection_officer">ইন্সপেকশন অফিসার</option>
-                                <option <% if(user.role == 'production_officer') {%>selected <% } %>
-                                    value="production_officer">প্রডাকশন অফিসার</option>
-                                <option <% if(user.role == 'field_officer') {%>selected <% } %> value="field_officer">
+                                <option <% if(user.role == 'এডমিন') {%>selected <% } %> value="এডমিন">এডমিন</option>
+                                <option <% if(user.role == 'ইন্সপেকশন অফিসার') {%>selected <% } %>
+                                    value="ইন্সপেকশন অফিসার">ইন্সপেকশন অফিসার</option>
+                                <option <% if(user.role == 'প্রডাকশন অফিসার') {%>selected <% } %>
+                                    value="প্রডাকশন অফিসার">প্রডাকশন অফিসার</option>
+                                <option <% if(user.role == 'ফিল্ড অফিসার') {%>selected <% } %> value="ফিল্ড অফিসার">
                                     ফিল্ড অফিসার</option>
                             </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-control-label">অফিস আইডি</label>
+                            <input type="text" name="office_id" class="form-control" value="<%=user.office_id%>">
                         </div>
                         <button class="btn btn-primary btn-block">হালনাগাদ করুন</button>
                     </form>
@@ -116,8 +121,14 @@
                     <button class="close" data-dismiss="modal"><span>&times;</span></button>
                     <form action="/officers/change-password/<%=user._id%>?role=<%=userRole%>" method="POST">
                         <div class="form-group">
-                            <label class="form-control-label">নতুন পাসওয়ার্ড দিন</label>
-                            <input type="password" name="password" class="form-control">
+                            <label for="password" class="form-control-label">নতুন পাসওয়ার্ড দিন</label>
+                            <input id="password" type="password" name="password" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="form-control-label">পাসওয়ার্ড নিশ্চিত করুন</label>
+                            <input id="confirmPassword" type="password" name="confirmPassword" class="form-control">
+                            <span id='message'></span>
                         </div>
                         <button id="button" class="btn btn-warning btn-block">Submit</button>
                     </form>
@@ -167,4 +178,17 @@
     </div>
 
     <%- include ../includes/footer-text.ejs %>
+
+    <script>
+        $('#confirmPassword').on('keyup', function () {
+            if ($(this).val() == $('#password').val()) {
+                $('#message').html('Matched').css('color', 'green');
+                $('#button').removeClass("d-none")
+            }
+            else {
+                $('#message').html('Not matched!').css('color', 'red');
+                $('#button').addClass("d-none");
+            }
+        });
+    </script>
     <%- include ../includes/footer.ejs %>

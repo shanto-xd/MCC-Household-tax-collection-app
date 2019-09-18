@@ -1,6 +1,7 @@
 <%- include ../includes/header.ejs %>
-    <title>তথ্য সংগ্রহ ফরম পাতা-১</title>
-</head> 
+<title>তথ্য সংগ্রহ ফরম পাতা-১</title>
+</head>
+
 <body>
     <%- include('../includes/nav.ejs', {userRole: userRole}) %>
     <div class="container">
@@ -12,11 +13,11 @@
         <div id="formHeader" class="text-center mb-5">
             <h4 class="bg-dark text-white p-1 font-weight-bold d-inline">তথ্য বিবরণী ফরম</h4>
         </div>
-        
+
         <form action="/form" method="POST">
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label>মালিকের নাম<span>*</span></label>
+                    <label>মালিকের নাম/দখলদারের নাম<span>*</span></label>
                     <input name="ownerName" type="text" class="form-control">
                 </div>
                 <div class="form-group col-md-4">
@@ -30,51 +31,71 @@
             </div>
 
 
-            <div class="form-row"> 
+            <div class="form-row">
                 <div class="form-group col-md-3">
-                    <label>পোস্ট কোড<span>*</span></label> 
-                    <input name="postcode" type="text" class="form-control">
-                </div>  
+                    <label>পোস্ট কোড</label>
+                    <select name="postcode" id="" class="form-control">
+                        <option selected disabled>বাছাই করুন...</option>
+                        <option value="mymensingh sadar-2200">ময়মনসিংহ সদর - ২২০০</option>
+                        <option value="kawatkhali-2201">কাওয়াটখালি - ২২০১</option>
+                        <option value="bau-2202">বাংলাদেশ কৃষি বিশ্ববিদ্যালয় - ২২০২</option>
+                        <option value="shambuganj-2203">শম্ভুগঞ্জ - ২২০৩</option>
+                        <option value="biddyaganj-2204">বিদ্যাগঞ্জ - ২২০৪</option>
+                        <option value="pearpur-2205">পিয়ারপুর - ২২০৫</option>
+                    </select>
+                </div>
 
                 <div class="form-group col-md-2">
                     <label>ওয়ার্ড নং<span>*</span></label>
-                    <input name="ward" placeholder="ইংরেজিতে লিখুন" type="number" class="form-control">
+                    <select name="ward" class="form-control">
+                        <option selected disabled>বাছাই করুন...</option>
+                        <%for(let i = 1; i < 34; i++) { %>
+                        <option value="<%=i%>"><%=i%></option>
+                        <%}%>
+                    </select>
                 </div>
- 
-                 <div class="form-group col-md-2">
+
+                <div class="form-group col-md-2">
                     <label>বয়স<span>*</span></label>
-                    <input name="age"  type="text" class="form-control">
-                </div> 
-               
-                 <div class="form-group col-md-2">
-                    <label>পেশা<span>*</span></label>
-                    <input name="occupation" type="text" class="form-control">
+                    <input name="age" type="text" class="form-control">
                 </div>
- 
-                 <div class="form-group col-md-3">
+
+                <div class="form-group col-md-2">
+                    <label>পেশা<span>*</span></label>
+                    <select name="occupation" id="" class="form-control">
+                        <option selected disabled>বাছাই করুন...</option>
+                        <option value="চাকরিজীবি">চাকরিজীবি</option>
+                        <option value="ব্যবসা">ব্যবসা</option>
+                        <option value="অবসরপ্রাপ্ত">অবসরপ্রাপ্ত</option>
+                        <option value="শিক্ষার্থী">শিক্ষার্থী</option>
+                        <option value="অন্যান্য">অন্যান্য</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-3">
                     <label>রাস্তা/মহল্লার নাম<span>*</span></label>
                     <input name="road" type="text" class="form-control">
                 </div>
             </div>
 
-             <div class="form-row"> 
+            <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label>হোল্ডিং নং<span>*</span></label> 
-                    <input name="holding" type="text" placeholder="ইংরেজিতে লিখুন" class="form-control">  
-                </div> 
- 
-                 <div class="form-group col-md-4"> 
+                    <label>হোল্ডিং নং<span>*</span></label>
+                    <input name="holding" type="text" placeholder="ইংরেজিতে লিখুন" class="form-control">
+                </div>
+
+                <div class="form-group col-md-4">
                     <label>থানা<span>*</span></label>
-                    <input name="thana" type="text" class="form-control">
-                </div> 
-               
+                    <input readonly name="thana" type="text" class="form-control" value="কোতোয়ালি">
+                </div>
+
                 <div class="form-group col-md-3 ml-1 d-flex">
                     <label class="align-self-end"> মুক্তিযোদ্ধা*
                         <span>
                             <input type="radio" name="freedomFighter" value="হ্যাঁ"> হ্যাঁ
                             <input type="radio" name="freedomFighter" value="না"> না
                         </span>
-                        
+
                     </label>
                 </div>
             </div>
@@ -85,23 +106,23 @@
                     <input name="mobile" class="form-control" type="text">
                 </div>
 
-                 <div class="form-grop col-md-6">
+                <div class="form-grop col-md-6">
                     <label>ভোটার আইডি/জন্মনিবন্ধন/পাসপোর্ট নাম্বার<span>*</span></label>
                     <input name="id" class="form-control" type="text">
                 </div>
             </div>
-           
-           
+
+
 
             <div class="form-row mt-2">
                 <div class="form-group col-md-4">
                     <label>হোল্ডিং এর ধরন<span>*</span></label>
-                     <select class="form-control" name="holdingType">
+                    <select class="form-control" name="holdingType">
                         <option selected disabled>বাছাই করুন...</option>
                         <option value="আবাসিক">আবাসিক</option>
-                        <option value="বাণিজ্যিক">বাণিজ্যিক</option>  
+                        <option value="বাণিজ্যিক">বাণিজ্যিক</option>
                         <option value="দোকান">দোকান</option>
-                        <option value="শিল্প প্রতিষ্ঠান">শিল্প প্রতিষ্ঠান</option> 
+                        <option value="শিল্প প্রতিষ্ঠান">শিল্প প্রতিষ্ঠান</option>
                         <option value="উপাসানলয়">উপাসানলয়</option>
                         <option value="সরকারি প্রতিষ্ঠান">সরকারি প্রতিষ্ঠান</option>
                         <option value="হাসপাতাল">হাসপাতাল</option>
@@ -109,43 +130,43 @@
                         <option value="সাংস্কৃতিক সংগঠন">সাংস্কৃতিক সংগঠন</option>
                         <option value="এনজিও">এনজিও</option>
                         <option value="অন্যান্য">অন্যান্য</option>
-                    </select> 
+                    </select>
                 </div>
 
                 <div class="form-group col-md-4">
-                    <label>হোল্ডিং এর নাম<span>*</span></label>
+                    <label>হোল্ডিং/বাড়ির নাম</label>
                     <input type="text" name="holdingName" class="form-control">
                 </div>
 
                 <div class="form-group col-md-4">
-                    <label>হোল্ডিং এর কাঠামো<span>*</span></label> 
-                    <select class="form-control" name="holdingStructure"> 
+                    <label>হোল্ডিং এর কাঠামো<span>*</span></label>
+                    <select class="form-control" name="holdingStructure">
                         <option selected disabled>বাছাই করুন...</option>
                         <option value="পাকা">পাকা</option>
-                        <option value="আধা পাকা">আধা পাকা/স্টিল স্ট্রাকচার</option>  
-                        <option value="কাঁচা">কাঁচা/অন্যান্য</option>  
-                    </select>    
-                </div> 
-            </div> 
+                        <option value="আধা পাকা">আধা পাকা/স্টিল স্ট্রাকচার</option>
+                        <option value="কাঁচা">কাঁচা/অন্যান্য</option>
+                    </select>
+                </div>
+            </div>
 
-            <div class="form-row"> 
-                <div class="form-group col-md-2"> 
-                    <label>দৈর্ঘ্য(ফুট)<span>*</span></label> 
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label>দৈর্ঘ্য(ফুট)</label>
                     <input name="length" type="number" placeholder="ইংরেজিতে লিখুন" min="0" class="form-control">
                 </div>
- 
-                 <div class="form-group col-md-2"> 
-                    <label>প্রস্থ(ফুট)<span>*</span></label> 
+
+                <div class="form-group col-md-2">
+                    <label>প্রস্থ(ফুট)</label>
                     <input name="wide" type="number" placeholder="ইংরেজিতে লিখুন" min="0" class="form-control">
                 </div>
- 
-                <div class="form-group col-md-2"> 
-                    <label>আয়তন(বর্গফুট)<span>*</span></label> 
+
+                <div class="form-group col-md-2">
+                    <label>আয়তন(বর্গফুট)</label>
                     <input name="volume" type="number" min="0" class="form-control">
                 </div>
 
-                 <div class="form-group col-md-3 d-flex">
-                    <label class="align-self-end">মালিকানা* 
+                <div class="form-group col-md-3 d-flex">
+                    <label class="align-self-end">মালিকানা*
                         <span>
                             <input type="radio" name="ownership" value="নিজস্ব"> নিজস্ব
                             <input type="radio" name="ownership" value="ভাড়া"> ভাড়া
@@ -153,8 +174,8 @@
                     </label>
                 </div>
 
-                <div class="form-group col-md-3"> 
-                    <label>ভাড়া<span>*</span></label>  
+                <div class="form-group col-md-3">
+                    <label>ভাড়া<span>*</span></label>
                     <input name="rent" type="text" class="form-control">
                 </div>
 
@@ -164,35 +185,35 @@
             <p class="py-2">পরিবারের সদস্য সংখ্যা<span class="text-danger">*</span></p>
             <hr>
 
-            <div class="form-row"> 
+            <div class="form-row">
                 <div class="form-group col-md-3">
-                    <label>পুরুষ<span>*</span></label> 
-                    <input name="maleMember" type="text" class="form-control">  
-                </div> 
+                    <label>পুরুষ<span>*</span></label>
+                    <input name="maleMember" type="text" class="form-control">
+                </div>
 
                 <div class="form-group col-md-3">
-                    <label>মহিলা<span>*</span></label> 
+                    <label>মহিলা<span>*</span></label>
                     <input name="femaleMember" type="text" class="form-control">
                 </div>
-                
+
                 <div class="form-group col-md-3">
-                    <label>মোট<span>*</span></label> 
+                    <label>মোট<span>*</span></label>
                     <input name="totalMember" type="text" class="form-control">
                 </div>
 
-                <div class="form-group col-md-3"> 
-                    <label>বার্ষিক আয়<span>*</span></label>
+                <div class="form-group col-md-3">
+                    <label>বার্ষিক আয়</label>
                     <input name="yearlyIncome" type="text" class="form-control">
-                </div> 
+                </div>
             </div>
 
             <p class="py-2">সেবার ধরন<span class="text-danger">*</span></p>
-            <hr> 
+            <hr>
 
-            <div class="form-row"> 
+            <div class="form-row">
 
                 <div class="form-group col-md-4 d-flex">
-                    <label class="align-self-end"> রাস্তা* 
+                    <label class="align-self-end"> রাস্তা*
                         <span>
                             <input type="radio" name="roadExist" value="yes"> আছে
                             <input type="radio" name="roadExist" value="no"> নেই
@@ -200,57 +221,58 @@
                     </label>
                 </div>
 
-                 <div class="form-group col-md-4">
-                    <label>রাস্তার ধরন<span>*</span></label> 
+                <div class="form-group col-md-4">
+                    <label>রাস্তার ধরন</label>
                     <select class="form-control" name="roadType">
                         <option selected disabled>বাছাই করুন...</option>
                         <option value="raw">কাঁচা</option>
-                        <option value="hbb">এইচ বি বি </option>  
-                        <option value="flat">ফ্ল্যাট সোলিং</option>  
+                        <option value="hbb">এইচ বি বি </option>
+                        <option value="flat">ফ্ল্যাট সোলিং</option>
                         <option value="rcc">আর সি সি</option>
-                        <option value="carpet">কার্পেটিং</option>  
-                        <option value="cc">সি সি</option>  
-                        <option value="others">অন্যান্য</option>  
-                    </select>  
+                        <option value="carpet">কার্পেটিং</option>
+                        <option value="cc">সি সি</option>
+                        <option value="others">অন্যান্য</option>
+                    </select>
                 </div>
 
                 <div class="form-group col-md-4">
-                    <label>স্যানিটেশন ব্যবস্থা<span>*</span></label> 
+                    <label>স্যানিটেশন ব্যবস্থা<span>*</span></label>
                     <select class="form-control" name="sanitationStatus">
                         <option selected disabled>বাছাই করুন...</option>
+                        <option value="পাকা">পাকা</option>
+                        <option value="আধা পাকা">আধা পাকা</option>
                         <option value="কাঁচা">কাঁচা</option>
-                        <option value="পাকা">পাকা</option>  
-                    </select>  
+                    </select>
                 </div>
             </div>
 
-             <div class="form-row"> 
+            <div class="form-row">
                 <div class="form-group col-md-4 d-flex">
-                    <label class="align-self-end"> পানির সরবরাহ* 
+                    <label class="align-self-end"> গ্যাস সংযোগ*
                         <span>
-                            <input type="radio" name="waterSource" value="yes"> হ্যাঁ
-                            <input type="radio" name="waterSource" value="no"> না
+                            <input type="radio" name="gasConnection" value="আছে"> আছে
+                            <input type="radio" name="gasConnection" value="নেই"> নেই
                         </span>
+                
                     </label>
                 </div>
 
                 <div class="form-group col-md-4 d-flex">
-                    <label class="align-self-end"> সড়ক বাতি* 
+                    <label class="align-self-end"> সড়ক বাতি*
                         <span>
                             <input type="radio" name="streetlight" value="yes"> হ্যাঁ
                             <input type="radio" name="streetlight" value="no"> না
                         </span>
-                        
+
                     </label>
                 </div>
- 
+
                 <div class="form-group col-md-4 d-flex">
-                    <label class="align-self-end"> গ্যাস সংযোগ* 
+                    <label class="align-self-end"> পানির সরবরাহ*
                         <span>
-                            <input type="radio" name="gasConnection" value="আছে"> আছে 
-                            <input type="radio" name="gasConnection" value="নেই"> নেই
+                            <input type="radio" name="waterSource" value="yes"> হ্যাঁ
+                            <input type="radio" name="waterSource" value="no"> না
                         </span>
-                        
                     </label>
                 </div>
             </div>
@@ -258,20 +280,20 @@
             <button type="submit" class="btn btn-primary btn-block">পরবর্তী পৃষ্ঠায় যান</button>
         </form>
     </div>
-<%- include ../includes/footer-text.ejs %>
+    <%- include ../includes/footer-text.ejs %>
 
-<script>
-    var length = 0;
-    var wide = 0;
-    $("input[name='length']").on('keyup', function() {
-        length = parseFloat($(this).val());
-        $("input[name='volume']").val(wide * length);
-    });
+                        <script>
+                            var length = 0;
+                            var wide = 0;
+                            $("input[name='length']").on('keyup', function () {
+                                length = parseFloat($(this).val());
+                                $("input[name='volume']").val(wide * length);
+                            });
 
-     $("input[name='wide']").on('keyup', function() {
-        wide = parseFloat($(this).val());
-       $("input[name='volume']").val(wide * length);
-    });
-</script>
+                            $("input[name='wide']").on('keyup', function () {
+                                wide = parseFloat($(this).val());
+                                $("input[name='volume']").val(wide * length);
+                            });
+                        </script>
 
-<%- include ../includes/footer.ejs %>
+                        <%- include ../includes/footer.ejs %>

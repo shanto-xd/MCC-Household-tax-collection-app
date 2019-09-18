@@ -13,7 +13,7 @@ const mobile = []
 const orderStatus = ['In progress...', 'Delivered', 'Canceled']
 const ward = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 100; i++) {
     let temp = uniqueRandom(11111, 100000000000)
     mobile.push(temp());
 }
@@ -30,7 +30,7 @@ const paid = ['হ্যাঁ', 'না', 'বকেয়া']
 const plate = ['৬ * ৯ ইঞ্চি', '৮ * ১২ ইঞ্চি']
 async function seed() {
     // const orders = await Order.find()
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 10; i++) {
         const random1 = uniqueRandom(0, 9);
         const random2 = uniqueRandom(0, 2);
         const random3 = uniqueRandom(200, 500)
@@ -39,7 +39,7 @@ async function seed() {
         const random = uniqueRandom(1, 100000000000);
 
         try {
-            const survey = await new Survey({
+            const survey = new Survey({
                 assessment_id: random(),
                 ownerName: ownerName[random1()],
                 fatherName: ownerName[random1() + 2],
@@ -73,12 +73,14 @@ async function seed() {
                 roadExist: paid[random2()],
                 roadType: roadType[random1()],
                 streetlight: paid[random2()],
-                orderPaid: paid[random2()],
+                orderPaid: 'Paid',
                 orderStatus: 'In progress',
-                plateSize: '৮ * ১২ ইঞ্চি',
+                plateSize: '৬ * ৯ ইঞ্চি',
+                invoice: '',
+                imageUrl: 'profile.png',
                 created: new Date().toDateString(),
                 updated: new Date().toDateString(),
-                conductedBy: '5d71f9c950d8721194673761'
+                conductedBy: '5d7b35ed70cdba0ce4e522af'
             })
 
             await survey.save()

@@ -150,6 +150,7 @@ const surveySchema = new Schema({
     orderStatus: {
         type: String,
     },
+    invoice: String,
     created: Date,
     updated: Date,
     conductedBy: {

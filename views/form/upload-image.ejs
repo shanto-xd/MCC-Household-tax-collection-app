@@ -1,7 +1,9 @@
 <%- include ../includes/header.ejs %>
 <title>তথ্য সংগ্রহ ফরম পাতা-2</title>
-</head> 
+</head>
+
 <body>
+    <%- include('../includes/nav.ejs', {userRole: userRole}) %>
     <div class="container">
         <div class="text-center mt-3">
             <h1 class=" font-weight-bold">ময়মনসিংহ সিটি কর্পোরেশন</h1>
@@ -18,13 +20,14 @@
                 <input type="file" name="image" accept="image/*"><br>
             </div>
 
-            <h5 class="text-center text-primary">১৯৮৬ সনের মিউনিসিপ্যাল(সিটি) কর্পোরেশন ট্যাক্সেশন আইন-২০(৩)(এ)(বি) ধারা মোতাবেক মূল্যায়ন শিট</h5>
-            
+            <h5 class="text-center text-primary">১৯৮৬ সনের মিউনিসিপ্যাল(সিটি) কর্পোরেশন ট্যাক্সেশন আইন-২০(৩)(এ)(বি) ধারা
+                মোতাবেক মূল্যায়ন শিট</h5>
+
             <p class="lead text-center">সিটি কর্পোরেশনের আদর্শ কর তফসিল-২০১৬ মোতাবেক বার্ষিক মূল্যায়নের......হারে</p>
             <hr>
             <div class="form-row my-2">
                 <div class="form-group col-md-4">
-                    <label>হোল্ডিং এর কাঠামো<span>*</span></label> 
+                    <label>হোল্ডিং এর কাঠামো<span>*</span></label>
                     <input class="form-control" type="text" readonly value="<%=holdingStructure%>">
                     <!-- <select class="form-control" name="holdingStructure"> 
                         <option selected disabled>বাছাই করুন...</option>
@@ -41,7 +44,7 @@
 
                 <div class="form-group col-md-4">
                     <label>আয়তন(বর্গফুট)<span>*</span></label>
-                    <input class="form-control" type="number" readonly value="<%=volume%>" >
+                    <input class="form-control" type="number" readonly value="<%=volume%>">
                 </div>
             </div>
 
@@ -51,43 +54,46 @@
 
             <div class="form-row my-2">
                 <div class="form-group col-md-4">
-                    <label>প্রতি বর্গফুট মাসিক ভাড়া<span>*</span></label>  
-                    <input class="form-control" type="number" min="1" name="monthlyRentPerSF" placeholder="ইংরেজিতে লিখুন" >
+                    <label>প্রতি বর্গফুট মাসিক ভাড়া<span>*</span></label>
+                    <input class="form-control" type="number" min="1" name="monthlyRentPerSF"
+                        placeholder="ইংরেজিতে লিখুন">
                 </div>
-                    <div class="form-group col-md-4">
-                        <label>বার্ষিক মূল্যায়ন<span>*</span></label>
-                        <input type="text" class="form-control" name="yearlyEvalution">
-                        <small class="text-danger d-none rental">**রক্ষণাবেক্ষণ বাবদ ২ মাসের ভাড়া বাদে ১০ মাসের ভাড়া হিসেবে</small>
-                        <small class="text-danger d-none owned">**১০ মাসের ভাড়া থেকে ৪০% রেয়াতের পর</small>
-                    </div>
+                <div class="form-group col-md-4">
+                    <label>বার্ষিক মূল্যায়ন<span>*</span></label>
+                    <input type="text" class="form-control" name="yearlyEvalution">
+                    <small class="text-danger d-none rental">**রক্ষণাবেক্ষণ বাবদ ২ মাসের ভাড়া বাদে ১০ মাসের ভাড়া
+                        হিসেবে</small>
+                    <small class="text-danger d-none owned">**১০ মাসের ভাড়া থেকে ৪০% রেয়াতের পর</small>
+                </div>
 
-                    <div class="form-group col-md-4">
-                        <label>বার্ষিক কর<span>*</span></label>
-                        <input class="form-control" name="yearlyTax">
-                        <small id="rental" class="text-danger d-none rental">**রক্ষণাবেক্ষণ বাবদ ২ মাসের ভাড়া বাদে ১০ মাসের ভাড়া হিসেবে</small>
-                        <small class="text-danger d-none owned">**১০ মাসের ভাড়া থেকে ৪০% রেয়াতের পর</small>
-                    </div> 
+                <div class="form-group col-md-4">
+                    <label>বার্ষিক কর<span>*</span></label>
+                    <input class="form-control" name="yearlyTax">
+                    <small id="rental" class="text-danger d-none rental">**রক্ষণাবেক্ষণ বাবদ ২ মাসের ভাড়া বাদে ১০ মাসের
+                        ভাড়া হিসেবে</small>
+                    <small class="text-danger d-none owned">**১০ মাসের ভাড়া থেকে ৪০% রেয়াতের পর</small>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary btn-block">তথ্য সাবমিট করুন</button>
         </form>
     </div>
-        
-<%- include ../includes/footer-text.ejs %>
 
-<script type="text/javascript">
-    $(document).ready(function(){
-        $("input[name='ownership']").on('change', function() {
-            if($(this).val() == "নিজস্ব") {
-                $(".owned").removeClass('d-none')
-                $(".rental").addClass('d-none');
-            }
+    <%- include ../includes/footer-text.ejs %>
 
-            if($(this).val() == "ভাড়া") {
-                $(".owned").addClass('d-none');
-                $(".rental").removeClass('d-none');
-            }
-        })
-    });
-</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("input[name='ownership']").on('change', function () {
+                if ($(this).val() == "নিজস্ব") {
+                    $(".owned").removeClass('d-none')
+                    $(".rental").addClass('d-none');
+                }
 
-<%- include ../includes/footer.ejs %>
+                if ($(this).val() == "ভাড়া") {
+                    $(".owned").addClass('d-none');
+                    $(".rental").removeClass('d-none');
+                }
+            })
+        });
+    </script>
+
+    <%- include ../includes/footer.ejs %>

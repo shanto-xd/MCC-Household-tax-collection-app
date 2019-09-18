@@ -8,6 +8,7 @@ const shortUniqueId = require('short-unique-id');
 const fs = require('fs');
 const uniqueRandom = require('unique-random');
 const csv = require('csv-express')
+// const path = require('path')
 
 const uid = new shortUniqueId();
 const PER_PAGE = 20
@@ -46,7 +47,9 @@ exports.getForm = (req, res, next) => {
 exports.postForm = async (req, res, next) => {
 	// saves all data to db then
 	try {
-		const survey = await new Survey({
+		const random = uniqueRandom(10000, 10000000)
+		const survey = new Survey({
+			assessment_id: random(),
 			ownerName: req.body.ownerName,
 			fatherName: req.body.fatherName,
 			motherName: req.body.motherName,
@@ -79,7 +82,8 @@ exports.postForm = async (req, res, next) => {
 			roadType: req.body.roadType,
 			streetlight: req.body.streetlight,
 			created: new Date().toDateString(),
-			conductedBy: req.user._id
+			updated: new Date().toDateString(),
+			conductedBy: req.user._id,
 		});
 		const result = await survey.save();
 		// console.log(result);
@@ -100,6 +104,7 @@ exports.getUploadImage = async (req, res, next) => {
 			holdingStructure: survey.holdingStructure,
 			ownership: survey.ownership,
 			volume: survey.volume,
+			userRole: req.user.role,
 		});
 	} catch (err) {
 		const error = new Error(err);
@@ -109,23 +114,20 @@ exports.getUploadImage = async (req, res, next) => {
 }
 
 exports.postUploadImage = async (req, res, next) => {
-	// saves image and calculate tax then
-	// let time = new Date();
-
 	try {
-		let imageUrl = uid.randomUUID(13) + req.file.originalname
-		let filename = 'images/' + imageUrl;
-		const random = uniqueRandom(1, 1000000);
-		let assessment_id = random();
-		// console.log(assessment_id);
-		const resizedImage = await sharp(req.file.path).rotate().resize(800, 800).toFile(filename);
-		await fs.unlink(req.file.path, err => {
-			if (err) next;
-		})
+		let imageUrl
+		if (req.file) {
+			imageUrl = uid.randomUUID(13) + req.file.originalname
+			let filename = 'images/' + imageUrl;
+			await sharp(req.file.path).rotate().resize(800, 800).toFile(filename);
+			fs.unlink(req.file.path, err => {
+				if (err) next(err);
+			})
+		} else {
+			imageUrl = 'profile.png'
+		}
 
 		const survey = await Survey.findById(req.query.sid);
-
-		survey.assessment_id = assessment_id;
 		survey.imageUrl = imageUrl;
 		survey.monthlyRentPerSF = req.body.monthlyRentPerSF;
 		survey.yearlyTax = req.body.yearlyTax;
@@ -146,7 +148,11 @@ exports.postUploadImage = async (req, res, next) => {
 exports.getConfirmOrder = async (req, res, next) => {
 	try {
 		const survey = await Survey.findById(req.query.sid);
-		res.render('form/confirm-order', { assessment_id: survey.assessment_id, id: survey._id });
+		res.render('form/confirm-order', {
+			assessment_id: survey.assessment_id,
+			id: survey._id,
+			userRole: req.user.role,
+		});
 	} catch (err) {
 		const error = new Error(err);
 		error.httpStatusCode = 500;
@@ -157,15 +163,21 @@ exports.getConfirmOrder = async (req, res, next) => {
 exports.postConfirmOrder = async (req, res, next) => {
 	try {
 		const survey = await Survey.findById(req.query.sid);
+		const invoiceExist = fs.exists(`data\\invoices\\${survey.invoice}`, (exists) => { return exists })
+
+		if (invoiceExist) {
+			fs.unlink(`data\\invoices\\${survey.invoice}`, err => {
+				if (err) next(err)
+			})
+		}
 		survey.orderPaid = 'Paid';
 		survey.plateSize = req.body.plateSize;
 		survey.orderStatus = 'In progress';
-
+		survey.invoice = survey.holdingName + '-' + survey.orderBill + '.pdf';
 		await survey.save()
 
 		//create invoice
-		const billNo = uid.randomUUID(6);
-		await invoice.createInvoice(survey, billNo, res);
+		await invoice.createInvoice(survey, res);
 	} catch (err) {
 		const error = new Error(err);
 		error.httpStatusCode = 500;
@@ -179,8 +191,19 @@ exports.getOrderPlate = (req, res, next) => {
 
 exports.postOrderPlate = async (req, res, next) => {
 	try {
-		const survey = await Survey.findOne({ assessment_id: req.body.assessment_id })
-		res.redirect('/confirm-order?sid=' + survey._id);
+		let filter = req.body.filter
+		const key = req.body.key
+		const searchObj = {
+			orderStatus: 'In progress',
+			conductedBy: req.user._id,
+		}
+		searchObj[filter] = key
+
+		const surveys = await Survey.find(searchObj)
+		res.render('field-officer/show-orders', {
+			userRole: req.user.role,
+			surveys: surveys
+		})
 	} catch (err) {
 		const error = new Error(err);
 		error.httpStatusCode = 500;
@@ -260,7 +283,7 @@ exports.postDailyReport = async (req, res, next) => {
 			}
 		}
 
-		console.log(searchObj)
+		// console.log(searchObj)
 
 		const count = await Survey.find(searchObj).countDocuments()
 		const surveys = await Survey.find(searchObj).skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding')
@@ -300,7 +323,7 @@ exports.getOrders = async (req, res, next) => {
 
 		const orderCount = await Survey.find(obj).countDocuments()
 		const surveys = await Survey.find(obj).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding').exec()
-		console.log(surveys.conductedBy)
+		// console.log(surveys.conductedBy)
 		res.render('form/show-orders', {
 			surveys: surveys,
 			userRole: req.query.role,
@@ -383,7 +406,7 @@ exports.postPlateDelivery = async (req, res, next) => {
 		}
 
 		await survey.save()
-		res.redirect('/orders?page=' + page + '&role=প্রডাকশন অফিসার')
+		res.redirect('back')
 	} catch (err) {
 		const error = new Error(err);
 		error.httpStatusCode = 500;
@@ -522,20 +545,21 @@ exports.postUpdateSurveyInfo = async (req, res, next) => {
 exports.getSurveyInfoByDate = async (req, res, next) => {
 	try {
 		var filter = req.query.filter || ''
-		var keys = req.query.keys || ''
 		var page = +req.query.page || 1
-		let obj = {}
-
-		if (filter != '' && keys != '') {
-			obj[filter] = keys
+		var keys = req.query.keys || ''
+		let time = keys.split(",")
+		const date = {
+			created: {
+				$gte: time[0],
+				$lte: time[1]
+			}
 		}
-
-		const surveys = await Survey.find(obj).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding').exec()
-		const count = await Survey.find(obj).countDocuments()
-		console.log(count)
+		const surveys = await Survey.find(date).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding').exec()
+		const count = await Survey.find(date).countDocuments()
+		// console.log(count)
 		res.render('inspection-officer/survey-info', {
 			surveys: surveys,
-			userRole: req.query.role,
+			userRole: req.user.role,
 			currentPage: page,
 			lastPage: Math.ceil(count / PER_PAGE),
 			filter: filter,
@@ -550,19 +574,31 @@ exports.getSurveyInfoByDate = async (req, res, next) => {
 
 exports.postSurveyInfoByDate = async (req, res, next) => {
 	try {
-		var date = new Date(req.body.date).toDateString()
+		var startDate = new Date(req.body.startDate)
+		let endDate
+		if (req.body.endDate) {
+			endDate = new Date(req.body.endDate)
+		} else {
+			endDate = startDate
+		}
+		const date = {
+			created: {
+				$gte: startDate.toDateString(),
+				$lte: endDate.toDateString(),
+			},
+		}
 		var page = +req.query.page || 1;
 
-		const surveys = await Survey.find({ created: date }).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding').exec()
-		const count = await Survey.find({ created: date }).countDocuments()
-		console.log(count)
+		const surveys = await Survey.find(date).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding').exec()
+		const count = await Survey.find(date).countDocuments()
+		// console.log(count)
 		res.render('inspection-officer/survey-info', {
 			surveys: surveys,
 			userRole: req.query.role,
 			currentPage: page,
 			lastPage: Math.ceil(count / PER_PAGE),
 			filter: 'created',
-			keys: date,
+			keys: [startDate.toDateString(), endDate.toDateString()],
 		})
 	} catch (err) {
 		const error = new Error(err)
@@ -718,40 +754,171 @@ exports.getReports = async (req, res, next) => {
 	}
 }
 
-exports.getReportsDetail = async (req, res, next) => {
-	try {
-		var filter = req.query.filter || ''
-		var keys = req.query.keys || ''
-		var page = req.query.page || 1
+// exports.getReportsDetail = async (req, res, next) => {
+// 	try {
+// 		var filter = req.query.filter || ''
+// 		var keys = req.query.keys || ''
+// 		var page = req.query.page || 1
 
-		let obj = {
-			conductedBy: req.params.uid,
+// 		let obj = {
+// 			conductedBy: req.params.uid,
+// 			created: new Date().toDateString(),
+// 		}
+// 		if (filter !== '' && keys !== '') {
+// 			keys = keys.split(',')
+// 			if (typeof filter !== 'string') {
+// 				for (let i = 0; i < filter.length; i++) {
+// 					obj[filter[i]] = keys[i];
+// 				}
+// 			} else {
+// 				obj[filter] = keys[0]
+// 			}
+// 		}
+
+// 		const surveys = await Survey.find(obj).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding')
+// 		const count = await Survey.find(obj).countDocuments()
+// 		res.render('inspection-officer/survey-info', {
+// 			surveys: surveys,
+// 			userRole: req.user.role,
+// 			currentPage: page,
+// 			lastPage: Math.ceil(count / PER_PAGE),
+// 			filter: filter,
+// 			keys: keys,
+// 		})
+// 	} catch (err) {
+// 		const error = new Error(err)
+// 		error.httpStatusCode = 500
+// 		return next(error)
+// 	}
+// }
+
+exports.getDeleteSurvey = async (req, res, next) => {
+	try {
+		const survey = await Survey.findById(req.params.sid)
+		const imageExist = fs.exists(`images\\${survey.imageUrl}`, exists => { return exists })
+		const invoiceExist = fs.exists(`data\\invoice\\${survey.invoice}`, exists => { return exists })
+
+		if (imageExist) {
+			fs.unlink(`images\\${survey.imageUrl}`, err => {
+				if (err) next(err)
+			})
+		}
+
+		if (invoiceExist) {
+			fs.unlink(`data\\invoice\\${survey.invoice}`, err => {
+				if (err) next(err)
+			})
+		}
+		await Survey.findByIdAndDelete(req.params.sid)
+		console.log('DELETED - admin->show-info')
+		res.redirect('/survey-info?role=' + req.user.role + '&page=' + req.query.page)
+	} catch (err) {
+		const error = new Error(err)
+		error.httpStatusCode = 500
+		return next(error)
+	}
+}
+
+exports.getDailyOrders = async (req, res, next) => {
+	try {
+		const page = +req.query.page || 1;
+		const filter = req.query.filter || '';
+		let keys = req.query.keys || '';
+
+		let searchObj = {
+			orderStatus: 'In progress',
 			created: new Date().toDateString(),
 		}
 		if (filter !== '' && keys !== '') {
 			keys = keys.split(',')
 			if (typeof filter !== 'string') {
 				for (let i = 0; i < filter.length; i++) {
-					obj[filter[i]] = keys[i];
+					searchObj[filter[i]] = keys[i];
 				}
 			} else {
-				obj[filter] = keys[0]
+				searchObj[filter] = keys[0]
 			}
 		}
 
-		const surveys = await Survey.find(obj).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding')
-		const count = await Survey.find(obj).countDocuments()
-		res.render('inspection-officer/survey-info', {
+		const orderCount = await Survey.find(searchObj).countDocuments()
+		const surveys = await Survey.find(searchObj)
+			.populate('conductedBy', 'name')
+			.skip((page - 1) * PER_PAGE)
+			.limit(PER_PAGE)
+			.sort('holding')
+		res.render('production-officer/daily-orders', {
 			surveys: surveys,
 			userRole: req.user.role,
 			currentPage: page,
-			lastPage: Math.ceil(count / PER_PAGE),
+			lastPage: Math.ceil(orderCount / PER_PAGE),
 			filter: filter,
 			keys: keys,
-		})
+		});
 	} catch (err) {
-		const error = new Error(err)
-		error.httpStatusCode = 500
-		return next(error)
+		const error = new Error(err);
+		error.httpStatusCode = 500;
+		return next(error);
+	}
+}
+
+exports.postDailyOrders = async (req, res, next) => {
+	try {
+		const filter = req.body.filter || '';
+		let keys = req.body.keys || ''
+		const page = +req.query.page || 1;
+
+		let searchObj = {
+			orderStatus: 'In progress',
+			created: new Date().toDateString(),
+		}
+
+		if (filter !== '' && keys !== '') {
+			keys = keys.split(',')
+			if (typeof filter !== 'string') {
+				for (let i = 0; i < filter.length; i++) {
+					searchObj[filter[i]] = keys[i];
+				}
+			} else {
+				searchObj[filter] = keys[0]
+			}
+		}
+
+		const orderCount = await Survey.find(searchObj).countDocuments()
+		const surveys = await Survey.find(searchObj)
+			.populate('conductedBy', 'name')
+			.skip((page - 1) * PER_PAGE)
+			.limit(PER_PAGE)
+			.sort('holding')
+		res.render('production-officer/daily-orders', {
+			surveys: surveys,
+			userRole: req.user.role,
+			currentPage: page,
+			lastPage: Math.ceil(orderCount / PER_PAGE),
+			filter: filter,
+			keys: keys,
+		});
+	} catch (err) {
+		const error = new Error(err);
+		error.httpStatusCode = 500;
+		return next(error);
+	}
+}
+
+exports.getDownloadInvoice = async (req, res, next) => {
+	try {
+		const path = require('path')
+		const survey = await Survey.findById(req.params.sid)
+		const invoicePath = path.join('data', 'invoices', survey.invoice)
+		fs.readFile(invoicePath, (err, data) => {
+			if (err) return next(err)
+			res.set('Content-Type', 'application/pdf');
+			res.set('Content-Disposition', 'inline; filename="' + survey.invoice + '"');
+			res.send(data)
+		})
+
+	} catch (err) {
+		const error = new Error(err);
+		error.httpStatusCode = 500;
+		return next(error);
 	}
 }

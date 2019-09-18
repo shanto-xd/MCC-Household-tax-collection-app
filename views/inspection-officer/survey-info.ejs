@@ -7,7 +7,7 @@
 
 <body>
 	<%- include('../includes/nav.ejs', {userRole: userRole}) %>
-
+	<% include ../includes/alerts %>
 	<% if(surveys.length > 0) { %>
 
 	<div class="container my-5">
@@ -23,11 +23,9 @@
 						<option value="ward">ওয়ার্ড নং</option>
 						<option value="ownerName">মালিকের নাম</option>
 						<option value="holdingType">হোল্ডিং এর ধরন</option>
-						<option value="block">ব্লক</option>
 						<option value="road">রাস্তা/মহল্লা</option>
 						<option value="mobile">মোবাইল নং</option>
 						<option value="holdingName">হোল্ডিং এর নাম</option>
-						<option value="thana">থানা</option>
 					</select>
 				</div>
 				<div class="form-group col-md-5">
@@ -35,6 +33,7 @@
 					<input type="text" name="keys" class="form-control" placeholder="উদাহরন - 177/A,18,1234,A">
 					<small class="text-danger">**হোল্ডিং নং, ওয়ার্ড নং, এসেসমেন্ট আইডি, ব্লক নং ইংরেজিতে লিখুন</small>
 				</div>
+				<input type="text" hidden name="date" value="<%=keys%>">
 				<div class="col-md-1 my-auto">
 					<button class="btn btn-primary btn-block mb-1"><span class="fa fa-search"></span></button>
 				</div>
@@ -52,15 +51,14 @@
 							<th>বিল নং</th>
 							<th>মালিকের নাম</th>
 							<th>ওয়ার্ড</th>
-							<th>রাস্তা/মহল্লা</th>
-							<th>থানা</th>
 							<th>মোবাইল</th>
 							<th>বিল পরিশোধ</th>
 							<th>হোল্ডিং নং</th>
 							<th>অর্ডার</th>
 							<th>হালনাগাদের তারিখ</th>
 							<th>তথ্য সংগ্রহকারী</th>
-							<th>সার্ভে তথ্য হালনাগাদ</th>
+							<th>সার্ভে তথ্য</th>
+							<th>অর্ডার রশিদ</th>
 						</tr>
 					</thead>
 
@@ -75,8 +73,6 @@
 							<td><%= survey.orderBill%></td>
 							<td><%= survey.ownerName%></td>
 							<td><%= survey.ward %></td>
-							<td><%= survey.road %></td>
-							<td><%= survey.thana %></td>
 							<td><%= survey.mobile %></td>
 							<td><%= survey.orderPaid %></td>
 							<td class="text-success"><%= survey.holding %></td>
@@ -85,8 +81,17 @@
 							<td><%=survey.conductedBy.name%></td>
 							<td>
 								<a href="/survey-info/update/<%=survey._id%>?role=<%=userRole%>&page=<%=currentPage%>"
-									class="btn btn-primary btn-sm">আপডেট</a>
+									class="p-1">আপডেট</a>
+								<%if(userRole == 'এডমিন') { %>
+								<a href="/survey-info/delete/<%=survey._id%>?page=<%=currentPage%>"
+									class="p-1 text-danger">ডিলেট</a>
+								<%} %>
 							</td>
+							<%if(survey.invoice && userRole == 'এডমিন') {%>
+							<td><a href="/download/invoice/<%=survey._id%>">ডাউনলোড</a></td>
+							<%} else { %>
+							<td>...</td>
+							<%}%>
 						</tr>
 					</tbody>
 					<% }) %>

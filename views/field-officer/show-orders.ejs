@@ -1,0 +1,64 @@
+<%- include ../includes/header.ejs %>
+
+<title>অর্ডার | ফিল্ড অফিসার</title>
+</head>
+
+<body>
+
+    <%- include('../includes/nav.ejs', {userRole: userRole}) %>
+
+    <% if(surveys.length > 0) { %>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-sm" border="1" style="font-size: 13px !important">
+                    <thead>
+                        <tr>
+                            <th>এসেসমেন্ট আইডি</th>
+                            <th>বিল নং</th>
+                            <th>মালিকের নাম</th>
+                            <th>ওয়ার্ড</th>
+                            <th>মোবাইল</th>
+                            <th>হোল্ডিং এর নাম</th>
+                            <th>প্লেট সাইজ</th>
+                            <th>বিল পরিশোধ</th>
+                            <th>হোল্ডিং নং</th>
+                            <th>অর্ডার</th>
+                            <th>প্লেট অর্ডার</th>
+                        </tr>
+                    </thead>
+
+                    <% surveys.forEach(survey => {%>
+                    <tbody>
+                        <tr>
+                            <td><a title="বিস্তারিত তথ্য দেখতে ক্লিক করুন"
+                                    href="/show-info/<%=survey._id%>"><%= survey.assessment_id%></a></td>
+                            <td><%= survey.orderBill%></td>
+                            <td><%= survey.ownerName%></td>
+                            <td><%= survey.ward %></td>
+                            <td><%= survey.mobile %></td>
+                            <td><%= survey.holdingName %></td>
+                            <td class="text-danger"><%= survey.plateSize %></td>
+                            <td><%= survey.orderPaid %></td>
+                            <td class="text-success"><%= survey.holding %></td>
+                            <td><%=survey.orderStatus%></td>
+                            <td>
+                                <a class="btn btn-sm btn-success" href="/confirm-order?sid=<%=survey._id%>">হ্যাঁ</a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                    <% }) %>
+                </table>
+                <% } else { %>
+                <h1 class="text-center text-danger font-weight-bold">দুঃখিত, অনুসন্ধানকৃত তথ্য ডাটাবেজে পাওয়া যায় নি...
+                </h1>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+
+
+    <%- include ../includes/footer-text.ejs %>
+    <%- include ../includes/footer.ejs %>
