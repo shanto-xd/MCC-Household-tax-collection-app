@@ -33,6 +33,8 @@ router.post('/orders', formController.postOrders);
 
 router.get('/show-info/:sid', formController.getShowInfo);
 
+router.get('/order/plate-number/:sid', formController.getOrderPlateNumber)
+
 router.post('/orders/plate-delivery/:sid', formController.postPlateDelivery)
 
 router.get('/survey-info', formController.getSurveyInfo)
@@ -66,5 +68,9 @@ router.get('/po/daily-orders', formController.getDailyOrders)
 router.post('/po/daily-orders', formController.postDailyOrders)
 
 router.get('/download/invoice/:sid', formController.getDownloadInvoice)
+
+router.post('/update/image/:sid', formController.postUpdateImage)
+
+router.get('/download/image/:sid', formController.getDownloadImage)
 
 module.exports = router

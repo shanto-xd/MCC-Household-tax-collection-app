@@ -4,6 +4,7 @@
 
 <body>
     <%- include('../includes/nav.ejs', {userRole: userRole}) %>
+    <%- include ../includes/alerts.ejs %>
     <div class="container">
         <div class="text-center mt-3">
             <h1 class=" font-weight-bold">ময়মনসিংহ সিটি কর্পোরেশন</h1>
@@ -18,15 +19,15 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>মালিকের নাম/দখলদারের নাম<span>*</span></label>
-                    <input name="ownerName" type="text" class="form-control">
+                    <input name="ownerName" type="text" class="form-control" required>
                 </div>
                 <div class="form-group col-md-4">
                     <label>পিতা/স্বামীর নাম<span>*</span></label>
-                    <input name="fatherName" type="text" class="form-control">
+                    <input name="fatherName" type="text" class="form-control" required>
                 </div>
                 <div class="form-group col-md-4">
                     <label>মাতার নাম<span>*</span></label>
-                    <input name="motherName" type="text" class="form-control">
+                    <input name="motherName" type="text" class="form-control" required>
                 </div>
             </div>
 
@@ -47,7 +48,7 @@
 
                 <div class="form-group col-md-2">
                     <label>ওয়ার্ড নং<span>*</span></label>
-                    <select name="ward" class="form-control">
+                    <select name="ward" class="form-control" required>
                         <option selected disabled>বাছাই করুন...</option>
                         <%for(let i = 1; i < 34; i++) { %>
                         <option value="<%=i%>"><%=i%></option>
@@ -56,13 +57,13 @@
                 </div>
 
                 <div class="form-group col-md-2">
-                    <label>বয়স<span>*</span></label>
-                    <input name="age" type="text" class="form-control">
+                    <label>বয়স/জন্মসাল<span>*</span></label>
+                    <input placeholder="ইংরেজিতে লিখুন" name="age" type="number" class="form-control" required> 
                 </div>
 
                 <div class="form-group col-md-2">
                     <label>পেশা<span>*</span></label>
-                    <select name="occupation" id="" class="form-control">
+                    <select name="occupation" id="" class="form-control" required>
                         <option selected disabled>বাছাই করুন...</option>
                         <option value="চাকরিজীবি">চাকরিজীবি</option>
                         <option value="ব্যবসা">ব্যবসা</option>
@@ -74,14 +75,14 @@
 
                 <div class="form-group col-md-3">
                     <label>রাস্তা/মহল্লার নাম<span>*</span></label>
-                    <input name="road" type="text" class="form-control">
+                    <input name="road" type="text" class="form-control" required>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>হোল্ডিং নং<span>*</span></label>
-                    <input name="holding" type="text" placeholder="ইংরেজিতে লিখুন" class="form-control">
+                    <input name="holding" type="text" placeholder="ইংরেজিতে লিখুন" class="form-control" required>
                 </div>
 
                 <div class="form-group col-md-4">
@@ -103,12 +104,12 @@
             <div class="form-row">
                 <div class="form-grop col-md-6">
                     <label>মোবাইল<span>*</span></label>
-                    <input name="mobile" class="form-control" type="text">
+                    <input name="mobile" class="form-control" type="text" required>
                 </div>
 
                 <div class="form-grop col-md-6">
                     <label>ভোটার আইডি/জন্মনিবন্ধন/পাসপোর্ট নাম্বার<span>*</span></label>
-                    <input name="id" class="form-control" type="text">
+                    <input name="id" class="form-control" type="text" required>
                 </div>
             </div>
 
@@ -117,7 +118,7 @@
             <div class="form-row mt-2">
                 <div class="form-group col-md-4">
                     <label>হোল্ডিং এর ধরন<span>*</span></label>
-                    <select class="form-control" name="holdingType">
+                    <select class="form-control" name="holdingType" required>
                         <option selected disabled>বাছাই করুন...</option>
                         <option value="আবাসিক">আবাসিক</option>
                         <option value="বাণিজ্যিক">বাণিজ্যিক</option>
@@ -140,7 +141,7 @@
 
                 <div class="form-group col-md-4">
                     <label>হোল্ডিং এর কাঠামো<span>*</span></label>
-                    <select class="form-control" name="holdingStructure">
+                    <select class="form-control" name="holdingStructure" required>
                         <option selected disabled>বাছাই করুন...</option>
                         <option value="পাকা">পাকা</option>
                         <option value="আধা পাকা">আধা পাকা/স্টিল স্ট্রাকচার</option>
@@ -176,7 +177,7 @@
 
                 <div class="form-group col-md-3">
                     <label>ভাড়া<span>*</span></label>
-                    <input name="rent" type="text" class="form-control">
+                    <input name="rent" type="text" class="form-control" required>
                 </div>
 
             </div>
@@ -188,17 +189,17 @@
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label>পুরুষ<span>*</span></label>
-                    <input name="maleMember" type="text" class="form-control">
+                    <input name="maleMember" type="text" class="form-control" required>
                 </div>
 
                 <div class="form-group col-md-3">
                     <label>মহিলা<span>*</span></label>
-                    <input name="femaleMember" type="text" class="form-control">
+                    <input name="femaleMember" type="text" class="form-control" required>
                 </div>
 
                 <div class="form-group col-md-3">
                     <label>মোট<span>*</span></label>
-                    <input name="totalMember" type="text" class="form-control">
+                    <input name="totalMember" type="text" class="form-control" required>
                 </div>
 
                 <div class="form-group col-md-3">
@@ -213,7 +214,7 @@
             <div class="form-row">
 
                 <div class="form-group col-md-4 d-flex">
-                    <label class="align-self-end"> রাস্তা*
+                    <label class="align-self-end"> রাস্তা<span class="text-danger">*</span>
                         <span>
                             <input type="radio" name="roadExist" value="yes"> আছে
                             <input type="radio" name="roadExist" value="no"> নেই
@@ -223,7 +224,7 @@
 
                 <div class="form-group col-md-4">
                     <label>রাস্তার ধরন</label>
-                    <select class="form-control" name="roadType">
+                    <select class="form-control" name="roadType" >
                         <option selected disabled>বাছাই করুন...</option>
                         <option value="raw">কাঁচা</option>
                         <option value="hbb">এইচ বি বি </option>
@@ -237,7 +238,7 @@
 
                 <div class="form-group col-md-4">
                     <label>স্যানিটেশন ব্যবস্থা<span>*</span></label>
-                    <select class="form-control" name="sanitationStatus">
+                    <select class="form-control" name="sanitationStatus" required>
                         <option selected disabled>বাছাই করুন...</option>
                         <option value="পাকা">পাকা</option>
                         <option value="আধা পাকা">আধা পাকা</option>
@@ -248,7 +249,7 @@
 
             <div class="form-row">
                 <div class="form-group col-md-4 d-flex">
-                    <label class="align-self-end"> গ্যাস সংযোগ*
+                    <label class="align-self-end"> গ্যাস সংযোগ<span class="text-danger">*</span>
                         <span>
                             <input type="radio" name="gasConnection" value="আছে"> আছে
                             <input type="radio" name="gasConnection" value="নেই"> নেই
@@ -258,7 +259,7 @@
                 </div>
 
                 <div class="form-group col-md-4 d-flex">
-                    <label class="align-self-end"> সড়ক বাতি*
+                    <label class="align-self-end"> সড়ক বাতি<span class="text-danger">*</span>
                         <span>
                             <input type="radio" name="streetlight" value="yes"> হ্যাঁ
                             <input type="radio" name="streetlight" value="no"> না
@@ -268,7 +269,7 @@
                 </div>
 
                 <div class="form-group col-md-4 d-flex">
-                    <label class="align-self-end"> পানির সরবরাহ*
+                    <label class="align-self-end"> পানির সরবরাহ<span class="text-danger">*</span>
                         <span>
                             <input type="radio" name="waterSource" value="yes"> হ্যাঁ
                             <input type="radio" name="waterSource" value="no"> না

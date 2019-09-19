@@ -81,16 +81,15 @@
                 <td>
                     <div class="row">
                         <div class="col-sm-4 mx-auto">
-                            <form action="/orders/plate-delivery/<%=survey._id%>?delivery=true&page=<%=currentPage%>"
-                                method="POST">
-                                <input type="submit" value="Deliver">
-                            </form>
+                            <div class="col-sm-4 mx-auto">
+                                <a href="/order/plate-number/<%=survey._id%>?role=<%=userRole%>"
+                                    class="btn btn-sm btn-success m-1 p-1">Deliver</a>
+                            </div>
                         </div>
                         <div class="col-sm-8 mx-auto">
-                            <form class="form-inline"
-                                action="/orders/plate-delivery/<%=survey._id%>?delivery=false&page=<%=currentPage%>"
+                            <form class="form-inline" action="/orders/plate-delivery/<%=survey._id%>?delivery=false"
                                 method="POST">
-                                <input type="submit" value="Cancel Delivery">
+                                <input class="btn btn-sm btn-danger m-1 p-1" type="submit" value="Cancel Delivery">
                             </form>
                         </div>
                     </div>
@@ -104,6 +103,7 @@
     <% } else { %>
     <h1 class="text-center text-danger font-weight-bold">দুঃখিত, অনুসন্ধানকৃত তথ্য ডাটাবেজে পাওয়া যায় নি...</h1>
     <% } %>
+
 
 
 

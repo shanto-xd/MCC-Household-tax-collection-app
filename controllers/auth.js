@@ -68,8 +68,7 @@ exports.getResetPassword = (req, res, next) => {
 }
 
 exports.getSignup = async (req, res, next) => {
-    const uid = uniqueRandom(1111111, 9999999)
-    res.render('auth/signup', { office_id: uid(), userRole: req.query.role })
+    res.render('auth/signup', { userRole: req.query.role })
 }
 
 exports.postSignup = async (req, res, next) => {
@@ -85,7 +84,7 @@ exports.postSignup = async (req, res, next) => {
         })
 
         // console.log(req.query.role)
-        const user = await new User({
+        const user = new User({
             name: req.body.name,
             username: req.body.username,
             password: hashedPassword,
@@ -115,6 +114,7 @@ exports.postUpdateProfile = async (req, res, next) => {
             mobile: req.body.mobile,
             role: req.body.role,
             office_id: req.body.office_id,
+            remarks: req.body.remarks,
         }
         console.log(req.body.role)
         await User.findByIdAndUpdate(user_id, updateInfo)
@@ -161,8 +161,9 @@ exports.postChangePhoto = async (req, res, next) => {
         let imageUrl = uid.randomUUID(13) + req.file.originalname
         filename = 'images/' + imageUrl
         await sharp(req.file.path).rotate().resize(800, 800).toFile(filename)
-        await fs.unlink(req.file.path, err => {
-            if (err) next(err);
+        fs.unlink(req.file.path, err => {
+            if (err)
+                next(err);
         })
         user.image = imageUrl
         await user.save()

@@ -147,6 +147,7 @@ const surveySchema = new Schema({
     plateSize: {
         type: String,
     },
+    plateNumber: String,
     orderStatus: {
         type: String,
     },

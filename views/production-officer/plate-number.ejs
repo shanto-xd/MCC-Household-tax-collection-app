@@ -1,0 +1,28 @@
+<%- include ../includes/header.ejs %>
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.10/css/bootstrap-select.css" />
+<title>প্লেট অর্ডার | <%=userRole%></title>
+</head>
+
+<body>
+    <%- include('../includes/nav.ejs', {userRole: userRole}) %>
+    <% include ../includes/alerts %>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <form action="/orders/plate-delivery/<%=sid%>?delivery=true" method="POST">
+                    <label class="lead">প্লেট নাম্বার</label>
+                    <input type="text" name="plateNumber" class="form-control">
+                    <button class="btn btn-block btn-primary mt-3">অর্ডার কমপ্লিট করুন</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <%- include ../includes/footer-text.ejs %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.10/js/bootstrap-select.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $('select').selectpicker();
+    </script>
+    <%- include ../includes/footer.ejs %>

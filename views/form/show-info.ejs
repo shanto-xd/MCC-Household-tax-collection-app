@@ -5,6 +5,7 @@
 
 <body>
   <%- include('../includes/nav.ejs', {userRole: userRole}) %>
+  <% include ../includes/alerts.ejs %>
   <h1 class="font-weight bold text-center my-3">বিস্তারিত হোল্ডিং তথ্য</h1>
 
   <div class="container">
@@ -13,11 +14,12 @@
         <img src="/images/<%=survey.imageUrl%>" class="card-img-top rounded-circle">
 
         <% if(userRole != 'ফিল্ড অফিসার') { %>
-        <a href="/download/image/<%=survey.imageUrl%>" class="text-muted ml-5 my-1"><i class="fa fa-download"></i>
+        <a href="/download/image/<%=survey._id%>" class="text-muted ml-5 my-1"><i class="fa fa-download"></i>
           ডাউনলোড করুন</a>
         <% } %>
 
-        <a href="" class="text-muted ml-5 "><i class="fa fa-camera"></i> আপডেট করুন</a>
+        <a href="#" data-toggle="modal" data-target="#updateImage" class="text-muted ml-5 "><i class="fa fa-camera"></i>
+          আপডেট করুন</a>
 
         <ul class="list-group list-group-flush my-2">
           <li class="list-group-item">তথ্য হালনাগাদের তারিখ : <%=survey.created.toDateString()%></li>
@@ -28,6 +30,7 @@
         <ul class="list-group list-group-flush my-2">
           <li class="list-group-item">এসেসমেন্ট আইডি : <%=survey.assessment_id%></li>
           <li class="list-group-item text-danger">প্লেট সাইজ : <%=survey.plateSize%></li>
+          <li class="list-group-item">প্লেট নাম্বার : <%=survey.plateNumber%></li>
           <li class="list-group-item">অর্ডার বিল নং : <%=survey.orderBill%></li>
           <li class="list-group-item">মালিকের নাম : <%=survey.ownerName%></li>
           <li class="list-group-item">পিতা/স্বামীর নাম : <%=survey.fatherName%></li>
@@ -64,6 +67,22 @@
     </div>
   </div>
 
+  <div class="modal fade" id="updateImage">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button class="close" data-dismiss="modal"><span>&times;</span></button>
+          <form method="POST" action="/update/image/<%=survey._id%>" enctype="multipart/form-data">
+            <div class="form-group">
+              <label class="form-control-label">প্রোফাইল ছবি পরিবর্তন করুন</label>
+              <input type="file" name="image" class="form-control" accept="image/*">
+            </div>
+            <input type="submit" class="btn btn-block btn-primary m-2" value="হালনাগাদ করুন">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <%- include ../includes/footer-text.ejs %>
   <%- include ../includes/footer.ejs %> <i class="fas fa-construction"></i>

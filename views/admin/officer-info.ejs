@@ -56,7 +56,7 @@
                     <li class="list-group-item text-danger font-weight-bold">অফিস আইডি : <%=user.office_id%></li>
                     <li class="list-group-item">যোগদানের তারিখ : <%=user.createdAt.toDateString()%></li>
                     <li class="list-group-item">সর্বশেষ তথ্য হালনাগাদ : <%=user.updatedAt.toDateString()%></li>
-
+                    <li class="list-group-item">মূল্যায়ন - <%-user.remarks%></li>
                 </ul>
             </div>
         </div>
@@ -105,6 +105,12 @@
                         <div class="form-group">
                             <label class="form-control-label">অফিস আইডি</label>
                             <input type="text" name="office_id" class="form-control" value="<%=user.office_id%>">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-control-label">মূল্যায়ন</label>
+                            <textarea class="form-control" name="remarks" cols="30"
+                                rows="2"><%-user.remarks%></textarea>
                         </div>
                         <button class="btn btn-primary btn-block">হালনাগাদ করুন</button>
                     </form>

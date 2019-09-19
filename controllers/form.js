@@ -48,14 +48,21 @@ exports.postForm = async (req, res, next) => {
 	// saves all data to db then
 	try {
 		const random = uniqueRandom(10000, 10000000)
-		const survey = new Survey({
+		let age
+		if (req.body.age.length > 3) {
+			age = String(new Date().getFullYear() - req.body.age)
+		} else {
+			age = req.body.age
+		}
+
+		const surveyInfo = {
 			assessment_id: random(),
 			ownerName: req.body.ownerName,
 			fatherName: req.body.fatherName,
 			motherName: req.body.motherName,
 			postcode: req.body.postcode,
 			ward: req.body.ward,
-			age: req.body.age,
+			age: age,
 			occupation: req.body.occupation,
 			road: req.body.road,
 			holding: req.body.holding,
@@ -84,8 +91,16 @@ exports.postForm = async (req, res, next) => {
 			created: new Date().toDateString(),
 			updated: new Date().toDateString(),
 			conductedBy: req.user._id,
-		});
+		}
+		const isDuplicate = await Survey.find(surveyInfo)
+		console.log(isDuplicate)
+		if (isDuplicate.length > 0) {
+			req.flash('error', 'Duplicate entry. Please try again')
+			return res.redirect('back')
+		}
+		const survey = new Survey(surveyInfo);
 		const result = await survey.save();
+
 		// console.log(result);
 		res.redirect('/upload-image?sid=' + result._id);
 	} catch (err) {
@@ -390,15 +405,27 @@ exports.getShowInfo = async (req, res, next) => {
 	}
 }
 
+exports.getOrderPlateNumber = (req, res, next) => {
+	res.render('production-officer/plate-number', {
+		userRole: req.user.role,
+		sid: req.params.sid,
+	})
+}
+
 exports.postPlateDelivery = async (req, res, next) => {
 	const delivery = req.query.delivery
 	const sid = req.params.sid
-	const page = req.query.page
 
 	try {
+		const checkPlateNumber = await Survey.find({ plateNumber: req.body.plateNumber })
+		if (checkPlateNumber.length > 0) {
+			req.flash('error', 'Sorry, this plate number is already taken. Please try a new number')
+			return res.redirect('back')
+		}
 		const survey = await Survey.findById(sid)
 		if (delivery == 'true') {
 			survey.orderStatus = 'Delivered'
+			survey.plateNumber = req.body.plateNumber
 		} else if (delivery == 'false') {
 			survey.orderStatus = 'Canceled'
 			survey.orderPaid = ''
@@ -406,7 +433,7 @@ exports.postPlateDelivery = async (req, res, next) => {
 		}
 
 		await survey.save()
-		res.redirect('back')
+		res.redirect('/orders?role=' + req.user.role)
 	} catch (err) {
 		const error = new Error(err);
 		error.httpStatusCode = 500;
@@ -909,16 +936,57 @@ exports.getDownloadInvoice = async (req, res, next) => {
 		const path = require('path')
 		const survey = await Survey.findById(req.params.sid)
 		const invoicePath = path.join('data', 'invoices', survey.invoice)
-		fs.readFile(invoicePath, (err, data) => {
-			if (err) return next(err)
-			res.set('Content-Type', 'application/pdf');
-			res.set('Content-Disposition', 'inline; filename="' + survey.invoice + '"');
-			res.send(data)
-		})
+		res.download(invoicePath)
 
 	} catch (err) {
 		const error = new Error(err);
 		error.httpStatusCode = 500;
 		return next(error);
+	}
+}
+
+exports.postUpdateImage = async (req, res, next) => {
+	try {
+		if (!req.file) {
+			req.flash('error', 'No image selected. Please select an image')
+			return res.redirect('back')
+		}
+		const survey = await Survey.findById(req.params.sid)
+		let filename = 'images/' + survey.imageUrl
+
+		if (fs.existsSync(filename)) {
+			fs.unlink(filename, err => {
+				if (err) return next(err)
+			})
+		}
+
+		let imageUrl = uid.randomUUID(13) + req.file.originalname
+		filename = 'images/' + imageUrl
+		await sharp(req.file.path).rotate().resize(800, 800).toFile(filename)
+		fs.unlink(req.file.path, err => {
+			if (err)
+				next(err);
+		})
+		survey.imageUrl = imageUrl
+		survey.updated = new Date().toDateString()
+		await survey.save()
+		res.redirect('back')
+	} catch (err) {
+		const error = new Error(err)
+		error.httpStatusCode = 500
+		return next(error)
+	}
+}
+
+exports.getDownloadImage = async (req, res, next) => {
+	try {
+
+		const survey = await Survey.findById(req.params.sid)
+		filePath = 'images/' + survey.imageUrl
+		res.download(filePath)
+	} catch (err) {
+		const error = new Error(err)
+		error.httpStatusCode = 500
+		return next(error)
 	}
 }
