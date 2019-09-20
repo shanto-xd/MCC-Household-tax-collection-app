@@ -1,81 +1,93 @@
 <%- include ../includes/header.ejs %>
 
-    <title>ড্যাশবোর্ড | <%=userRole%></title> 
-</head> 
+<title>ড্যাশবোর্ড | <%=currentUser.role%></title>
+</head>
 
 <body>
     <%- include('../includes/nav.ejs', {userRole: userRole}) %>
     <%- include ../includes/dashboard.ejs %>
     <%- include ../includes/alerts.ejs %>
-        <div class="row mt-2">
-            <div class="col-md-6 mx-auto text-center ">
-                <div class="mt-4"> 
-                    <a href="/survey-info?role=<%=userRole%>" class="btn btn-block btn-outline-success p-3">
-                        এসেসমেন্ট তথ্য
-                    </a>
-                </div>
+    <div class="row mt-2">
+        <div class="col-md-6 mx-auto text-center ">
+            <div class="mt-4">
+                <a href="/survey-info?role=<%=userRole%>" class="btn btn-block btn-outline-success p-3">
+                    এসেসমেন্ট তথ্য
+                </a>
+            </div>
 
-                <div class="mt-4">
-                    <a href="#" class="btn btn-block btn-outline-success p-3" data-toggle="modal" data-target="#downloadData">
-                        এসেসমেন্ট তথ্য ডাউনলোড
-                    </a> 
-                </div> 
-                
-                <div class="mt-4">
-                    <a href="#" class="btn btn-block btn-outline-success p-3">দৈনিক প্রতিবেদন দেখুন</a> 
-                </div> 
-                
-                <div class="mt-4">
-                    <a href="#" class="btn btn-block btn-outline-success p-3" data-toggle="modal" data-target="#searchByDate">
-                        নির্দিষ্ট তারিখের প্রতিবেদন দেখুন
-                    </a>  
-                </div>
+            <div class="mt-4">
+                <a href="/form?role=<%=userRole%>" class="btn btn-block btn-outline-success p-3">
+                    এসেসমেন্ট এন্ট্রি
+                </a>
+            </div>
 
-                <div class="mt-4">
-                    <a href="/officers-panel?role=<%=userRole%>" class="btn btn-block btn-outline-success p-3">
-                        অফিসার্স প্যানেল  
-                    </a>  
-                </div>
-            </div> 
-        </div>
-    </div>
+            <div class="mt-4">
+                <a href="#" class="btn btn-block btn-outline-success p-3" data-toggle="modal"
+                    data-target="#downloadData">
+                    এসেসমেন্ট তথ্য ডাউনলোড
+                </a>
+            </div>
 
-<div class="modal fade" id="searchByDate">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <button class="close" data-dismiss="modal"><span>&times;</span></button>
-                <form action="/survey-info/date?role=<%=userRole%>" method="POST">
-                    <div class="form-group mx-auto">
-                        <label>নির্দিষ্ট তারিখ প্রবেশ করান<span>*</span></label>
-                        <input type="date" name="date" class="form-control mb-2">
-                        <button class="btn btn-block btn-success"><span class="fa fa-search"></span> খুঁজুন</button>
-                    </div>
-                </form>
+            <div class="mt-4">
+                <a href="/reports?role=<%=currentUser.role%>" class="btn btn-block btn-outline-success p-3">দৈনিক
+                    প্রতিবেদন দেখুন</a>
+            </div>
 
+            <div class="mt-4">
+                <a href="#" class="btn btn-block btn-outline-success p-3" data-toggle="modal"
+                    data-target="#searchByDate">
+                    নির্দিষ্ট তারিখের প্রতিবেদন দেখুন
+                </a>
+            </div>
+
+            <div class="mt-4">
+                <a href="/officers-panel?role=<%=userRole%>" class="btn btn-block btn-outline-success p-3">
+                    অফিসার্স প্যানেল
+                </a>
             </div>
         </div>
     </div>
-</div>
+    </div>
 
-<div class="modal fade" id="downloadData">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <button class="close" data-dismiss="modal"><span>&times;</span></button>
-                <form action="/survey-info/download?role=<%=userRole%>" method="POST">
-                    <div class="form-group mx-auto">
-                        <label>ওয়ার্ড নং<span>*</span></label>
-                        <input type="text" name="ward" class="form-control mb-2">
-                        <button class="btn btn-block btn-success"><span class="fa fa-download"></span> ডাউনলোড করুন</button>
-                    </div>
-                </form>
+    <div class="modal fade" id="searchByDate">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <form action="/survey-info/date?role=<%=userRole%>" method="POST">
+                        <div class="form-group mx-auto">
+                            <label>শুরুর তারিখ<span>*</span></label>
+                            <input type="date" name="startDate" class="form-control mb-2">
+                            <label>শেষের তারিখ<span>*</span></label>
+                            <input type="date" name="endDate" class="form-control mb-2">
+                            <button class="btn btn-block btn-success"><span class="fa fa-search"></span> খুঁজুন</button>
+                        </div>
+                    </form>
 
+                </div>
             </div>
         </div>
     </div>
-</div>
-    
-<%- include ../includes/search-modal.ejs %>
-<%- include ../includes/footer-text.ejs %>
-<%- include ../includes/footer.ejs %>
+
+    <div class="modal fade" id="downloadData">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <form action="/survey-info/download?role=<%=userRole%>" method="POST">
+                        <div class="form-group mx-auto">
+                            <label>ওয়ার্ড নং<span>*</span></label>
+                            <input type="text" name="ward" class="form-control mb-2">
+                            <button class="btn btn-block btn-success"><span class="fa fa-download"></span> ডাউনলোড
+                                করুন</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include ../includes/search-modal.ejs %>
+    <%- include ../includes/footer-text.ejs %>
+    <%- include ../includes/footer.ejs %>

@@ -9,11 +9,11 @@ exports.createInvoice = async (survey, res) => {
     try {
         const pdf = new PDFKit({ margin: 50 });
         const invoicePath = path.join('data', 'invoices', survey.invoice)
+        const fontPath = path.join('public', 'fonts', 'SolaimanLipi.ttf')
 
         res.set('Content-Type', 'application/pdf');
-        res.set('Content-Disposition', 'inline; filename="' + survey.invoice + '"', 'utf-8');
-
-        pdf.registerFont('SolaimanLipi', 'public\\fonts\\SolaimanLipi.ttf');
+        res.set('Content-Disposition', 'inline; filename="' + survey.invoice + '"', 'utf-8')
+        pdf.registerFont('SolaimanLipi', fontPath);
 
         pdf.pipe(fs.createWriteStream(invoicePath));
         await pdf.pipe(res);

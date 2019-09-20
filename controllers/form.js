@@ -8,7 +8,7 @@ const shortUniqueId = require('short-unique-id');
 const fs = require('fs');
 const uniqueRandom = require('unique-random');
 const csv = require('csv-express')
-// const path = require('path')
+const path = require('path')
 
 const uid = new shortUniqueId();
 const PER_PAGE = 20
@@ -177,11 +177,14 @@ exports.getConfirmOrder = async (req, res, next) => {
 
 exports.postConfirmOrder = async (req, res, next) => {
 	try {
-		const survey = await Survey.findById(req.query.sid);
-		const invoiceExist = fs.exists(`data\\invoices\\${survey.invoice}`, (exists) => { return exists })
+		const survey = await Survey.findById(req.query.sid)
+		let invoicePath = ''
+		if (survey.invoice !== undefined) {
+			invoicePath = path.join('data', 'invoices', survey.invoice)
+		}
 
-		if (invoiceExist) {
-			fs.unlink(`data\\invoices\\${survey.invoice}`, err => {
+		if (fs.existsSync(invoicePath)) {
+			fs.unlink(invoicePath, err => {
 				if (err) next(err)
 			})
 		}
@@ -822,22 +825,27 @@ exports.getReports = async (req, res, next) => {
 exports.getDeleteSurvey = async (req, res, next) => {
 	try {
 		const survey = await Survey.findById(req.params.sid)
-		const imageExist = fs.exists(`images\\${survey.imageUrl}`, exists => { return exists })
-		const invoiceExist = fs.exists(`data\\invoice\\${survey.invoice}`, exists => { return exists })
+		let imagePath = '', invoicePath = ''
+		if (survey.imageUrl !== undefined && survey.imageUrl !== 'profile.png') {
+			imagePath = path.join('images', survey.imageUrl)
+		}
 
-		if (imageExist) {
-			fs.unlink(`images\\${survey.imageUrl}`, err => {
+		if (survey.invoice !== undefined) {
+			invoicePath = path.join('data', 'invoices', survey.invoice)
+		}
+
+		if (fs.existsSync(imagePath)) {
+			fs.unlink(imagePath, err => {
 				if (err) next(err)
 			})
 		}
 
-		if (invoiceExist) {
-			fs.unlink(`data\\invoice\\${survey.invoice}`, err => {
+		if (fs.existsSync(invoicePath)) {
+			fs.unlink(invoicePath, err => {
 				if (err) next(err)
 			})
 		}
 		await Survey.findByIdAndDelete(req.params.sid)
-		console.log('DELETED - admin->show-info')
 		res.redirect('/survey-info?role=' + req.user.role + '&page=' + req.query.page)
 	} catch (err) {
 		const error = new Error(err)
@@ -936,8 +944,12 @@ exports.getDownloadInvoice = async (req, res, next) => {
 		const path = require('path')
 		const survey = await Survey.findById(req.params.sid)
 		const invoicePath = path.join('data', 'invoices', survey.invoice)
-		res.download(invoicePath)
-
+		if (fs.existsSync(invoicePath)) {
+			res.download(invoicePath)
+		} else {
+			req.flash('error', 'Invoice not found!')
+			return res.redirect('back')
+		}
 	} catch (err) {
 		const error = new Error(err);
 		error.httpStatusCode = 500;
@@ -980,10 +992,19 @@ exports.postUpdateImage = async (req, res, next) => {
 
 exports.getDownloadImage = async (req, res, next) => {
 	try {
-
 		const survey = await Survey.findById(req.params.sid)
-		filePath = 'images/' + survey.imageUrl
-		res.download(filePath)
+		let imagePath = ''
+		if (survey.imageUrl !== undefined) {
+			imagePath = path.join('images', survey.imageUrl)
+		}
+
+		if (fs.existsSync(imagePath)) {
+			res.download(imagePath)
+		} else {
+			req.flash('error', 'Image not found!')
+			return res.redirect('back')
+		}
+
 	} catch (err) {
 		const error = new Error(err)
 		error.httpStatusCode = 500

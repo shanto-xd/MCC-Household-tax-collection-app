@@ -5,72 +5,72 @@ const auth = require('../middleware')
 
 router.get('/', formController.getLandingPage)
 
-router.get('/dashboard', auth.isAuthenticated, formController.getDashboard)
+router.get('/dashboard', auth.dashboardPass, formController.getDashboard)
 
-router.get('/form', formController.getForm)
+router.get('/form', auth.isAuthenticated, formController.getForm)
 
-router.post('/form', formController.postForm)
+router.post('/form', auth.isAuthenticated, formController.postForm)
 
-router.get('/upload-image', formController.getUploadImage)
+router.get('/upload-image', auth.isAuthenticated, formController.getUploadImage)
 
-router.post('/upload-image', formController.postUploadImage);
+router.post('/upload-image', auth.isAuthenticated, formController.postUploadImage);
 
-router.get('/confirm-order', formController.getConfirmOrder);
+router.get('/confirm-order', auth.isAuthenticated, formController.getConfirmOrder);
 
-router.post('/confirm-order', formController.postConfirmOrder);
+router.post('/confirm-order', auth.isAuthenticated, formController.postConfirmOrder);
 
-router.get('/order-plate', formController.getOrderPlate);
+router.get('/order-plate', auth.isFieldOfficer, formController.getOrderPlate);
 
-router.post('/order-plate', formController.postOrderPlate);
+router.post('/order-plate', auth.isFieldOfficer, formController.postOrderPlate);
 
-router.get('/fo/daily-report', formController.getDailyReport);
+router.get('/fo/daily-report', auth.isFieldOfficer, formController.getDailyReport);
 
-router.post('/fo/daily-report', formController.postDailyReport)
+router.post('/fo/daily-report', auth.isFieldOfficer, formController.postDailyReport)
 
-router.get('/orders', formController.getOrders);
+router.get('/orders', auth.isProductionOfficer, formController.getOrders);
 
-router.post('/orders', formController.postOrders);
+router.post('/orders', auth.isProductionOfficer, formController.postOrders);
 
-router.get('/show-info/:sid', formController.getShowInfo);
+router.get('/show-info/:sid', auth.isAuthenticated, formController.getShowInfo);
 
-router.get('/order/plate-number/:sid', formController.getOrderPlateNumber)
+router.get('/order/plate-number/:sid', auth.isProductionOfficer, formController.getOrderPlateNumber)
 
-router.post('/orders/plate-delivery/:sid', formController.postPlateDelivery)
+router.post('/orders/plate-delivery/:sid', auth.isProductionOfficer, formController.postPlateDelivery)
 
-router.get('/survey-info', formController.getSurveyInfo)
+router.get('/survey-info', auth.surveyInfoPass, formController.getSurveyInfo)
 
-router.post('/survey-info', formController.postSurveyInfo)
+router.post('/survey-info', auth.surveyInfoPass, formController.postSurveyInfo)
 
-router.get('/survey-info/update/:sid', formController.getUpdateSurveyInfo)
+router.get('/survey-info/update/:sid', auth.surveyInfoPass, formController.getUpdateSurveyInfo)
 
-router.post('/survey-info/update/:sid', formController.postUpdateSurveyInfo)
+router.post('/survey-info/update/:sid', auth.surveyInfoPass, formController.postUpdateSurveyInfo)
 
-router.get('/survey-info/date', formController.getSurveyInfoByDate)
+router.get('/survey-info/date', auth.surveyInfoPass, formController.getSurveyInfoByDate)
 
-router.post('/survey-info/date', formController.postSurveyInfoByDate)
+router.post('/survey-info/date', auth.surveyInfoPass, formController.postSurveyInfoByDate)
 
 router.get('/officers-panel', auth.isAdmin, formController.getOfficersPanel)
 
 router.post('/officers-panel', auth.isAdmin, formController.postOfficersPanel)
 
-router.get('/officers/:user_id', auth.isAdmin, formController.getOfficers)
+router.get('/officers/:user_id', auth.isAuthenticated, formController.getOfficers)
 
 router.post('/survey-info/download', auth.isAdmin, formController.postDownloadSurveyInfo)
 
-router.get('/reports', formController.getReports)
+router.get('/reports', auth.surveyInfoPass, formController.getReports)
 
 // router.get('/reports/details/:uid', formController.getReportsDetail)
 
-router.get('/survey-info/delete/:sid', formController.getDeleteSurvey)
+router.get('/survey-info/delete/:sid', auth.isAdmin, formController.getDeleteSurvey)
 
-router.get('/po/daily-orders', formController.getDailyOrders)
+router.get('/po/daily-orders', auth.isProductionOfficer, formController.getDailyOrders)
 
-router.post('/po/daily-orders', formController.postDailyOrders)
+router.post('/po/daily-orders', auth.isProductionOfficer, formController.postDailyOrders)
 
-router.get('/download/invoice/:sid', formController.getDownloadInvoice)
+router.get('/download/invoice/:sid', auth.isAdmin, formController.getDownloadInvoice)
 
-router.post('/update/image/:sid', formController.postUpdateImage)
+router.post('/update/image/:sid', auth.isAuthenticated, formController.postUpdateImage)
 
-router.get('/download/image/:sid', formController.getDownloadImage)
+router.get('/download/image/:sid', auth.notFO, formController.getDownloadImage)
 
 module.exports = router

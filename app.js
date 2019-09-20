@@ -8,8 +8,10 @@ const shortUniqueId = require('short-unique-id');
 const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
 const flash = require('connect-flash')
+const helmet = require('helmet')
+const rateLimiter = require('express-rate-limit')
 
-const seed = require('./seed');
+//const seed = require('./seed');
 
 const uid = new shortUniqueId();
 
@@ -25,6 +27,21 @@ const errorController = require('./controllers/error')
 
 // import db models
 const User = require('./models/user')
+
+// set headers to secure app
+app.use(helmet())
+
+// limit login attempt
+// for reverse proxy -> heroku
+app.set('trust proxy', 1)
+
+const reqLimiter = rateLimiter({
+	windowMs: 1 * 60 * 1000, // 1 minutes
+	max: 100
+})
+
+// only apply to requests that begin with /api/
+app.use("/auth/", reqLimiter);
 
 // configure db conncetion
 const MONGODB_URI = 'mongodb+srv://azad71:0076b@ecommerce-fgwuw.mongodb.net/mmc'
@@ -88,7 +105,7 @@ app.use((req, res, next) => {
 				return next();
 			}
 			req.user = user;
-			// req.locals.currentUser = req.user
+			res.locals.currentUser = user
 			next();
 		})
 		.catch(err => {
