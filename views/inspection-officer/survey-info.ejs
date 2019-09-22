@@ -2,14 +2,13 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.10/css/bootstrap-select.css" />
 
-<title>সার্ভে তথ্য | ইন্সপেকশন অফিসার</title>
+<title>সার্ভে তথ্য | <%=currentUser.role%></title>
 </head>
 
 <body>
 	<%- include('../includes/nav.ejs', {userRole: userRole}) %>
 	<% include ../includes/alerts %>
 	<% if(surveys.length > 0) { %>
-
 	<div class="container my-5">
 		<form action="/survey-info?role=<%=userRole%>" method="POST">
 			<div class="form-row">

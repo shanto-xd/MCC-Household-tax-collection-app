@@ -461,7 +461,26 @@ exports.getSurveyInfo = async (req, res, next) => {
 			}
 		}
 		const count = await Survey.find(obj).countDocuments()
-		const surveys = await Survey.find(obj).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding')
+		const surveys = await Survey.find(obj)
+			.populate('conductedBy', 'name')
+			.skip((page - 1) * PER_PAGE)
+			.limit(PER_PAGE)
+		// .sort('holding')
+
+		// let holding = []
+		// for (let i = 0; i < surveys.length; i++) {
+		// 	holding.push(surveys[i].holding)
+		// }
+		// var collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+		// const holdingNum = holding.sort(collator.compare);
+
+		// let sortedSurveys = []
+		// for (let i = 0; i < holdingNum.length; i++) {
+		// 	const temp = await Survey.find({ holding: holdingNum[i] })
+		// 	sortedSurveys.push(temp[0])
+		// }
+		//res.send(sortedSurveys)
+		// console.log(sortedSurveys[0].conductedBy.name)
 		res.render('inspection-officer/survey-info', {
 			surveys: surveys,
 			userRole: req.query.role,
@@ -495,7 +514,23 @@ exports.postSurveyInfo = async (req, res, next) => {
 			}
 		}
 		const count = await Survey.find(obj).countDocuments()
-		const surveys = await Survey.find(obj).populate('conductedBy', 'name').skip((page - 1) * PER_PAGE).limit(PER_PAGE).sort('holding')
+		const surveys = await Survey.find(obj)
+			.populate('conductedBy', 'name')
+			.skip((page - 1) * PER_PAGE)
+			.limit(PER_PAGE)
+		//.sort('holding')
+		// let holding = []
+		// for (let i = 0; i < surveys.length; i++) {
+		// 	holding.push(surveys[i].holding)
+		// }
+		// var collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+		// const holdingNum = holding.sort(collator.compare);
+
+		// let sortedSurveys = []
+		// for (let i = 0; i < holdingNum.length; i++) {
+		// 	const temp = await Survey.find({ holding: holdingNum[i] })
+		// 	sortedSurveys.push(temp[0])
+		// }
 		res.render('inspection-officer/survey-info', {
 			surveys: surveys,
 			userRole: req.query.role,
@@ -725,12 +760,29 @@ exports.getOfficers = async (req, res, next) => {
 exports.postDownloadSurveyInfo = async (req, res, next) => {
 	try {
 		let filename = 'survey_info_ward_' + req.body.ward + '.csv'
-		const surveys = await Survey.find({ ward: req.body.ward }).select('-_id -created -updated -__v').sort('holding').lean()
+		const surveys = await Survey.find({ ward: req.body.ward })
+		console.log(surveys.length)
+		let holding = []
+		for (let i = 0; i < surveys.length; i++) {
+			holding.push(surveys[i].holding)
+		}
+		console.log(holding.length)
+		var collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+		const holdingNum = holding.sort(collator.compare);
+		let sortedSurveys = []
+		for (let i = 0; i < holdingNum.length; i++) {
+			const temp = await Survey.find({ holding: holdingNum[i], ward: req.body.ward })
+				.select('-_id -created -updated -__v -imageUrl -invoice -conductedBy -orderBill -orderStatus').lean()
+
+			sortedSurveys.push(temp[0])
+		}
+		// console.log(sortedSurveys.length)
+		// res.send(sortedSurveys)
 		res.statusCode = 200
 
 		res.setHeader('Content-Type', 'text/csv');
 		res.setHeader("Content-Disposition", 'attachment; filename=' + filename);
-		res.csv(surveys, true);
+		res.csv(sortedSurveys, true);
 	} catch (err) {
 		const error = new Error(err)
 		error.httpStatusCode = 500

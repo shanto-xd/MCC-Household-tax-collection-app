@@ -7,8 +7,9 @@ const motherName = ['সালমা খাতুন', 'জরিনা বে�
 const areaName = ['ঢাকা', 'সাভার', 'গাজীপুর', 'বিক্রমপুর', 'ডেমরা', 'সবুজবাগ', 'ওয়ারি', 'মিরপুর', 'ফার্মগেট', 'উত্তরা']
 const age = ['৫০', '৬০', '৫২', '৪৫', '৩৫', '৪৮', '৬৩', '৫৩', '৪৬', '৬১']
 const occupation = ['চাকরিজীবি', 'কৃষক', 'অবসরপ্রাপ্ত', 'ব্যবসায়ী', 'গৃহিনী', 'শিক্ষক', 'ডাক্তার', 'রাজনীতিবিদ', 'দিন মজুর', 'বেকার']
-const holding = ['135/2', '132/A', '52/C', '85/R', '232/5', '91/8', '789/F', '123/4', '851/4', '81/1']
-const block = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+const holding = ['1/a', '2/3', '3/4', '4/6', '3/ta', '3/gha', '4/c', '8/1', '2/a/1', '2/b/2', '2/a/2',
+    '3/b/1', '2/h/1', '2/d/4', '3/h/1', '6/5', '7/5', '18', '19', '14', '7/a/1', '7/a', '3/cha', '4/ga', '9/c']
+//const block = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 const mobile = []
 const orderStatus = ['In progress...', 'Delivered', 'Canceled']
 const ward = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
@@ -30,7 +31,7 @@ const paid = ['হ্যাঁ', 'না', 'বকেয়া']
 const plate = ['৬ * ৯ ইঞ্চি', '৮ * ১২ ইঞ্চি']
 async function seed() {
     // const orders = await Order.find()
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < holding.length; i++) {
         const random1 = uniqueRandom(0, 9);
         const random2 = uniqueRandom(0, 2);
         const random3 = uniqueRandom(200, 500)
@@ -44,12 +45,12 @@ async function seed() {
                 ownerName: ownerName[random1()],
                 fatherName: ownerName[random1() + 2],
                 motherName: motherName[random1()],
-                ward: ward[random4()],
+                ward: '2',
                 age: age[random1()],
                 occupation: occupation[random1()],
                 road: areaName[random1()],
                 postcode: random3(),
-                holding: holding[random1()],
+                holding: holding[i],
                 thana: areaName[random4()],
                 freedomFighter: freedom[random2()],
                 mobile: mobile[random5()],
@@ -80,7 +81,7 @@ async function seed() {
                 imageUrl: 'profile.png',
                 created: new Date().toDateString(),
                 updated: new Date().toDateString(),
-                conductedBy: '5d7b35ed70cdba0ce4e522af'
+                conductedBy: '5d7b35b870cdba0ce4e522ae'
             })
 
             await survey.save()

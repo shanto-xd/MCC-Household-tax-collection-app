@@ -11,11 +11,11 @@ const flash = require('connect-flash')
 const helmet = require('helmet')
 const rateLimiter = require('express-rate-limit')
 
-//const seed = require('./seed');
+const seed = require('./seed');
 
 const uid = new shortUniqueId();
 
-// seed();
+//seed();
 
 
 // import routes
@@ -32,7 +32,7 @@ const User = require('./models/user')
 app.use(helmet())
 
 // limit login attempt
-// for reverse proxy -> heroku
+// for reverse proxy -> heroku, digitalocean
 app.set('trust proxy', 1)
 
 const reqLimiter = rateLimiter({

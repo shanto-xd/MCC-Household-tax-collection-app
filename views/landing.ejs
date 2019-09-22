@@ -1,37 +1,42 @@
 <%- include includes/header.ejs %>
-    <!-- <link rel="stylesheet" href="/css/app.css"> -->
-    <title>হোম | ময়মনসিংহ সিটি কর্পোরেশন</title>
+<!-- <link rel="stylesheet" href="/css/app.css"> -->
+<title>হোম | ময়মনসিংহ সিটি কর্পোরেশন</title>
 </head>
+
 <body>
     <div class="container">
         <h1 class="mt-3 text-center font-weight-bold">MYMENSHINGH CITY CORPORATION</h1>
-        <h2 class="heading text-center font-weight-bold p-4">ডিজিটাল হোল্ডিং এসেসমেন্ট এবং হোল্ডিং নাম্বার প্লেট বাস্তবায়ন প্রকল্প</h2>
-        
+        <h2 class="heading text-center font-weight-bold p-4">ডিজিটাল হোল্ডিং এসেসমেন্ট এবং হোল্ডিং নাম্বার প্লেট
+            বাস্তবায়ন প্রকল্প</h2>
+
         <%- include includes/alerts.ejs %>
         <div class="row mt-2">
             <div class="col-md-6 mx-auto text-center ">
-                <div class="mt-4"> 
+                <div class="mt-4">
                     <a href="/auth/login?role=এডমিন" class="btn btn-block btn-outline-success p-3">এডমিন</a>
                 </div>
-                
-                    <div class="mt-4">
-                    <a href="/auth/login?role=ফিল্ড অফিসার" class="btn btn-block btn-outline-success p-3">ফিল্ড অফিসার</a>
-                </div>
-                
-                    <div class="mt-4">
-                    <a href="/auth/login?role=ইন্সপেকশন অফিসার" class="btn btn-block btn-outline-success p-3">ইন্সপেকশন অফিসার</a>  
-                </div>
-                
+
                 <div class="mt-4">
-                    <a href="/auth/login?role=প্রডাকশন অফিসার" class="btn btn-block btn-outline-success p-3">প্রডাকশন অফিসার</a>
+                    <a href="/auth/login?role=ফিল্ড অফিসার" class="btn btn-block btn-outline-success p-3">ফিল্ড
+                        অফিসার</a>
+                </div>
+
+                <div class="mt-4">
+                    <a href="/auth/login?role=ইন্সপেকশন অফিসার" class="btn btn-block btn-outline-success p-3">ইন্সপেকশন
+                        অফিসার</a>
+                </div>
+
+                <div class="mt-4">
+                    <a href="/auth/login?role=প্রডাকশন অফিসার" class="btn btn-block btn-outline-success p-3">প্রডাকশন
+                        অফিসার</a>
                 </div>
 
                 <!-- <div class="mt-4">
                     <a href="#" title="আপনার হোল্ডিং প্লেট ডেলিভারি,  সর্বশেষ অবস্থা জানুন" class="btn btn-block btn-outline-success p-3">অনুসন্ধান</a>
                 </div> -->
-            </div> 
+            </div>
         </div>
     </div>
-<%- include includes/footer-text.ejs %>
+    <%- include includes/footer-text.ejs %>
 
-<%- include includes/footer.ejs %>
+    <%- include includes/footer.ejs %>
