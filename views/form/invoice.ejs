@@ -1,0 +1,62 @@
+<%- include ../includes/header.ejs %>
+<title>অর্ডার</title>
+</head>
+
+<body>
+    <%- include('../includes/nav.ejs', {userRole: currentUser.role}) %>
+    <div class="container">
+        <div class="text-center mt-3">
+            <h1 class=" font-weight-bold"> <img src="/images/logo.png" width="60" height="60" alt=""> ময়মনসিংহ সিটি
+                কর্পোরেশন</h1>
+            <h4>নগর ভবন, ময়মনসিংহ</h4>
+        </div>
+        <div class="d-flex justify-content-between">
+            <a href="/form?role=<%=userRole%>" class="btn btn-primary"><span class="fa fa-arrow-left"></span> ফর্মে ফিরে
+                যান</a>
+            <a href="/confirm-order/invoice/<%=survey._id%>" class="btn btn-success"><span class="fa fa-print"> প্রিন্ট
+                    করুন</span></a>
+        </div>
+        <div class="row my-5">
+            <div class="col-md-8 mx-auto">
+                <div class="d-flex justify-content-between">
+                    <p class="lead">বিল নং - <%=survey.orderBill%></p>
+                    <p class="lead">তারিখ - <%=new Date().toDateString()%></p>
+                </div>
+                <p class="mb-3">
+                    -----------------------------------------------------------------------------------------------------------------
+                </p>
+
+                <p class="lead">
+                    এসেসমেন্ট আইডি - <%=survey.assessment_id%>
+                </p>
+                <p class="lead">
+                    বাড়ির নাম - <%=survey.holdingName%>
+                </p>
+                <p class="lead">
+                    মালিক/দখলদারের নাম - <%=survey.ownerName%>
+                </p>
+                <p class="lead">
+                    হোল্ডিং নং - <%=survey.holding%>
+                </p>
+                <p class="lead">
+                    রাস্তা/মহল্লার নাম - <%=survey.road%>
+                </p>
+                <p class="lead">
+                    প্লেট সাইজ - <%=survey.plateSize%>
+                </p>
+                <p class="lead">
+                    ওয়ার্ড নং - <%=survey.ward%>
+                </p>
+                <p class="lead">
+                    মোবাইল - <%=survey.mobile%>
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <%- include ../includes/footer-text.ejs %>
+    <%- include ../includes/footer.ejs %>

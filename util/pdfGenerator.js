@@ -7,7 +7,7 @@ const dateFormatter = require('./date-formatter')
 exports.createInvoice = async (survey, res) => {
 
     try {
-        const pdf = new PDFKit({ margin: 50 });
+        const pdf = new PDFKit({ margin: 50 })
         const invoicePath = path.join('data', 'invoices', survey.invoice)
         const fontPath = path.join('public', 'fonts', 'SolaimanLipi.ttf')
 

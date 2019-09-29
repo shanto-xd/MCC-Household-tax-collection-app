@@ -19,6 +19,8 @@ router.get('/confirm-order', auth.isAuthenticated, formController.getConfirmOrde
 
 router.post('/confirm-order', auth.isAuthenticated, formController.postConfirmOrder);
 
+router.get('/confirm-order/invoice/:sid', auth.isAuthenticated, formController.getConfirmOrderInvoice)
+
 router.get('/order-plate', auth.isFieldOfficer, formController.getOrderPlate);
 
 router.post('/order-plate', auth.isFieldOfficer, formController.postOrderPlate);

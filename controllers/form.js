@@ -11,7 +11,7 @@ const csv = require('csv-express')
 const path = require('path')
 
 const uid = new shortUniqueId();
-const PER_PAGE = 20
+const PER_PAGE = 15
 
 exports.getLandingPage = (req, res, next) => {
 	res.render('landing');
@@ -178,22 +178,30 @@ exports.getConfirmOrder = async (req, res, next) => {
 exports.postConfirmOrder = async (req, res, next) => {
 	try {
 		const survey = await Survey.findById(req.query.sid)
-		let invoicePath = ''
-		if (survey.invoice !== undefined) {
-			invoicePath = path.join('data', 'invoices', survey.invoice)
-		}
 
-		if (fs.existsSync(invoicePath)) {
-			fs.unlink(invoicePath, err => {
-				if (err) next(err)
-			})
-		}
 		survey.orderPaid = 'Paid';
 		survey.plateSize = req.body.plateSize;
 		survey.orderStatus = 'In progress';
-		survey.invoice = survey.holdingName + '-' + survey.orderBill + '.pdf';
 		await survey.save()
 
+		res.render('form/invoice', {
+			survey: survey,
+			userRole: req.user.role,
+		})
+
+	} catch (err) {
+		const error = new Error(err);
+		error.httpStatusCode = 500;
+		return next(error);
+	}
+}
+
+exports.getConfirmOrderInvoice = async (req, res, next) => {
+	try {
+		const survey = await Survey.findById(req.params.sid)
+
+		survey.invoice = survey.holdingName + '-' + survey.orderBill + '.pdf'
+		await survey.save()
 		//create invoice
 		await invoice.createInvoice(survey, res);
 	} catch (err) {
@@ -213,7 +221,7 @@ exports.postOrderPlate = async (req, res, next) => {
 		const key = req.body.key
 		const searchObj = {
 			orderStatus: 'In progress',
-			conductedBy: req.user._id,
+			// conductedBy: req.user._id,
 		}
 		searchObj[filter] = key
 
@@ -462,27 +470,26 @@ exports.getSurveyInfo = async (req, res, next) => {
 		}
 		const count = await Survey.find(obj).countDocuments()
 		const surveys = await Survey.find(obj)
-			.populate('conductedBy', 'name')
 			.skip((page - 1) * PER_PAGE)
 			.limit(PER_PAGE)
 		// .sort('holding')
 
-		// let holding = []
-		// for (let i = 0; i < surveys.length; i++) {
-		// 	holding.push(surveys[i].holding)
-		// }
-		// var collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
-		// const holdingNum = holding.sort(collator.compare);
+		let holding = []
+		for (let i = 0; i < surveys.length; i++) {
+			holding.push(surveys[i].holding)
+		}
+		var collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+		const holdingNum = holding.sort(collator.compare);
 
-		// let sortedSurveys = []
-		// for (let i = 0; i < holdingNum.length; i++) {
-		// 	const temp = await Survey.find({ holding: holdingNum[i] })
-		// 	sortedSurveys.push(temp[0])
-		// }
-		//res.send(sortedSurveys)
+		let sortedSurveys = []
+		for (let i = 0; i < holdingNum.length; i++) {
+			const temp = await Survey.find({ holding: holdingNum[i] }).populate('conductedBy', 'name')
+			sortedSurveys.push(temp[0])
+		}
+		// res.send(sortedSurveys)
 		// console.log(sortedSurveys[0].conductedBy.name)
 		res.render('inspection-officer/survey-info', {
-			surveys: surveys,
+			surveys: sortedSurveys,
 			userRole: req.query.role,
 			currentPage: page,
 			lastPage: Math.ceil(count / PER_PAGE),
@@ -515,24 +522,23 @@ exports.postSurveyInfo = async (req, res, next) => {
 		}
 		const count = await Survey.find(obj).countDocuments()
 		const surveys = await Survey.find(obj)
-			.populate('conductedBy', 'name')
 			.skip((page - 1) * PER_PAGE)
 			.limit(PER_PAGE)
 		//.sort('holding')
-		// let holding = []
-		// for (let i = 0; i < surveys.length; i++) {
-		// 	holding.push(surveys[i].holding)
-		// }
-		// var collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
-		// const holdingNum = holding.sort(collator.compare);
+		let holding = []
+		for (let i = 0; i < surveys.length; i++) {
+			holding.push(surveys[i].holding)
+		}
+		var collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+		const holdingNum = holding.sort(collator.compare);
 
-		// let sortedSurveys = []
-		// for (let i = 0; i < holdingNum.length; i++) {
-		// 	const temp = await Survey.find({ holding: holdingNum[i] })
-		// 	sortedSurveys.push(temp[0])
-		// }
+		let sortedSurveys = []
+		for (let i = 0; i < holdingNum.length; i++) {
+			const temp = await Survey.find({ holding: holdingNum[i] }).populate('conductedBy', 'name')
+			sortedSurveys.push(temp[0])
+		}
 		res.render('inspection-officer/survey-info', {
-			surveys: surveys,
+			surveys: sortedSurveys,
 			userRole: req.query.role,
 			currentPage: page,
 			lastPage: Math.ceil(count / PER_PAGE),
@@ -545,6 +551,7 @@ exports.postSurveyInfo = async (req, res, next) => {
 		return next(error);
 	}
 }
+
 
 exports.getUpdateSurveyInfo = async (req, res, next) => {
 	try {
