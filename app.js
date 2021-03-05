@@ -44,7 +44,9 @@ const reqLimiter = rateLimiter({
 app.use("/auth/", reqLimiter);
 
 // configure db conncetion
-const MONGODB_URI = 'mongodb+srv://azad71:0076b@ecommerce-fgwuw.mongodb.net/mmc'
+//const MONGODB_URI = 'mongodb+srv://azad71:0076b@ecommerce-fgwuw.mongodb.net/mmc'
+
+const MONGODB_URI = 'mongodb+srv://shanto:shanto@cluster0.ksuea.mongodb.net/mmc'
 
 // configure session
 const store = new MongoDBStore({
